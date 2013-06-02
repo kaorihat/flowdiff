@@ -16,7 +16,8 @@ import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
-import com.sun.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 
 

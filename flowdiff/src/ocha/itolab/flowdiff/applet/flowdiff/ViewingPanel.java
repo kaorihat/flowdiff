@@ -19,9 +19,12 @@ import ocha.itolab.flowdiff.core.streamline.*;
 public class ViewingPanel extends JPanel {
 
 	// TODO:ファイルのパスが固定になっている
-	static String url1 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/ari/";
-	static String url2 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/nashi/";
+//	static String url1 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/ari/";
+//	static String url2 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/nashi/";
+	static String url1 = "./data/kassoro/ari/";
+	static String url2 = "./data/kassoro/nashi/";
 
+	
 	public JButton  openDataButton, viewResetButton, generateButton;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
 	public JLabel xText, yText, zText;
