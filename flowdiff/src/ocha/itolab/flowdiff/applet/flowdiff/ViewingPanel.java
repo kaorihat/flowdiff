@@ -1,26 +1,36 @@
 
 package ocha.itolab.flowdiff.applet.flowdiff;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
-import java.net.URL;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ocha.itolab.flowdiff.core.data.*;
-import ocha.itolab.flowdiff.core.streamline.*;
+import ocha.itolab.flowdiff.core.data.FileReader;
+import ocha.itolab.flowdiff.core.data.Grid;
+import ocha.itolab.flowdiff.core.streamline.Streamline;
+import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
 
 public class ViewingPanel extends JPanel {
 
 	// TODO:ファイルのパスが固定になっている
-//	static String url1 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/ari/";
-//	static String url2 = "file:C:/itot/projects/VolVis/flowdiff/data/kassoro/nashi/";
+	//static String url1 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/ari/";
+	//static String url2 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/nashi/";
 	static String url1 = "./data/kassoro/ari/";
 	static String url2 = "./data/kassoro/nashi/";
 
