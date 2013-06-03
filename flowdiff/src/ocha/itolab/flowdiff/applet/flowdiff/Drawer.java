@@ -16,13 +16,13 @@ import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
 /**
- * �`�揈���̃N���X
+ * 描画処理のクラス
  * 
  * @author itot
  */
@@ -67,9 +67,9 @@ public class Drawer implements GLEventListener {
 	 * Constructor
 	 * 
 	 * @param width
-	 *            �`��̈�̕�
+	 *            描画領域の幅
 	 * @param height
-	 *            �`��̈�̍���
+	 *            描画領域の高さ
 	 */
 	public Drawer(int width, int height, GLCanvas c) {
 		glcanvas = c;
@@ -93,14 +93,14 @@ public class Drawer implements GLEventListener {
 	}
 
 	/**
-	 * �_�~�[���\�b�h
+	 * ダミーメソッド
 	 */
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged) {
 	}
 
 	/**
-	 * Transformer���Z�b�g����
+	 * Transformerをセットする
 	 * 
 	 * @param transformer
 	 */
@@ -110,7 +110,7 @@ public class Drawer implements GLEventListener {
 
 	
 	/**
-	 * Grid���Z�b�g����
+	 * Gridをセットする
 	 */
 	public void setGrid1(Grid g) {
 		grid1 = g;
@@ -121,7 +121,7 @@ public class Drawer implements GLEventListener {
 	}
 	
 	/**
-	 * Grid���Z�b�g����
+	 * Gridをセットする
 	 */
 	public void setGrid2(Grid g) {
 		grid2 = g;
@@ -132,26 +132,26 @@ public class Drawer implements GLEventListener {
 	}
 	
 	/**
-	 * Streamline���Z�b�g����
+	 * Streamlineをセットする
 	 */
 	public void setStreamline1(Streamline s) {
 		sl1 = s;
 	}
 
 	/**
-	 * Streamline���Z�b�g����
+	 * Streamlineをセットする
 	 */
 	public void setStreamline2(Streamline s) {
 		sl2 = s;
 	}
 	
 	/**
-	 * �`��̈�̃T�C�Y��ݒ肷��
+	 * 描画領域のサイズを設定する
 	 * 
 	 * @param width
-	 *            �`��̈�̕�
+	 *            描画領域の幅
 	 * @param height
-	 *            �`��̈�̍���
+	 *            描画領域の高さ
 	 */
 	public void setWindowSize(int width, int height) {
 		windowWidth = width;
@@ -159,34 +159,34 @@ public class Drawer implements GLEventListener {
 	}
 
 	/**
-	 * �}�E�X�{�^����ON/OFF��ݒ肷��
+	 * マウスボタンのON/OFFを設定する
 	 * 
 	 * @param isMousePressed
-	 *            �}�E�X�{�^����������Ă����true
+	 *            マウスボタンが押されていればtrue
 	 */
 	public void setMousePressSwitch(boolean isMousePressed) {
 		this.isMousePressed = isMousePressed;
 	}
 
 	/**
-	 * ��̑������Z�b�g����
+	 * 線の太さをセットする
 	 * 
 	 * @param lw
-	 *            ��̑����i��f���j
+	 *            線の太さ（画素数）
 	 */
 	public void setLinewidth(double lw) {
 		linewidth = lw;
 	}
 
 	/**
-	 * Image�̉ۂ��Z�b�g����
+	 * Imageの可否をセットする
 	 */
 	public void isImage(boolean is) {
 		isImage = is;
 	}
 
 	/**
-	 * Wireframe�̉ۂ��Z�b�g����
+	 * Wireframeの可否をセットする
 	 */
 	public void isWireframe(boolean is) {
 		isWireframe = is;
@@ -194,7 +194,7 @@ public class Drawer implements GLEventListener {
 
 
 	/**
-	 * �}�E�X�h���b�O�̃��[�h��ݒ肷��
+	 * マウスドラッグのモードを設定する
 	 * 
 	 * @param dragMode
 	 *            (1:ZOOM 2:SHIFT 3:ROTATE)
@@ -204,7 +204,7 @@ public class Drawer implements GLEventListener {
 	}
 
 	/**
-	 * ����
+	 * 初期化
 	 */
 	public void init(GLAutoDrawable drawable) {
 
@@ -225,7 +225,7 @@ public class Drawer implements GLEventListener {
 	}
 
 	/**
-	 * �ĕ`��
+	 * 再描画
 	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
@@ -233,10 +233,10 @@ public class Drawer implements GLEventListener {
 		windowWidth = width;
 		windowHeight = height;
 
-		// �r���[�|�[�g�̒�`
+		// ビューポートの定義
 		gl.glViewport(0, 0, width, height);
 
-		// ���e�ϊ��s��̒�`
+		// 投影変換行列の定義
 		gl2.glMatrixMode(GL2.GL_PROJECTION);
 		gl2.glLoadIdentity();
 		gl2.glOrtho(-width / 200.0, width / 200.0, -height / 200.0,
@@ -247,12 +247,12 @@ public class Drawer implements GLEventListener {
 	}
 
 	/**
-	 * �`������s����
+	 * 描画を実行する
 	 */
 	public void display(GLAutoDrawable drawable) {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
-		// ���_�ʒu������
+		// 視点位置を決定
 		gl2.glLoadIdentity();
 		glu.gluLookAt(centerX, centerY, (centerZ + 20.0), centerX, centerY,
 				centerZ, 0.0, 1.0, 0.0);
@@ -263,26 +263,26 @@ public class Drawer implements GLEventListener {
 		angleX = trans.getViewRotateY() * 45.0;
 		angleY = trans.getViewRotateX() * 45.0;
 
-		// �s����v�b�V��
+		// 行列をプッシュ
 		gl2.glPushMatrix();
 
-		// �������񌴓_���ɕ��̂𓮂���
+		// いったん原点方向に物体を動かす
 		gl2.glTranslated(centerX, centerY, centerZ);
 
-		// �}�E�X�̈ړ��ʂɉ����ĉ�]
+		// マウスの移動量に応じて回転
 		gl2.glRotated(angleX, 1.0, 0.0, 0.0);
 		gl2.glRotated(angleY, 0.0, 1.0, 0.0);
 
-		// �}�E�X�̈ړ��ʂɉ����Ĉړ�
+		// マウスの移動量に応じて移動
 		gl2.glTranslated(shiftX, shiftY, 0.0);
 
-		// �}�E�X�̈ړ��ʂɉ����Ċg��k��
+		// マウスの移動量に応じて拡大縮小
 		gl2.glScaled(scale, scale, scale);
 
-		// ���̂����Ƃ̈ʒu�ɖ߂�
+		// 物体をもとの位置に戻す
 		gl2.glTranslated(-centerX, -centerY, -centerZ);
 
-		// �ϊ��s��ƃr���[�|�[�g�̒l��ۑ�����
+		// 変換行列とビューポートの値を保存する
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport);
 		gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelview);
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
@@ -302,20 +302,20 @@ public class Drawer implements GLEventListener {
 			drawEndGrid(grid2);
 		}
 		
-		// �s����|�b�v
+		// 行列をポップ
 		gl2.glPopMatrix();
 
 	}
 
 	
 	/**
-	 * �i�q�̈�𔠂ŕ`�悷��
+	 * 格子領域を箱で描画する
 	 */
 	void drawBox() {
 		if(grid1 == null) return;
 		double minmax[] = grid1.getMinmaxPos();
 		
-		// 6�{�̃��[�v��`��
+		// 6本のループを描く
 		gl2.glColor3d(0.5, 0.5, 0.5);
 		gl2.glBegin(GL.GL_LINE_LOOP);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
@@ -356,7 +356,7 @@ public class Drawer implements GLEventListener {
 	}
 	
 	/**
-	 * �n�_��`�悷��
+	 * 始点を描画する
 	 */
 	void drawStartGrid(Grid grid){
 		int i, j, k;
@@ -378,7 +378,7 @@ public class Drawer implements GLEventListener {
 			}
 		}
 		
-		// 6�{�̃��[�v��`��
+		// 6本のループを描く
 		gl2.glColor3d(1.0, 1.0, 1.0);
 		
 		gl2.glBegin(GL.GL_LINE_LOOP);
@@ -421,7 +421,7 @@ public class Drawer implements GLEventListener {
 	
 	
 	/**
-	 * �I��`�悷��
+	 * 的を描画する
 	 */
 	void drawTarget(Grid grid, Streamline sl){
 		int i, j, k;
@@ -443,7 +443,7 @@ public class Drawer implements GLEventListener {
 			}
 		}
 		
-		// 6�{�̃��[�v��`��
+		// 6本のループを描く
 		if (sl == null) {
 			gl2.glColor3d(1.0, 0.0, 0.0);
 		}
@@ -492,7 +492,7 @@ public class Drawer implements GLEventListener {
 	}
 	
 	/**
-	 * ����̍s����������̊i�q��`��
+	 * 流線の行き着いた先の格子を描く
 	 */
 	public void drawEndGrid(Grid grid){
 		if(grid == null) return;
@@ -518,7 +518,7 @@ public class Drawer implements GLEventListener {
 			}
 		}
 		
-		// 6�{�̃��[�v��`��
+		// 6本のループを描く
 
 		gl2.glColor3d(0.0, 1.0, 0.0);
 		
@@ -563,11 +563,11 @@ public class Drawer implements GLEventListener {
 	
 	
 	/**
-	 * �����`��
+	 * 流線を描く
 	 */
 	void drawStreamline(Streamline sl, int id) {
 		
-		// �܂���`��
+		// 折れ線を描く
 		if(id == 1)
 			gl2.glColor3d(1.0, 0.0, 1.0);
 		if(id == 2)
