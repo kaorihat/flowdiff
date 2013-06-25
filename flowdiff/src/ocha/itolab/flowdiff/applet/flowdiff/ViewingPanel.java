@@ -37,7 +37,7 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
-	public JButton  openDataButton, viewResetButton, generateButton;
+	public JButton  openDataButton, viewResetButton, generateButton, viewButton;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
 	public JLabel xText, yText, zText;
 	public JSlider sliderX, sliderY, sliderZ;
@@ -76,9 +76,13 @@ public class ViewingPanel extends JPanel {
 		viewRotateButton = new JRadioButton("回転する");
 		group1.add(viewRotateButton);
 		p1.add(viewRotateButton);
+		
+		
 		viewScaleButton = new JRadioButton("大きく・小さく", true);
 		group1.add(viewScaleButton);
 		p1.add(viewScaleButton);
+		
+		
 		viewShiftButton = new JRadioButton("移動する");
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
@@ -92,7 +96,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(7,1));
+		p2.setLayout(new GridLayout(8,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -123,7 +127,8 @@ public class ViewingPanel extends JPanel {
 		generateButton = new JButton("決定する");
 		p2.add(generateButton);
 		
-		
+		viewButton = new JButton("ベクトル表示");
+		p2.add(viewButton);
 		//
 		// パネル群のレイアウト
 		//
@@ -254,6 +259,9 @@ public class ViewingPanel extends JPanel {
 				
 			}
 			
+			if (buttonPushed == viewButton) {
+				
+			}
 			canvas.display();
 		}
 	}
