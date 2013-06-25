@@ -31,8 +31,10 @@ public class ViewingPanel extends JPanel {
 	// TODO:ファイルのパスが固定になっている
 	//static String url1 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/ari/";
 	//static String url2 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/nashi/";
-	static String url1 = "./data/kassoro/ari/";
-	static String url2 = "./data/kassoro/nashi/";
+	
+	// 流れ場のファイルを読み込む（相対パス）
+	static String url1 = "file:../data/kassoro/ari/";
+	static String url2 = "file:../data/kassoro/nashi/";
 
 	
 	public JButton  openDataButton, viewResetButton, generateButton;
