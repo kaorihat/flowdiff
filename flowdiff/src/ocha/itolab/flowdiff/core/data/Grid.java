@@ -1,6 +1,6 @@
 package ocha.itolab.flowdiff.core.data;
 
-import ocha.itolab.flowdiff.core.streamline.*;
+import ocha.itolab.flowdiff.core.streamline.Streamline;
 
 public class Grid {
 	int num[] = new int[3];
@@ -17,7 +17,9 @@ public class Grid {
 	 * 格子の頂点数を設定する
 	 */
 	public void setNumGridPoint(int nx, int ny, int nz) {
-		num[0] = nx;   num[1] = ny;   num[2] = nz;
+		num[0] = nx;
+		num[1] = ny;
+		num[2] = nz;
 		gtotal = nx * ny * nz;
 		etotal = (nx - 1) * (ny - 1) * (nz - 1);
 

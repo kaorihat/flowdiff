@@ -1,16 +1,18 @@
 package ocha.itolab.flowdiff.applet.flowdiff;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.imageio.ImageIO;
+import java.util.EventListener;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-import ocha.itolab.flowdiff.core.data.*;
-import ocha.itolab.flowdiff.core.streamline.*;
+import javax.swing.JPanel;
+
+import ocha.itolab.flowdiff.core.data.Grid;
+import ocha.itolab.flowdiff.core.streamline.Streamline;
 
 
 /**

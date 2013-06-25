@@ -3,9 +3,12 @@ package ocha.itolab.flowdiff.applet.flowdiff;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 import javax.media.opengl.awt.GLCanvas;
 
-public class CursorListener implements MouseListener, MouseMotionListener {
+public class CursorListener implements MouseListener, MouseMotionListener,MouseWheelListener {
 
 	Canvas canvas = null;
 	GLCanvas glcanvas = null;
@@ -22,6 +25,7 @@ public class CursorListener implements MouseListener, MouseMotionListener {
 		glcanvas = (GLCanvas) glc;
 		glcanvas.addMouseListener(this);
 		glcanvas.addMouseMotionListener(this);
+		glcanvas.addMouseWheelListener(this);
 	}
 	
 
@@ -86,6 +90,21 @@ public class CursorListener implements MouseListener, MouseMotionListener {
 
 		if(canvas == null) return;
 		
+		int cX = e.getX();
+		int cY = e.getY();
+		
+		canvas.drag(initX, cX, initY, cY);
+		canvas.display();
+	}
+
+
+	@Override
+	/**
+	 * マウスホイールの操作を検出するリスナー
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+		if(canvas == null) return;
 		int cX = e.getX();
 		int cY = e.getY();
 		
