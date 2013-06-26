@@ -28,10 +28,6 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
 public class ViewingPanel extends JPanel {
 
-	// TODO:ファイルのパスが固定になっている
-	//static String url1 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/ari/";
-	//static String url2 = "file:C:/Users/kaori/git/flowdiff/flowdiff/data/kassoro/nashi/";
-	
 	// 流れ場のファイルを読み込む（相対パス）
 	static String url1 = "file:../data/kassoro/ari/";
 	static String url2 = "file:../data/kassoro/nashi/";
@@ -73,16 +69,12 @@ public class ViewingPanel extends JPanel {
 		p1.add(openDataButton);
 		p1.add(viewResetButton);
 		ButtonGroup group1 = new ButtonGroup();
-		viewRotateButton = new JRadioButton("回転する");
+		viewRotateButton = new JRadioButton("回転する",true);//最初にチェックが入っている
 		group1.add(viewRotateButton);
 		p1.add(viewRotateButton);
-		
-		
-		viewScaleButton = new JRadioButton("大きく・小さく", true);
+		viewScaleButton = new JRadioButton("大きく・小さく");
 		group1.add(viewScaleButton);
 		p1.add(viewScaleButton);
-		
-		
 		viewShiftButton = new JRadioButton("移動する");
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);

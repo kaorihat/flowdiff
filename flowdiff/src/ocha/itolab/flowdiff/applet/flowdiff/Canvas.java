@@ -54,7 +54,7 @@ public class Canvas extends JPanel {
 		this.height = height;
 		setSize(width, height);
 		setColors(foregroundColor, backgroundColor);
-		dragMode = 1;
+		dragMode = 3;
 		dimMode = 2;
 	
 		glc = new GLCanvas();
@@ -217,6 +217,17 @@ public class Canvas extends JPanel {
 		trans.drag(x, y, width, height, dragMode);
 	}
 
+	/**
+	 * マウスホイールの動き
+	 * @param wheelRotation マウスホイールの方向(前：1, 後：-1)
+	 * @param aptitude 倍率
+	 */
+	public void wheel(int wheelRotation, int aptitude) {
+		int x = wheelRotation*aptitude;
+		int y = wheelRotation*aptitude;
+
+		trans.drag(x, y, width, height, 1);
+	}
 
 	/**
 	 * 線の太さをセットする

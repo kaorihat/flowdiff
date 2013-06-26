@@ -14,6 +14,7 @@ public class CursorListener implements MouseListener, MouseMotionListener,MouseW
 	GLCanvas glcanvas = null;
 	ViewingPanel  viewingPanel = null;
 	int initX = 0, initY = 0;
+	int initW =0;
 
 	
 	/**
@@ -104,11 +105,10 @@ public class CursorListener implements MouseListener, MouseMotionListener,MouseW
 	 */
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
+		//System.out.println("wheel="+e.getWheelRotation());
 		if(canvas == null) return;
-		int cX = e.getX();
-		int cY = e.getY();
-		
-		canvas.drag(initX, cX, initY, cY);
+		initW += e.getWheelRotation();
+		canvas.wheel(initW, 15);
 		canvas.display();
 	}
 }
