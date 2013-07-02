@@ -220,7 +220,7 @@ public class Drawer implements GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL2.GL_NORMALIZE);
 		gl2.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE, GL.GL_TRUE);
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	}
 
@@ -288,6 +288,8 @@ public class Drawer implements GLEventListener {
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
 
 		drawBox();
+		drawBuilding(grid1);
+		drawBuilding(grid2);
 		
 		if(grid1 != null && sl1 != null) {
 			drawTarget(grid1, sl1);
@@ -353,6 +355,30 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
+	}
+	
+	/**
+	 * 建物を描画する
+	 * @param grid
+	 */
+	void drawBuilding(Grid grid){
+		if(grid == null) return;
+		
+		//建物がある座標に点を描画
+		for(int i = 0;i<grid.getNumGridPointAll();i++){
+			
+			if(grid.getGridPoint(i).getEnvironment() != 0.0){
+				if(grid.getGridPoint(i).getEnvironment() == 0.5){
+					gl2.glColor3d(0.0, 0.0, 1.0);
+				}
+				else{
+					gl2.glColor3d(0.0, 1.0, 0.0);
+				}
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(grid.getEnvironmentPoint(i)[0],grid.getEnvironmentPoint(i)[1],grid.getEnvironmentPoint(i)[2]);
+				gl2.glEnd();
+			}
+		}
 	}
 	
 	/**
@@ -491,6 +517,8 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 	}
 	
+	
+	
 	/**
 	 * 流線の行き着いた先の格子を描く
 	 */
@@ -560,6 +588,7 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 	
 	}
+	
 	
 	
 	/**

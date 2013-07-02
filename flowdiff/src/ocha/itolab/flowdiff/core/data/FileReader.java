@@ -1,8 +1,11 @@
 package ocha.itolab.flowdiff.core.data;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 import ocha.itolab.flowdiff.applet.flowdiff.ViewingPanel;
 
@@ -39,6 +42,7 @@ public class FileReader {
 		read("U.txt", 3);
 		read("V.txt", 4);
 		read("W.txt", 5);
+		read("MSK.txt", 6);
 		
 		// Gridを返す
 		grid.finalize();
@@ -68,6 +72,7 @@ public class FileReader {
 				double pos[] = gp.getPosition();
 				double vec[] = gp.getVector();
 				double value = Double.valueOf(words[i]);
+				double environment = 0.0;
 						
 				// 代入の場合分け
 				switch(id) {
@@ -89,6 +94,11 @@ public class FileReader {
 				case 5:
 					gp.setVector(vec[0], vec[1], value);
 					break;
+				case 6:
+					if(value != 0.0){
+						gp.setEnvironment(value);
+						//System.out.println("value ="+ value);
+					}
 				}
 			}
 			
