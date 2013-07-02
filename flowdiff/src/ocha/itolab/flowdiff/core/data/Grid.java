@@ -11,9 +11,8 @@ public class Grid {
 	public int startPoint[] = new int [3]; // 始点となる格子の座標値を格納する
 	public int target[] = new int [3]; // 的となる格子の座標値を格納する
 	public int levelMode = 1; // 初期設定は「ちょいむず」レベル（「かなりむず」は0になる）
-	public double environment[] = new double[4]; // 建物の座標値・種別を格納する(1:建物・滑走路　0.5:海 0:何もなし)
-	int bnum = 0;
-	int count = 0;
+	
+	
 	/**
 	 * 格子の頂点数を設定する
 	 */
@@ -41,9 +40,6 @@ public class Grid {
 	 */
 	public int[] getNumGridPoint() {
 		return num;
-	}
-	public int getNumGridPointAll() {
-		return gtotal;
 	}
 	
 	
@@ -103,7 +99,7 @@ public class Grid {
 		target[2] = k;
 	}	
 	
-	
+
 	/**
 	 * データを読み終えたあとのまとめ作業
 	 */
@@ -143,51 +139,6 @@ public class Grid {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * 建物のある座標値・種別を返す
-	 */
-	public  GridPoint[] getBuildingPoint(){
-		GridPoint barray[] = new GridPoint[this.getNumBuilding()];
-		
-		for(int i = 0; i<gtotal;i++){
-			if(this.getEnvironment(i)!=0.0){
-				barray[count] = this.getGridPoint(i);
-				count++;
-			}
-		}
-		return barray;
-	}
-	
-	/**
-	 * 建物のある座標値の数を返す
-	 */
-	public int getNumBuilding(){
-		
-		for(int i = 0; i<gtotal;i++){
-			if(this.getEnvironment(i)!=0.0){
-				bnum++;
-			}
-		}
-		return bnum;
-	}
-	
-	/**
-	 * 一点の建物の位置を返す
-	 */
-	double[] test = new double[3];
-	public double[] getEnvironmentPoint(int id){
-		test[0] = this.getGridPoint(id).getPosition()[0];
-		test[1] = this.getGridPoint(id).getPosition()[1];
-		test[2] = this.getGridPoint(id).getPosition()[2];
-		return test;
-	}
-	/**
-	 * 一点の建物の種別を返す
-	 */
-	public double getEnvironment(int id){
-		return this.getGridPoint(id).environment;
 	}
 	
 	// targetとなっているelementとstreamlineの交差判定
