@@ -330,12 +330,6 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[0], minmax[3], minmax[5]);
 		gl2.glEnd();
 		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
 		gl2.glVertex3d(minmax[0], minmax[3], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
@@ -352,6 +346,13 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
+		gl2.glEnd();
+		gl2.glColor3d(0.18, 0.18, 0.18);
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
+		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
+		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
+		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
 		gl2.glEnd();
 	}
 	
