@@ -220,7 +220,7 @@ public class Drawer implements GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL2.GL_NORMALIZE);
 		gl2.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE, GL.GL_TRUE);
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	}
 
@@ -288,15 +288,15 @@ public class Drawer implements GLEventListener {
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
 
 		drawBox();
+		drawBuilding(grid1);
+		drawBuilding(grid2);
 		
 		if(grid1 != null && sl1 != null) {
-			drawTarget(grid1, sl1);
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);
 			drawEndGrid(grid1);
 		}
 		if(grid2 != null && sl2 != null) {
-			drawTarget(grid2, sl2);
 			drawStartGrid(grid2);
 			drawStreamline(sl2, 2);
 			drawEndGrid(grid2);
@@ -354,6 +354,31 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
 	}
+	
+	/**
+	 * 建物を描画する
+	 * @param grid
+	 */
+	void drawBuilding(Grid grid){
+		if(grid == null) return;
+		
+		//建物がある座標に点を描画
+		for(int i = 0;i<grid.getNumGridPointAll();i++){
+			
+			if(grid.getGridPoint(i).getEnvironment() != 0.0){
+				if(grid.getGridPoint(i).getEnvironment() == 0.5){
+					gl2.glColor3d(0.0, 0.0, 1.0);
+				}
+				else{
+					gl2.glColor3d(0.0, 1.0, 0.0);
+				}
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(grid.getEnvironmentPoint(i)[0],grid.getEnvironmentPoint(i)[1],grid.getEnvironmentPoint(i)[2]);
+				gl2.glEnd();
+			}
+		}
+	}
+	
 	
 	/**
 	 * 始点を描画する
@@ -419,77 +444,6 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 	}
 	
-	
-	/**
-	 * 的を描画する
-	 */
-	void drawTarget(Grid grid, Streamline sl){
-		int i, j, k;
-		if(grid == null) return;
-		i = grid.target[0];
-		j = grid.target[1];
-		k = grid.target[2];
-
-		double minmax[] = new double[6];
-		minmax[0] = minmax[2] = minmax[4] = 1.0e+30;
-		minmax[1] = minmax[3] = minmax[5] = -1.0e+30;
-		
-		Element element = grid.getElement(grid.calcElementId(i, j, k));
-		for (int d = 0; d < 8; d++){
-			double pos[] = element.gp[d].getPosition();
-			for (int loop = 0; loop < 3; loop++){
-				minmax[loop*2] = (minmax[loop*2] > pos[loop] ? pos[loop] : minmax[loop*2]);
-				minmax[loop*2 + 1] = (minmax[loop*2 + 1] < pos[loop] ? pos[loop] : minmax[loop*2 + 1]);
-			}
-		}
-		
-		// 6本のループを描く
-		if (sl == null) {
-			gl2.glColor3d(1.0, 0.0, 0.0);
-		}
-		else if (grid.intersectWithTarget(sl)) {
-			gl2.glColor3d(1.0, 1.0, 0.0);
-		}
-		else {
-			gl2.glColor3d(1.0, 0.0, 0.0);
-		}
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[4]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[5]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[5]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[4]);
-		gl2.glVertex3d(minmax[0], minmax[3], minmax[5]);
-		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
-		gl2.glEnd();
-		gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
-		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
-		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
-		gl2.glEnd();
-	}
 	
 	/**
 	 * 流線の行き着いた先の格子を描く
@@ -560,6 +514,7 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 	
 	}
+	
 	
 	
 	/**
