@@ -291,6 +291,9 @@ public class Drawer implements GLEventListener {
 		drawBuilding(grid1);
 		drawBuilding(grid2);
 		
+		drawVectorPart(grid1,1,40,30);
+		//drawVectorPart(grid2,2);
+		
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);
@@ -380,6 +383,62 @@ public class Drawer implements GLEventListener {
 		}
 	}
 	
+	/**
+	 * ベクトルの描画
+	 */
+	void drawVector(Grid grid){
+		if(grid == null) return;
+		
+		for(int i = 0; i < grid.getNumGridPointAll();i++){
+			gl2.glColor3d(1.0, 0.0, 0.0);
+			gl2.glBegin(GL.GL_POINTS);
+			gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
+			gl2.glEnd();
+		}
+	}
+	/**
+	 * 一平面ベクトルの描画(高さ)
+	 */
+	void drawVectorPart(Grid grid, int type,int h,int l){
+		if(grid == null) return;
+		
+		int height = h;//高さ80
+		int test = grid.getNumGridPoint()[0]*height;//描画する最初の要素
+		int next = grid.getNumGridPoint()[0]*grid.getNumGridPoint()[1];//描画する次の列
+		int num = 0;
+		double[] gpos = new double[3];
+		double[] vpos = new double[3];
+		int vlen = l; //ベクトルの長さを調節する値(大きいと短くなる)
+		//System.out.println(next);
+
+		for(int i = 0; i < grid.getNumGridPoint()[2];i++){
+			for (int j = 0; j < grid.getNumGridPoint()[0]; j++) {
+				if(i == 0){
+					num = test;
+				}else{
+					num = test+next*i;
+				}
+				if(grid.getEnvironment(num+j)==0.0){
+					gpos[0] = grid.getGridPoint(num+j).getPosition()[0];
+					gpos[1] = grid.getGridPoint(num+j).getPosition()[1];
+					gpos[2] = grid.getGridPoint(num+j).getPosition()[2];
+					vpos[0] = grid.getGridPoint(num+j).getVector()[0];
+					vpos[1] = grid.getGridPoint(num+j).getVector()[1];
+					vpos[2] = grid.getGridPoint(num+j).getVector()[2];
+					
+					if(type==1){
+						gl2.glColor3d(1.0, 1.0, 1.0);
+					}else{
+						gl2.glColor3d(1.0, 0.0, 0.0);
+					}
+					gl2.glBegin(GL.GL_LINES);
+					gl2.glVertex3d(gpos[0], gpos[1], gpos[2]);
+					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
+					gl2.glEnd();
+				}
+			}
+		}
+	}
 	
 	/**
 	 * 始点を描画する

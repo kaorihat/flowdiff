@@ -23,6 +23,7 @@ public class Grid {
 		num[2] = nz;
 		gtotal = nx * ny * nz;
 		etotal = (nx - 1) * (ny - 1) * (nz - 1);
+		//System.out.println("nx,ny,nz="+nx+","+ny+","+nz);
 
 		// 格子点の配列を確保する
 		garray = new GridPoint[gtotal];
@@ -189,6 +190,7 @@ public class Grid {
 	public double getEnvironment(int id){
 		return this.getGridPoint(id).environment;
 	}
+	
 	
 	// targetとなっているelementとstreamlineの交差判定
 	public boolean intersectWithTarget(Streamline sl) {
