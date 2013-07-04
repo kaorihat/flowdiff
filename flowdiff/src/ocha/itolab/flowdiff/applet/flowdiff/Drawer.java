@@ -62,6 +62,7 @@ public class Drawer implements GLEventListener {
 
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
+	int vheight = 0;
 	
 	/**
 	 * Constructor
@@ -106,6 +107,19 @@ public class Drawer implements GLEventListener {
 	 */
 	public void setTransformer(Transformer view) {
 		this.trans = view;
+	}
+	
+	/**
+	 * 高さをセットする
+	 * @return
+	 */
+	public int getVheight() {
+		return vheight;
+	}
+
+	public void setVheight(int vheight) {
+		this.vheight = vheight;
+		System.out.println(vheight);
 	}
 
 	
@@ -291,7 +305,7 @@ public class Drawer implements GLEventListener {
 		drawBuilding(grid1);
 		drawBuilding(grid2);
 		
-		drawVectorPart(grid1,1,40,30);
+		drawVectorPart(grid1,1,vheight,30);
 		//drawVectorPart(grid2,2);
 		
 		if(grid1 != null && sl1 != null) {
@@ -401,6 +415,7 @@ public class Drawer implements GLEventListener {
 	 */
 	void drawVectorPart(Grid grid, int type,int h,int l){
 		if(grid == null) return;
+		if(h == 85) return;//ぬるぽ対策
 		
 		int height = h;//高さ80
 		int test = grid.getNumGridPoint()[0]*height;//描画する最初の要素
@@ -426,6 +441,7 @@ public class Drawer implements GLEventListener {
 					vpos[1] = grid.getGridPoint(num+j).getVector()[1];
 					vpos[2] = grid.getGridPoint(num+j).getVector()[2];
 					
+					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
 						gl2.glColor3d(1.0, 1.0, 1.0);
 					}else{

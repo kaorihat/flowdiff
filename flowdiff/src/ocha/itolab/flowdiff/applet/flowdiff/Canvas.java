@@ -28,6 +28,7 @@ public class Canvas extends JPanel {
 	GLCanvas glc;
 	Grid grid1, grid2;
 	Streamline sl1, sl2;
+	int vheight;
 	
 	boolean isMousePressed = false, isAnnotation = true, 
 		isImage = true, isWireframe = true;
@@ -94,6 +95,19 @@ public class Canvas extends JPanel {
 	 */
 	public void setTransformer(Transformer t) {
 		trans = t;
+	}
+	
+	/**
+	 * ベクトル面の高さをセットする
+	 * @return
+	 */
+	public int getVheight() {
+		return vheight;
+	}
+
+	public void setVheight(int vheight) {
+		this.vheight = vheight;
+		drawer.setVheight(vheight);
 	}
 
 

@@ -28,21 +28,21 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
 public class ViewingPanel extends JPanel {
 
-	// 流れ場のファイルを読み込む（相対パス）
+	// ベクタ場のファイルを読み込む（相対パス）
 	static String url1 = "file:../data/kassoro/ari/";
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
 	public JButton  openDataButton, viewResetButton, generateButton, viewButton;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
-	public JLabel xText, yText, zText;
-	public JSlider sliderX, sliderY, sliderZ;
+	public JLabel xText, yText, zText, vtext;
+	public JSlider sliderX, sliderY, sliderZ,vheight;
 	public Container container;
 	File currentDirectory;
 
 	/* Selective canvas */
 	Canvas canvas;
-
+	
 	/* Cursor Sensor */
 	boolean cursorSensorFlag = false;
 
@@ -78,14 +78,17 @@ public class ViewingPanel extends JPanel {
 		viewShiftButton = new JRadioButton("移動する");
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
-		ButtonGroup group2 = new ButtonGroup();
-		easyButton = new JRadioButton("ちょいむず", true);
-		group2.add(easyButton);
-		p1.add(easyButton);
-		hardButton = new JRadioButton("かなりむず");
-		group2.add(hardButton);
-		p1.add(hardButton);
-
+		
+		vheight = new JSlider(0, 85, 10);
+		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
+		vheight.setMajorTickSpacing(10);
+		vheight.setMinorTickSpacing(5);
+		vheight.setPaintTicks(true);
+		vheight.setLabelTable(vheight.createStandardLabels(20));
+		vheight.setPaintLabels(true);
+		p1.add(vheight);
+		p1.add(vtext);
+		
 		// パネル2
 		JPanel p2 = new JPanel();
 		p2.setLayout(new GridLayout(8,1));
@@ -174,8 +177,6 @@ public class ViewingPanel extends JPanel {
 		viewRotateButton.addActionListener(actionListener);
 		viewScaleButton.addActionListener(actionListener);
 		viewShiftButton.addActionListener(actionListener);
-		easyButton.addActionListener(actionListener);
-		hardButton.addActionListener(actionListener);
 	}
 
 	/**
@@ -200,6 +201,7 @@ public class ViewingPanel extends JPanel {
 	 * @param actionListener ActionListener
 	 */
 	public void addSliderListener(ChangeListener changeListener) {
+		vheight.addChangeListener(changeListener);
 		sliderX.addChangeListener(changeListener);
 		sliderY.addChangeListener(changeListener);
 		sliderZ.addChangeListener(changeListener);
@@ -317,15 +319,6 @@ public class ViewingPanel extends JPanel {
 			if (buttonPushed == viewShiftButton) {
 				canvas.setDragMode(2);
 			}
-			if (buttonPushed == easyButton){
-				grid1.levelMode = 1;
-				grid2.levelMode = 1;
-			}
-			if (buttonPushed == hardButton){
-				grid1.levelMode = 0;
-				grid2.levelMode = 0;
-			}
-
 			canvas.display();
 		}
 	}
@@ -365,6 +358,10 @@ public class ViewingPanel extends JPanel {
 				zText.setText(" たかさ:" + sliderZ.getValue());
 				grid1.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
 				grid2.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
+			}
+			else if(changedSlider == vheight){
+				vtext.setText(" ベクトル面地上から: " + vheight.getValue());
+				canvas.setVheight(vheight.getValue());
 			}
 			canvas.display();
 		}
