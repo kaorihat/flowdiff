@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 
 import ocha.itolab.flowdiff.core.data.Element;
 import ocha.itolab.flowdiff.core.data.Grid;
+import ocha.itolab.flowdiff.core.data.GridPoint;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
@@ -303,9 +304,16 @@ public class Drawer implements GLEventListener {
 
 		drawBox();
 		drawBuilding(grid1);
-		drawBuilding(grid2);
+		//drawBuilding(grid2);
 		
-		drawVectorPart(grid1,1,vheight,30);
+		drawElement1(grid1,100,0,1);
+		//drawElement2(grid1,100,0,2);
+		//drawElement3(grid1,100,0,3);
+		drawElement3(grid1,100,0,7);
+		//drawElement3(grid1,100,0,5);
+		//drawElement3(grid1,100,0,6);
+		//drawElement3(grid1,100,0,7);
+		//drawVectorPart(grid1,1,vheight,30);
 		//drawVectorPart(grid2,2);
 		
 		if(grid1 != null && sl1 != null) {
@@ -429,11 +437,14 @@ public class Drawer implements GLEventListener {
 		for(int i = 0; i < grid.getNumGridPoint()[2];i++){
 			for (int j = 0; j < grid.getNumGridPoint()[0]; j++) {
 				if(i == 0){
+					//最初に描画する要素の決定
 					num = test;
 				}else{
+					//二列目以降に描画する要素の決定
 					num = test+next*i;
 				}
 				if(grid.getEnvironment(num+j)==0.0){
+					//座標・ベクトルを取得
 					gpos[0] = grid.getGridPoint(num+j).getPosition()[0];
 					gpos[1] = grid.getGridPoint(num+j).getPosition()[1];
 					gpos[2] = grid.getGridPoint(num+j).getPosition()[2];
@@ -447,6 +458,7 @@ public class Drawer implements GLEventListener {
 					}else{
 						gl2.glColor3d(1.0, 0.0, 0.0);
 					}
+					//ベクトルの描画
 					gl2.glBegin(GL.GL_LINES);
 					gl2.glVertex3d(gpos[0], gpos[1], gpos[2]);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
@@ -611,6 +623,54 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 	}
 
+	/**
+	 * エレメントを表示するテスト
+	 */
+	void drawElement1(Grid grid,int id,int n1,int n2){
+		if(grid == null) return;
+		GridPoint egp[] = new GridPoint[2];
+		egp = grid.getElement(id).getElement2(n1, n2);
+		//gl2.glBegin(GL.GL_LINE_LOOP);
+		gl2.glColor3d(1.0, 0.0, 0.0);
+		gl2.glPointSize(4.0f);
+		gl2.glBegin(GL.GL_POINTS);
+		gl2.glVertex3d(egp[0].getPosition()[0], egp[0].getPosition()[1], egp[0].getPosition()[2]);
+		gl2.glColor3d(0.0, 1.0, 1.0);
+		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
+		gl2.glEnd();
+	}
+	void drawElement2(Grid grid,int id,int n1,int n2){
+		if(grid == null) return;
+		GridPoint egp[] = new GridPoint[2];
+		egp = grid.getElement(id).getElement2(n1, n2);
+		if(egp[0].getPosition()[1]==egp[1].getPosition()[1]){
+			System.out.println("same height y!");
+		}
+		//gl2.glBegin(GL.GL_LINE_LOOP);
+		gl2.glColor3d(1.0, 0.0, 0.0);
+		gl2.glPointSize(4.0f);
+		gl2.glBegin(GL.GL_POINTS);
+		gl2.glVertex3d(egp[0].getPosition()[0], egp[0].getPosition()[1], egp[0].getPosition()[2]);
+		gl2.glColor3d(0.0, 0.0, 1.0);
+		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
+		gl2.glEnd();
+	}
+	void drawElement3(Grid grid,int id,int n1,int n2){
+		if(grid == null) return;
+		GridPoint egp[] = new GridPoint[2];
+		egp = grid.getElement(id).getElement2(n1, n2);
+		if(egp[0].getPosition()[1]==egp[1].getPosition()[1]){
+			System.out.println("same height y!");
+		}
+		//gl2.glBegin(GL.GL_LINE_LOOP);
+		gl2.glColor3d(1.0, 0.0, 0.0);
+		gl2.glPointSize(4.0f);
+		gl2.glBegin(GL.GL_POINTS);
+		gl2.glVertex3d(egp[0].getPosition()[0], egp[0].getPosition()[1], egp[0].getPosition()[2]);
+		gl2.glColor3d(0.0, 1.0, 0.0);
+		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
+		gl2.glEnd();
+	}
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub

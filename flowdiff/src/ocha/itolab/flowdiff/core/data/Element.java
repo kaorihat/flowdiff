@@ -6,6 +6,25 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 public class Element {
 	public GridPoint gp[] = new GridPoint[8];
 	
+	
+	/**
+	 * エレメント内の位置関係を表示するテストメソッド
+	 */
+	public GridPoint[] getElement2(int num1,int num2){
+		
+		GridPoint ele[] = new GridPoint[2];
+		ele[0] = gp[num1];
+		ele[1] = gp[num2];
+		return ele;
+	}
+	/**
+	 * 
+	 * @param myId
+	 * @param sl
+	 * @param mode
+	 * @return
+	 */
+	
 	// 自分とStreamlineの交差判定を行うメソッド
 	boolean intersect(int myId, Streamline sl, int mode) {
 		if (mode == 0){ // 「かなりむず」だったら
