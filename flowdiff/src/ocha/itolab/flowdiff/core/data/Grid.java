@@ -46,6 +46,13 @@ public class Grid {
 	public int getNumGridPointAll() {
 		return gtotal;
 	}
+	/**
+	 * エレメント数を返す
+	 * @return
+	 */
+	public int getNumElement() {
+		return etotal;
+	}
 	
 	
 	/**
