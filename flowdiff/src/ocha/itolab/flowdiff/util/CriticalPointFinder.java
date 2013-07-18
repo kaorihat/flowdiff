@@ -33,10 +33,10 @@ public class CriticalPointFinder {
 			
 			//0となる点を補完算出する
 			tmp[0] = interpolate(gp[0],gp[4],gp[5],gp[6]);
-			tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
-			tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
-			tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
-			tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
+			//tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
+			//tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
+			//tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
+			//tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
 			
 			//リストに加える
 			for (int j = 0; j < 5; j++) {
@@ -51,7 +51,7 @@ public class CriticalPointFinder {
 	}
 	
 	/**
-	 * データの補完を行う
+	 * データの補完を行う(エレメントを５つに分けたうちの1つについて)
 	 */
 	public double[] interpolate(GridPoint gp0,GridPoint gp1,GridPoint gp2,GridPoint gp3){
 		double[] coe = new double[3];
@@ -97,8 +97,7 @@ public class CriticalPointFinder {
 		if(coe != null){
 			//特異点がある場合　座標を算出
 			ans = critical_pos(x,y,z,coe);
-		}
-		else{
+		}else{
 			//特異点なし
 			ans = null;
 		}
@@ -134,8 +133,15 @@ public class CriticalPointFinder {
 			cmat[0] = -(dmat[0][0]*u[3] + dmat[0][1]*v[3] + dmat[0][2]*w[3]);
 			cmat[1] = -(dmat[1][0]*u[3] + dmat[1][1]*v[3] + dmat[1][2]*w[3]);
 			cmat[2] = -(dmat[2][0]*u[3] + dmat[2][1]*v[3] + dmat[2][2]*w[3]);
-		}
-		else{
+			
+			//渦中心が存在するかどうかの判定
+			if(cmat[0]>=0 && cmat[1]>=0 && cmat[2]>=0 && 1-cmat[0]-cmat[1]-cmat[2] >= 0){
+				return cmat;
+			}else{
+				cmat = null;
+			}
+			
+		}else{
 			cmat = null;
 		}
 		return cmat;

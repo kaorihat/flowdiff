@@ -46,6 +46,13 @@ public class Grid {
 	public int getNumGridPointAll() {
 		return gtotal;
 	}
+	/**
+	 * エレメント数を返す
+	 * @return
+	 */
+	public int getNumElement() {
+		return etotal;
+	}
 	
 	
 	/**
@@ -53,14 +60,6 @@ public class Grid {
 	 */
 	public GridPoint getGridPoint(int id) {
 		return garray[id];
-	}
-	
-	/**
-	 * 要素の頂点数を返す
-	 * @return
-	 */
-	public int getNumElement() {
-		return etotal;
 	}
 	
 	/**
