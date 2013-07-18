@@ -123,7 +123,7 @@ public class Drawer implements GLEventListener {
 
 	public void setVheight(int vheight) {
 		this.vheight = vheight;
-		System.out.println(vheight);
+		//System.out.println(vheight);
 	}
 
 	
@@ -307,7 +307,7 @@ public class Drawer implements GLEventListener {
 
 		drawBox();
 		drawBuilding(grid1);
-		drawBuilding(grid2);
+		//drawBuilding(grid2);
 		
 		//drawElement1(grid1,100,0,1);
 		//drawElement2(grid1,100,0,2);
@@ -318,9 +318,10 @@ public class Drawer implements GLEventListener {
 		//drawElement3(grid1,100,0,7);
 		
 		
-		//drawVectorPart(grid1,1,vheight,30);
+		drawVectorPart(grid1,1,vheight,30);
+		drawElement(grid1);
 		//drawVectorPart(grid2,2);
-		drawCriticalPoint(grid1);
+		//drawCriticalPoint(grid1);
 		
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
@@ -424,8 +425,13 @@ public class Drawer implements GLEventListener {
 			gl2.glEnd();
 		}
 	}
+	
 	/**
 	 * 一平面ベクトルの描画(高さ)
+	 * @param grid
+	 * @param type グリッドの種類
+	 * @param h　高さ
+	 * @param l　ベクトルの長さ
 	 */
 	void drawVectorPart(Grid grid, int type,int h,int l){
 		if(grid == null) return;
@@ -460,12 +466,17 @@ public class Drawer implements GLEventListener {
 					
 					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
-						gl2.glColor3d(1.0, 1.0, 1.0);
+						gl2.glColor3d(0.8, 0.8, 0.8);
 					}else{
 						gl2.glColor3d(1.0, 0.0, 0.0);
 					}
 					//ベクトルの描画
+					
+					//
+					gl2.glLineWidth(0.001f);
+					//gl2.glBegin(GL.GL_LINE_LOOP);
 					gl2.glBegin(GL.GL_LINES);
+					//gl2.glBegin(GL2.GL_LINE_STRIP);
 					gl2.glVertex3d(gpos[0], gpos[1], gpos[2]);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
 					gl2.glEnd();
@@ -474,6 +485,21 @@ public class Drawer implements GLEventListener {
 		}
 	}
 	
+	void drawElement(Grid grid){
+		if(grid == null) return;
+		GridPoint egp[] = new GridPoint[8];
+		for(int i =0 ;i<grid.getNumElementAll();i++){
+			if(grid.isEdgeElement(i)==true){
+				for(int j = 0; j < 8; j ++){
+					egp[j] = grid.getElement(i).gp[j];
+					gl2.glBegin(GL.GL_POINTS);
+					gl2.glVertex3d(egp[j].getPosition()[0],egp[j].getPosition()[1],egp[j].getPosition()[2]);
+					gl2.glEnd();
+				}
+			}
+		}
+		
+	}
 	/**
 	 * 渦中心の表示
 	 * @param grid

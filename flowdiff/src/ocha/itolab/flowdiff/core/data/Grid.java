@@ -4,6 +4,7 @@ import ocha.itolab.flowdiff.core.streamline.Streamline;
 
 public class Grid {
 	int num[] = new int[3];
+	int elnum[] = new int[3];
 	int gtotal, etotal;
 	GridPoint garray[];
 	Element earray[];
@@ -21,6 +22,10 @@ public class Grid {
 		num[0] = nx;
 		num[1] = ny;
 		num[2] = nz;
+		elnum[0] = nx -1;
+		elnum[1] = ny -1;
+		elnum[2] = nz -1;
+		
 		gtotal = nx * ny * nz;
 		etotal = (nx - 1) * (ny - 1) * (nz - 1);
 		//System.out.println("nx,ny,nz="+nx+","+ny+","+nz);
@@ -36,6 +41,9 @@ public class Grid {
 			earray[i] = new Element();
 	}
 	
+	//public int[] getNum(){
+		
+	//}
 
 	/**
 	 * 格子の頂点数を返す
@@ -46,14 +54,27 @@ public class Grid {
 	public int getNumGridPointAll() {
 		return gtotal;
 	}
+	
 	/**
 	 * エレメント数を返す
 	 * @return
 	 */
-	public int getNumElement() {
+	public int[] getNumElement() {
+		return elnum;
+	}
+	public int getNumElementAll() {
 		return etotal;
 	}
-	
+	/**
+	 * 端の要素ならtrue
+	 */
+	public boolean isEdgeElement(int id){
+		boolean ans = false;
+		if(id >=0 && id <= elnum[0]*elnum[1]){
+			ans = true;
+		}
+		return ans;
+	}
 	
 	/**
 	 * 所定の格子点を返す
