@@ -55,6 +55,13 @@ public class Grid {
 		return garray[id];
 	}
 	
+	/**
+	 * 要素の頂点数を返す
+	 * @return
+	 */
+	public int getNumElement() {
+		return etotal;
+	}
 	
 	/**
 	 * 所定の要素を返す
@@ -62,7 +69,6 @@ public class Grid {
 	public Element getElement(int id) {
 		return earray[id];
 	}
-	
 	
 	/**
 	 * 座標値の最小値・最大値を返す

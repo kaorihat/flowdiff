@@ -7,6 +7,7 @@ public class GridPoint {
 	double pos[] = new double[3];
 	double vec[] = new double[3];
 	double environment =0.0;
+	int type = 0;
 	
 
 	public void setPosition(double x, double y, double z) {
@@ -32,8 +33,22 @@ public class GridPoint {
 	public double[] getVector() {
 		return vec;
 	}
-	
+	/**
+	 * 建物の種別
+	 * @param e
+	 */
 	public void setEnvironment(double e) {
 		this.environment = e;
+	}
+	/**
+	 * 建物の種別
+	 * @return
+	 */
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

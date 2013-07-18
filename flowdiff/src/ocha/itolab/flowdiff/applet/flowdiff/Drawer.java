@@ -3,6 +3,7 @@ package ocha.itolab.flowdiff.applet.flowdiff;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -13,12 +14,13 @@ import javax.media.opengl.glu.GLU;
 
 import ocha.itolab.flowdiff.core.data.Element;
 import ocha.itolab.flowdiff.core.data.Grid;
-import ocha.itolab.flowdiff.core.data.GridPoint;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
+import ocha.itolab.flowdiff.util.CriticalPoint;
+import ocha.itolab.flowdiff.util.CriticalPointFinder;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -303,13 +305,14 @@ public class Drawer implements GLEventListener {
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
 
 		drawBox();
-		drawBuilding(grid1);
-		//drawBuilding(grid2);
+		//drawBuilding2(grid1);
+		drawBuilding(grid2);
+		drawCriticalPoint(grid1);
 		
-		drawElement1(grid1,100,0,1);
+		//drawElement1(grid1,100,0,1);
 		//drawElement2(grid1,100,0,2);
 		//drawElement3(grid1,100,0,3);
-		drawElement3(grid1,100,0,7);
+		//drawElement3(grid1,100,0,7);
 		//drawElement3(grid1,100,0,5);
 		//drawElement3(grid1,100,0,6);
 		//drawElement3(grid1,100,0,7);
@@ -404,6 +407,23 @@ public class Drawer implements GLEventListener {
 			}
 		}
 	}
+	/**
+	 * 建物を描画する
+	 * @param grid
+	 */
+	void drawBuilding2(Grid grid){
+		if(grid == null) return;
+		
+		//建物がある座標に点を描画
+		for(int i = 0; i < grid.getNumGridPointAll();i++){
+			if(grid.getGridPoint(i).getType()==1){
+				gl2.glColor3d(1.0, 0.0, 0.0);
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
+				gl2.glEnd();
+			}
+		}
+	}
 	
 	/**
 	 * ベクトルの描画
@@ -418,6 +438,7 @@ public class Drawer implements GLEventListener {
 			gl2.glEnd();
 		}
 	}
+	
 	/**
 	 * 一平面ベクトルの描画(高さ)
 	 */
@@ -465,6 +486,25 @@ public class Drawer implements GLEventListener {
 					gl2.glEnd();
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 渦中心の表示
+	 * @param grid
+	 */
+	void drawCriticalPoint(Grid grid){
+		ArrayList<CriticalPoint> array = new ArrayList<CriticalPoint>();
+		CriticalPointFinder cpf = new CriticalPointFinder();
+		array = cpf.find(grid);
+		
+		gl2.glColor3d(1.0, 0.0, 0.0);
+		gl2.glPointSize(5.0f);
+		//ベクトルの描画
+		for(int i = 0; i < array.size();i++){
+			gl2.glBegin(GL.GL_POINTS);
+			gl2.glVertex3d(array.get(i).getPosition()[0], array.get(i).getPosition()[1], array.get(i).getPosition()[2]);
+			gl2.glEnd();
 		}
 	}
 	
@@ -626,6 +666,7 @@ public class Drawer implements GLEventListener {
 	/**
 	 * エレメントを表示するテスト
 	 */
+	/*
 	void drawElement1(Grid grid,int id,int n1,int n2){
 		if(grid == null) return;
 		GridPoint egp[] = new GridPoint[2];
@@ -671,6 +712,8 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
 		gl2.glEnd();
 	}
+	*/
+	
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
