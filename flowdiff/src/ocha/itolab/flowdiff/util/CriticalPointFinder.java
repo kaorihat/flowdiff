@@ -19,31 +19,33 @@ public class CriticalPointFinder {
 		double[][] tmp = new double[5][3]; 
 		
 		//全ての要素に対して
-		for (int i = 0; i < grid.getNumElement(); i++) {
+		for (int i = 0; i < grid.getNumElementAll(); i++) {
 			
-			GridPoint gp[] = new GridPoint[8];
-			gp[0] = grid.getElement(i).gp[0];
-			gp[1] = grid.getElement(i).gp[1];
-			gp[2] = grid.getElement(i).gp[2];
-			gp[3] = grid.getElement(i).gp[3];
-			gp[4] = grid.getElement(i).gp[4];
-			gp[5] = grid.getElement(i).gp[5];
-			gp[6] = grid.getElement(i).gp[6];
-			gp[7] = grid.getElement(i).gp[7];
-			
-			//0となる点を補完算出する
-			tmp[0] = interpolate(gp[0],gp[4],gp[5],gp[6]);
-			//tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
-			//tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
-			//tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
-			//tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
-			
-			//リストに加える
-			for (int j = 0; j < 5; j++) {
-				if(tmp[j] != null){
-					CriticalPoint e = new CriticalPoint();
-					e.setPosition(tmp[j][0], tmp[j][1], tmp[j][2]);
-					cp.add(e);
+			if(!grid.isEdgeElement(i)){
+				GridPoint gp[] = new GridPoint[8];
+				gp[0] = grid.getElement(i).gp[0];
+				gp[1] = grid.getElement(i).gp[1];
+				gp[2] = grid.getElement(i).gp[2];
+				gp[3] = grid.getElement(i).gp[3];
+				gp[4] = grid.getElement(i).gp[4];
+				gp[5] = grid.getElement(i).gp[5];
+				gp[6] = grid.getElement(i).gp[6];
+				gp[7] = grid.getElement(i).gp[7];
+				
+				//0となる点を補完算出する
+				tmp[0] = interpolate(gp[0],gp[4],gp[5],gp[6]);
+				//tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
+				//tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
+				//tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
+				//tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
+				
+				//リストに加える
+				for (int j = 0; j < 5; j++) {
+					if(tmp[j] != null){
+						CriticalPoint e = new CriticalPoint();
+						e.setPosition(tmp[j][0], tmp[j][1], tmp[j][2]);
+						cp.add(e);
+					}
 				}
 			}
 		}
@@ -95,6 +97,8 @@ public class CriticalPointFinder {
 		coe = coefficient(u, v, w);
 		
 		if(coe != null){
+			//渦中心かどうかの判定
+			classify(x,y,z,u,v,w);
 			//特異点がある場合　座標を算出
 			ans = critical_pos(x,y,z,coe);
 		}else{
@@ -103,6 +107,52 @@ public class CriticalPointFinder {
 		}
 		
 		return ans;
+	}
+	
+	boolean  classify(double[] x, double[] y, double[] z, double[] u, double[] v, double[] w){
+		boolean type = false;
+		//行列の生成
+		double[][] mat1 = new double[3][3];
+		double[][] mat2 = new double[3][3];
+		double[][] dmat = new double[3][3];//逆行列
+		double[][] jv = new double[3][3];//ヤコビアン行列
+
+		mat1[0][0] = x[0] - x[3];
+		mat1[0][1] = y[0] - y[3];
+		mat1[0][2] = z[0] - z[3];
+		mat1[1][0] = x[1] - x[3];
+		mat1[1][1] = y[1] - y[3];
+		mat1[1][2] = z[1] - z[3];
+		mat1[2][0] = x[2] - x[3];
+		mat1[2][1] = y[2] - y[3];
+		mat1[2][2] = z[2] - z[3];
+		//逆行列の算出
+		dmat = determinant(mat1);
+		
+		mat2[0][0] = u[0] - u[3];
+		mat2[0][1] = u[1] - u[3];
+		mat2[0][2] = u[2] - u[3];
+		mat2[1][0] = v[0] - v[3];
+		mat2[1][1] = v[1] - v[3];
+		mat2[1][2] = v[2] - v[3];
+		mat2[2][0] = w[0] - w[3];
+		mat2[2][1] = w[1] - w[3];
+		mat2[2][2] = w[2] - w[3];
+		
+		//ヤコビアン行列を求める(行列の掛け算)
+		jv[0][0] = dmat[0][0]*mat2[0][0] + dmat[0][1]*mat2[1][0] + dmat[0][2]*dmat[2][0];
+		jv[0][1] = dmat[0][0]*mat2[0][1] + dmat[0][1]*mat2[1][1] + dmat[0][2]*dmat[2][1];
+		jv[0][2] = dmat[0][0]*mat2[0][2] + dmat[0][1]*mat2[1][2] + dmat[0][2]*dmat[2][2];
+		jv[1][0] = dmat[1][0]*mat2[0][0] + dmat[1][1]*mat2[1][0] + dmat[1][2]*dmat[2][0];
+		jv[1][1] = dmat[1][0]*mat2[0][1] + dmat[1][1]*mat2[1][1] + dmat[1][2]*dmat[2][1];
+		jv[1][2] = dmat[1][0]*mat2[0][2] + dmat[1][1]*mat2[1][2] + dmat[1][2]*dmat[2][2];
+		jv[2][0] = dmat[2][0]*mat2[0][0] + dmat[2][1]*mat2[1][0] + dmat[2][2]*dmat[2][0];
+		jv[2][1] = dmat[2][0]*mat2[0][1] + dmat[2][1]*mat2[1][1] + dmat[2][2]*dmat[2][1];
+		jv[2][2] = dmat[2][0]*mat2[0][2] + dmat[2][1]*mat2[1][2] + dmat[2][2]*dmat[2][2];
+		
+		
+		
+		return type;
 	}
 	
 	/**
@@ -205,5 +255,9 @@ public class CriticalPointFinder {
 			dmat[2][2] = (m[0][0]*m[1][1]-m[0][1]*m[1][0])/det;
 		}
 		return dmat;
+	}
+	
+	public double eigenvalue(double[][] m){
+		return det;
 	}
 }
