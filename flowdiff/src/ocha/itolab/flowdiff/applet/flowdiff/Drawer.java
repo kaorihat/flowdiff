@@ -20,7 +20,7 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 
-import com.jogamp.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
 //import com.jogamp.opengl.util.gl2.GLUT;
 
 
@@ -318,10 +318,10 @@ public class Drawer implements GLEventListener {
 		//drawElement3(grid1,100,0,7);
 		
 		
-		drawVectorPart(grid1,1,vheight,30);
-		drawElement(grid1);
+		//drawVectorPart(grid1,1,vheight,30);
+		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
-		//drawCriticalPoint(grid1);
+		drawCriticalPoint(grid1);
 		
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
@@ -485,7 +485,11 @@ public class Drawer implements GLEventListener {
 		}
 	}
 	
-	void drawElement(Grid grid){
+	/**
+	 * エレメント群の描写（端っこの）
+	 * @param grid
+	 */
+	void drawEdgeElement(Grid grid){
 		if(grid == null) return;
 		GridPoint egp[] = new GridPoint[8];
 		for(int i =0 ;i<grid.getNumElementAll();i++){

@@ -70,7 +70,20 @@ public class Grid {
 	 */
 	public boolean isEdgeElement(int id){
 		boolean ans = false;
+		//側面の要素
 		if(id >=0 && id <= elnum[0]*elnum[1]){
+			ans = true;
+		}else if(id % elnum[0] == 0){
+			ans = true;
+		}else if(id % elnum[0] == elnum[0] -1){
+			ans = true;
+		}else if(id < elnum[0]*elnum[1]*elnum[2] && id >= elnum[0]*elnum[1]*(elnum[2]-1)){
+			ans = true;
+		}else if(id % (elnum[0] * elnum[1]) <= elnum[0] * elnum[1]-1 && id % (elnum[0] * elnum[1])>=elnum[0] * elnum[1]-elnum[0]){
+			//上面の要素
+			ans = true;
+		}else if(id % (elnum[0] * elnum[1]) >=0 &&  id % (elnum[0] * elnum[1]) <= elnum[0]){
+			//下面の要素
 			ans = true;
 		}
 		return ans;
