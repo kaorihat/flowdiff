@@ -96,9 +96,8 @@ public class CriticalPointFinder {
 		//特異点があるかどうかを調べる
 		coe = coefficient(u, v, w);
 		
-		if(coe != null){
-			//渦中心かどうかの判定
-			classify(x,y,z,u,v,w);
+		//渦中心かどうかの判定
+		if(coe != null && classify(x,y,z,u,v,w)){
 			//特異点がある場合　座標を算出
 			ans = critical_pos(x,y,z,coe);
 		}else{
@@ -110,7 +109,6 @@ public class CriticalPointFinder {
 	}
 	
 	boolean  classify(double[] x, double[] y, double[] z, double[] u, double[] v, double[] w){
-		boolean type = false;
 		//行列の生成
 		double[][] mat1 = new double[3][3];
 		double[][] mat2 = new double[3][3];
@@ -150,9 +148,8 @@ public class CriticalPointFinder {
 		jv[2][1] = dmat[2][0]*mat2[0][1] + dmat[2][1]*mat2[1][1] + dmat[2][2]*dmat[2][1];
 		jv[2][2] = dmat[2][0]*mat2[0][2] + dmat[2][1]*mat2[1][2] + dmat[2][2]*dmat[2][2];
 		
-		
-		
-		return type;
+		//行列が虚数解を持つかどうか　虚数を持つ場合true
+		return isImaginaryEigenvalue(jv);
 	}
 	
 	/**
@@ -257,7 +254,34 @@ public class CriticalPointFinder {
 		return dmat;
 	}
 	
-	public double eigenvalue(double[][] m){
-		return det;
+	/**
+	 * 虚数解を持つかどうかの判別
+	 * @param m
+	 * @return
+	 */
+	public boolean isImaginaryEigenvalue(double[][] m){
+		/*
+			 m =
+			(m00 m01 m02)
+			(m10 m11 m12)
+			(m20 m21 m22)
+			
+			det(m-tI) =
+			|m00-t　m01　　　m02　|
+			|m10　　m11-t　　m12　|
+			|m20　　　m21　　m22-t|
+			
+			f(t) = t^3 - (m00+m11+m22)t^2 - (-m00*m11 - m11*m22 - m22*m00+m01*m10+m02*m20+m12*m21)t - det(m)
+		 	f'(t) = 3t^2 - 2(m00+m11+m22)t -(-m00*m11 - m11*m22 - m22*m00+m01*m10+m02*m20+m12*m21)
+			f'(t) = at^2+2bt+c
+			D = b^2-ac
+		 */
+		double a = 3;
+		double b = -(m[0][0] + m[1][1] + m[2][2]);
+		double c = -(-m[0][0]*m[1][1] - m[1][1]*m[2][2] - m[2][2]*m[0][0] + m[0][1]*m[1][0] +m[0][2]*m[2][0] + m[1][2]*m[2][1]);
+		if(b*b-a*c < 0){
+			return true;
+		}
+		return false;
 	}
 }
