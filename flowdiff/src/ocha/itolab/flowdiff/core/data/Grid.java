@@ -94,11 +94,11 @@ public class Grid {
 	 */
 	public Element[] getPartElement(int height){
 		Element[] egp = new Element[elnum[0]*elnum[2]];
-		
+		int count = 0;
 		for(int i = elnum[0]*(height-1); i < getNumElementAll() ;i++){
 			for(int j = 0; j<elnum[0]; j++){
-				egp[i+j] = getElement(i+j);
-				//なぜか値が入らない・・・・
+				egp[count] = getElement(i+j);
+				count++;
 			}
 			i += elnum[0]*elnum[1]-1;
 		}
