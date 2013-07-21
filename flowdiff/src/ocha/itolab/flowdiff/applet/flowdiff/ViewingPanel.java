@@ -33,7 +33,7 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
-	public JButton  openDataButton, viewResetButton, generateButton, viewButton;
+	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
 	public JLabel xText, yText, zText, vtext;
 	public JSlider sliderX, sliderY, sliderZ,vheight;
@@ -63,7 +63,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(7,1));
+		p1.setLayout(new GridLayout(8,1));
 		openDataButton = new JButton("最初から始める");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
@@ -79,6 +79,8 @@ public class ViewingPanel extends JPanel {
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
 		
+		viewVectorButton = new JButton("ベクトル表示");
+		p1.add(viewVectorButton);
 		vheight = new JSlider(0, 85, 10);
 		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
 		vheight.setMajorTickSpacing(10);
@@ -122,8 +124,7 @@ public class ViewingPanel extends JPanel {
 		generateButton = new JButton("決定する");
 		p2.add(generateButton);
 		
-		viewButton = new JButton("ベクトル表示");
-		p2.add(viewButton);
+		
 		//
 		// パネル群のレイアウト
 		//
@@ -187,6 +188,7 @@ public class ViewingPanel extends JPanel {
 		openDataButton.addActionListener(actionListener);
 		viewResetButton.addActionListener(actionListener);
 		generateButton.addActionListener(actionListener);
+		viewVectorButton.addActionListener(actionListener);
 	}
 
 	/**
@@ -253,8 +255,8 @@ public class ViewingPanel extends JPanel {
 				
 			}
 			
-			if (buttonPushed == viewButton) {
-				
+			if (buttonPushed == viewVectorButton) {
+				canvas.setVectorView(true);
 			}
 			canvas.display();
 		}

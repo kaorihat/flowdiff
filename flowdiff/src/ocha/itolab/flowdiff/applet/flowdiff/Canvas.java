@@ -145,7 +145,6 @@ public class Canvas extends JPanel {
 		drawer.setStreamline2(s);
 	}
 	
-	
 	/**
 	 * 再描画
 	 */
@@ -299,7 +298,13 @@ public class Canvas extends JPanel {
 	public void viewDefault() {
 		trans.setDefaultValue();
 	}
-
+/**
+ * 
+ * @param v
+ */
+	public void setVectorView(boolean v){
+		drawer.setVectorView(v);
+	}
 	/**
 	 * 画面上の特定物体をピックする
 	 * @param px ピックした物体の画面上のX座標値

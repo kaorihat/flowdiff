@@ -47,6 +47,7 @@ public class Drawer implements GLEventListener {
 
 	boolean isMousePressed = false, isAnnotation = true;
 	boolean isImage = true, isWireframe = true;
+	boolean isVectorView = false;
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -125,7 +126,9 @@ public class Drawer implements GLEventListener {
 		this.vheight = vheight;
 		//System.out.println(vheight);
 	}
-
+	public void setVectorView(boolean v){
+		this.isVectorView = v;
+	}
 	
 	/**
 	 * Gridをセットする
@@ -162,6 +165,7 @@ public class Drawer implements GLEventListener {
 	public void setStreamline2(Streamline s) {
 		sl2 = s;
 	}
+	
 	
 	/**
 	 * 描画領域のサイズを設定する
@@ -316,13 +320,13 @@ public class Drawer implements GLEventListener {
 		//drawElement3(grid1,100,0,5);
 		//drawElement3(grid1,100,0,6);
 		//drawElement3(grid1,100,0,7);
-		
-		
-		//drawVectorPart(grid1,1,vheight,30);
+		if(isVectorView == true){
+			drawVectorPart(grid1,1,vheight,30);
+			drawVectorPart(grid2,2,vheight,30);
+		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
-		drawCriticalPoint(grid1);
-		
+		//drawCriticalPoint(grid1);
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);
@@ -431,7 +435,7 @@ public class Drawer implements GLEventListener {
 	 * @param grid
 	 * @param type グリッドの種類
 	 * @param h　高さ
-	 * @param l　ベクトルの長さ
+	 * @param l　ベクトルの長さ(大きいと短くなる)
 	 */
 	void drawVectorPart(Grid grid, int type,int h,int l){
 		if(grid == null) return;
@@ -455,7 +459,7 @@ public class Drawer implements GLEventListener {
 					//二列目以降に描画する要素の決定
 					num = test+next*i;
 				}
-				if(grid.getEnvironment(num+j)==0.0){
+				if(grid.getEnvironment(num+j)==0.0 && j%2==0 && i%2==0){
 					//座標・ベクトルを取得
 					gpos[0] = grid.getGridPoint(num+j).getPosition()[0];
 					gpos[1] = grid.getGridPoint(num+j).getPosition()[1];
@@ -468,7 +472,7 @@ public class Drawer implements GLEventListener {
 					if(type==1){
 						gl2.glColor3d(0.8, 0.8, 0.8);
 					}else{
-						gl2.glColor3d(1.0, 0.0, 0.0);
+						gl2.glColor3d(1.0, 0.2, 0.2);
 					}
 					//ベクトルの描画
 					
