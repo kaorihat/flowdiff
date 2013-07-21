@@ -21,7 +21,7 @@ public class CriticalPointFinder {
 		//全ての要素に対して
 		for (int i = 0; i < grid.getNumElementAll(); i++) {
 			
-			if(!grid.isEdgeElement(i)){
+			//if(!grid.isEdgeElement(i)){
 				GridPoint gp[] = new GridPoint[8];
 				gp[0] = grid.getElement(i).gp[0];
 				gp[1] = grid.getElement(i).gp[1];
@@ -34,10 +34,10 @@ public class CriticalPointFinder {
 				
 				//0となる点を補完算出する
 				tmp[0] = interpolate(gp[0],gp[4],gp[5],gp[6]);
-				//tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
-				//tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
-				//tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
-				//tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
+				tmp[1] = interpolate(gp[0],gp[1],gp[3],gp[5]);
+				tmp[2] = interpolate(gp[0],gp[3],gp[5],gp[6]);
+				tmp[3] = interpolate(gp[0],gp[2],gp[3],gp[6]);
+				tmp[4] = interpolate(gp[3],gp[5],gp[6],gp[7]);
 				
 				//リストに加える
 				for (int j = 0; j < 5; j++) {
@@ -47,7 +47,7 @@ public class CriticalPointFinder {
 						cp.add(e);
 					}
 				}
-			}
+			//}
 		}
 		return cp;
 	}
@@ -107,7 +107,16 @@ public class CriticalPointFinder {
 		
 		return ans;
 	}
-	
+	/**
+	 * 渦中心かどうかの判定
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param u
+	 * @param v
+	 * @param w
+	 * @return
+	 */
 	boolean  classify(double[] x, double[] y, double[] z, double[] u, double[] v, double[] w){
 		//行列の生成
 		double[][] mat1 = new double[3][3];
