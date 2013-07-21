@@ -22,6 +22,7 @@ public class CriticalPointFinder {
 		for (int i = 0; i < grid.getNumElementAll(); i++) {
 			
 			//if(!grid.isEdgeElement(i)){
+			//if(grid.getElement(id)){
 				GridPoint gp[] = new GridPoint[8];
 				gp[0] = grid.getElement(i).gp[0];
 				gp[1] = grid.getElement(i).gp[1];

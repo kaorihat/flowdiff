@@ -299,12 +299,20 @@ public class Canvas extends JPanel {
 		trans.setDefaultValue();
 	}
 /**
- * 
+ * ベクトル表示をONにする
  * @param v
  */
 	public void setVectorView(boolean v){
 		drawer.setVectorView(v);
 	}
+	
+	/**
+	 * 渦中心を検出する
+	 * @param v
+	 */
+		public void setCriticalPoint(boolean c){
+			drawer.setCriticalPoint(c);
+		}
 	/**
 	 * 画面上の特定物体をピックする
 	 * @param px ピックした物体の画面上のX座標値

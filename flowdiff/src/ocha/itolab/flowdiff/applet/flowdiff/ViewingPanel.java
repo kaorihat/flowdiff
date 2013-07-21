@@ -33,7 +33,7 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
-	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton;
+	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
 	public JLabel xText, yText, zText, vtext;
 	public JSlider sliderX, sliderY, sliderZ,vheight;
@@ -64,18 +64,18 @@ public class ViewingPanel extends JPanel {
 		// パネル1
 		JPanel p1 = new JPanel();
 		p1.setLayout(new GridLayout(8,1));
-		openDataButton = new JButton("最初から始める");
+		openDataButton = new JButton("ファイル読込");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
 		p1.add(viewResetButton);
 		ButtonGroup group1 = new ButtonGroup();
-		viewRotateButton = new JRadioButton("回転する",true);//最初にチェックが入っている
+		viewRotateButton = new JRadioButton("回転",true);//最初にチェックが入っている
 		group1.add(viewRotateButton);
 		p1.add(viewRotateButton);
-		viewScaleButton = new JRadioButton("大きく・小さく");
+		viewScaleButton = new JRadioButton("拡大・縮小");
 		group1.add(viewScaleButton);
 		p1.add(viewScaleButton);
-		viewShiftButton = new JRadioButton("移動する");
+		viewShiftButton = new JRadioButton("移動");
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
 		
@@ -121,10 +121,10 @@ public class ViewingPanel extends JPanel {
 	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
 		p2.add(sliderZ);
 		p2.add(zText);
-		generateButton = new JButton("決定する");
+		generateButton = new JButton("決定");
 		p2.add(generateButton);
-		
-		
+		viewCriticalPoint = new JButton("渦中心表示");
+		p2.add(viewCriticalPoint);
 		//
 		// パネル群のレイアウト
 		//
@@ -189,6 +189,7 @@ public class ViewingPanel extends JPanel {
 		viewResetButton.addActionListener(actionListener);
 		generateButton.addActionListener(actionListener);
 		viewVectorButton.addActionListener(actionListener);
+		viewCriticalPoint.addActionListener(actionListener);
 	}
 
 	/**
@@ -257,6 +258,10 @@ public class ViewingPanel extends JPanel {
 			
 			if (buttonPushed == viewVectorButton) {
 				canvas.setVectorView(true);
+			}
+			
+			if (buttonPushed == viewCriticalPoint) {
+				canvas.setCriticalPoint(true);
 			}
 			canvas.display();
 		}

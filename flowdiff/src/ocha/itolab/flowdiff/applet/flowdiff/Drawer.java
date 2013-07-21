@@ -48,6 +48,7 @@ public class Drawer implements GLEventListener {
 	boolean isMousePressed = false, isAnnotation = true;
 	boolean isImage = true, isWireframe = true;
 	boolean isVectorView = false;
+	boolean isCriticalPoint = false;
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -128,6 +129,10 @@ public class Drawer implements GLEventListener {
 	}
 	public void setVectorView(boolean v){
 		this.isVectorView = v;
+	}
+	
+	public void setCriticalPoint(boolean c){
+		this.isCriticalPoint = c;
 	}
 	
 	/**
@@ -315,27 +320,29 @@ public class Drawer implements GLEventListener {
 		
 		//drawElement1(grid1,100,0,1);
 		//drawElement2(grid1,100,0,2);
-		//drawElement3(grid1,100,0,3);
+		drawElement3(grid1,30);
 		//drawElement3(grid1,100,0,7);
 		//drawElement3(grid1,100,0,5);
 		//drawElement3(grid1,100,0,6);
 		//drawElement3(grid1,100,0,7);
-		if(isVectorView == true){
+		if(isVectorView == true){//ベクトル表示の有無
 			drawVectorPart(grid1,1,vheight,30);
 			drawVectorPart(grid2,2,vheight,30);
 		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
-		//drawCriticalPoint(grid1);
+		if(isCriticalPoint == true){//渦中心表示
+			drawCriticalPoint(grid1);
+		}
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);
-			drawEndGrid(grid1);
+			//drawEndGrid(grid1);
 		}
 		if(grid2 != null && sl2 != null) {
 			drawStartGrid(grid2);
 			drawStreamline(sl2, 2);
-			drawEndGrid(grid2);
+			//drawEndGrid(grid2);
 		}
 		
 		// 行列をポップ
@@ -415,6 +422,24 @@ public class Drawer implements GLEventListener {
 			}
 		}
 	}
+	/**
+	 * 建物を描画する
+	 * @param grid
+	 */
+	void drawBuilding1(Grid grid){
+		if(grid == null) return;
+		int num = grid.getBuildingPoint1().length;
+		GridPoint[] bgp = new GridPoint[num];
+		//System.out.println(grid.getBuildingPoint1().length);
+		bgp = grid.getBuildingPoint1();
+		//建物がある座標に点を描画
+		for(int i = 0;i<num;i++){
+				gl2.glColor3d(0.0, 0.0, 1.0);
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(bgp[i].getPosition()[0], bgp[i].getPosition()[1], bgp[i].getPosition()[2]);
+				gl2.glEnd();
+		}
+	}
 	
 	/**
 	 * ベクトルの描画
@@ -477,7 +502,7 @@ public class Drawer implements GLEventListener {
 					//ベクトルの描画
 					
 					//
-					gl2.glLineWidth(0.001f);
+					//gl2.glLineWidth(0.001f);
 					//gl2.glBegin(GL.GL_LINE_LOOP);
 					gl2.glBegin(GL.GL_LINES);
 					//gl2.glBegin(GL2.GL_LINE_STRIP);
@@ -518,8 +543,8 @@ public class Drawer implements GLEventListener {
 		CriticalPointFinder cpf = new CriticalPointFinder();
 		array = cpf.find(grid);
 		
-		gl2.glColor3d(1.0, 0.0, 0.0);
-		//gl2.glPointSize(5.0f);
+		gl2.glColor3d(00, 1.0, 1.0);
+		gl2.glPointSize(2.f);
 		//ベクトルの描画
 		for(int i = 0; i < array.size();i++){
 			gl2.glBegin(GL.GL_POINTS);
@@ -715,21 +740,21 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
 		gl2.glEnd();
 	}
-	void drawElement3(Grid grid,int id,int n1,int n2){
+	
+	//平面にエレメントが表示されるかのチェック
+	void drawElement3(Grid grid,int height){
 		if(grid == null) return;
-		GridPoint egp[] = new GridPoint[2];
-		egp = grid.getElement(id).getElement2(n1, n2);
-		if(egp[0].getPosition()[1]==egp[1].getPosition()[1]){
-			System.out.println("same height y!");
-		}
+		Element egp[] = grid.getPartElement(height);
 		//gl2.glBegin(GL.GL_LINE_LOOP);
-		gl2.glColor3d(1.0, 0.0, 0.0);
-		gl2.glPointSize(4.0f);
-		gl2.glBegin(GL.GL_POINTS);
-		gl2.glVertex3d(egp[0].getPosition()[0], egp[0].getPosition()[1], egp[0].getPosition()[2]);
-		gl2.glColor3d(0.0, 1.0, 0.0);
-		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
-		gl2.glEnd();
+		for(int i = 0; i< egp.length;i++){
+			gl2.glColor3d(1.0, 0.0, 0.0);
+			gl2.glPointSize(4.0f);
+			gl2.glBegin(GL.GL_POINTS);
+			for(int j=0; j<8; j++){
+				gl2.glVertex3d(egp[i].gp[j].getPosition()[0], egp[i].gp[j].getPosition()[1], egp[i].gp[j].getPosition()[2]);
+			}
+			gl2.glEnd();
+		}
 	}
 	@Override
 	public void dispose(GLAutoDrawable arg0) {

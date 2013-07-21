@@ -41,14 +41,14 @@ public class GridPoint {
 		this.environment = e;
 	}
 	/**
-	 * 建物の種別
+	 * 建物の位置によって分類する
 	 * @return
 	 */
-	public int getType() {
+	public int getBuildingType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setBuildingType(int type) {
 		this.type = type;
 	}
 }

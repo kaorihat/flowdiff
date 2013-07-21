@@ -66,7 +66,7 @@ public class Grid {
 		return etotal;
 	}
 	/**
-	 * 端の要素ならtrue
+	 * 端に位置している要素ならtrueを返す
 	 */
 	public boolean isEdgeElement(int id){
 		boolean ans = false;
@@ -79,7 +79,7 @@ public class Grid {
 			ans = true;
 		}else if(id < elnum[0]*elnum[1]*elnum[2] && id >= elnum[0]*elnum[1]*(elnum[2]-1)){
 			ans = true;
-		}else if(id % (elnum[0] * elnum[1]) <= elnum[0] * elnum[1]-1 && id % (elnum[0] * elnum[1])>=elnum[0] * elnum[1]-elnum[0]){
+		}else if(id % (elnum[0] * elnum[1]) < elnum[0] * elnum[1] && id % (elnum[0] * elnum[1])>=elnum[0] * elnum[1]-elnum[0]){
 			//上面の要素
 			ans = true;
 		}else if(id % (elnum[0] * elnum[1]) >=0 &&  id % (elnum[0] * elnum[1]) <= elnum[0]){
@@ -87,6 +87,22 @@ public class Grid {
 			ans = true;
 		}
 		return ans;
+	}
+	
+	/**
+	 * 同じ平面の要素を返す
+	 */
+	public Element[] getPartElement(int height){
+		Element[] egp = new Element[elnum[0]*elnum[2]];
+		
+		for(int i = elnum[0]*(height-1); i < getNumElementAll() ;i++){
+			for(int j = 0; j<elnum[0]; j++){
+				egp[i+j] = getElement(i+j);
+				//なぜか値が入らない・・・・
+			}
+			i += elnum[0]*elnum[1]-1;
+		}
+		return egp;
 	}
 	
 	/**
@@ -188,8 +204,9 @@ public class Grid {
 	/**
 	 * 建物のある座標値・種別を返す
 	 */
-	public  GridPoint[] getBuildingPoint(){
-		GridPoint barray[] = new GridPoint[this.getNumBuilding()];
+	public  GridPoint[] getBuildingPoint1(){
+		int num = getNumBuilding();
+		GridPoint barray[] = new GridPoint[num];
 		
 		for(int i = 0; i<gtotal;i++){
 			if(this.getEnvironment(i)!=0.0){
@@ -201,15 +218,44 @@ public class Grid {
 	}
 	
 	/**
+	 * 建物のある座標値・種別を返す
+	 */
+	public  GridPoint[] getBuildingPoint2(){
+		GridPoint barray[] = new GridPoint[bnum];
+		int count = 0;//建物の種類の数
+		int n = 0;
+		//建物のラベリング
+		for(int i = 0; i<gtotal;i++){
+			if(getGridPoint(i).getBuildingType() ==0){
+				if(this.getEnvironment(i) == 1.0){
+					count++;
+					while(n>=0){
+						getGridPoint(i+n).setBuildingType(count);
+						barray[n] = this.getGridPoint(i+n);
+						if(this.getEnvironment(i+n) != 1.0){break;}
+						n++;
+					}
+				}
+				if(this.getEnvironment(i) == 0.5){
+					
+				}
+			}
+		}
+		return barray;
+	}
+	
+	/**
 	 * 建物のある座標値の数を返す
 	 */
-	public int getNumBuilding(){
+	public void setNumBuilding(){
 		
 		for(int i = 0; i<gtotal;i++){
 			if(this.getEnvironment(i)!=0.0){
 				bnum++;
 			}
 		}
+	}
+	public int getNumBuilding(){
 		return bnum;
 	}
 	
