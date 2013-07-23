@@ -302,7 +302,7 @@ public class Canvas extends JPanel {
  * ベクトル表示をONにする
  * @param v
  */
-	public void setVectorView(boolean v){
+	public void setVectorView(int v){
 		drawer.setVectorView(v);
 	}
 	

@@ -34,8 +34,8 @@ public class ViewingPanel extends JPanel {
 
 	
 	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint;
-	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, easyButton, hardButton;
-	public JLabel xText, yText, zText, vtext;
+	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, grid1View, grid2View, bothGridView;
+	public JLabel xText, yText, zText, vtext, vecviewText;
 	public JSlider sliderX, sliderY, sliderZ,vheight;
 	public Container container;
 	File currentDirectory;
@@ -63,7 +63,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(8,1));
+		p1.setLayout(new GridLayout(11,1));
 		openDataButton = new JButton("ファイル読込");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
@@ -79,8 +79,19 @@ public class ViewingPanel extends JPanel {
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
 		
-		viewVectorButton = new JButton("ベクトル表示");
-		p1.add(viewVectorButton);
+		vecviewText = new JLabel(" ベクトル表示");
+		p1.add(vecviewText);
+		ButtonGroup group2 = new ButtonGroup();
+		bothGridView = new JRadioButton("両方",true);//最初にチェックが入っている
+		group2.add(bothGridView);
+		p1.add(bothGridView);
+		grid1View = new JRadioButton("grid1");//最初にチェックが入っている
+		group2.add(grid1View);
+		p1.add(grid1View);
+		grid2View = new JRadioButton("grid2");//最初にチェックが入っている
+		group2.add(grid2View);
+		p1.add(grid2View);
+		
 		vheight = new JSlider(0, 85, 10);
 		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
 		vheight.setMajorTickSpacing(10);
@@ -121,7 +132,7 @@ public class ViewingPanel extends JPanel {
 	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
 		p2.add(sliderZ);
 		p2.add(zText);
-		generateButton = new JButton("決定");
+		generateButton = new JButton("流線決定");
 		p2.add(generateButton);
 		viewCriticalPoint = new JButton("渦中心表示");
 		p2.add(viewCriticalPoint);
@@ -178,6 +189,9 @@ public class ViewingPanel extends JPanel {
 		viewRotateButton.addActionListener(actionListener);
 		viewScaleButton.addActionListener(actionListener);
 		viewShiftButton.addActionListener(actionListener);
+		bothGridView.addActionListener(actionListener);
+		grid1View.addActionListener(actionListener);
+		grid2View.addActionListener(actionListener);
 	}
 
 	/**
@@ -188,7 +202,6 @@ public class ViewingPanel extends JPanel {
 		openDataButton.addActionListener(actionListener);
 		viewResetButton.addActionListener(actionListener);
 		generateButton.addActionListener(actionListener);
-		viewVectorButton.addActionListener(actionListener);
 		viewCriticalPoint.addActionListener(actionListener);
 	}
 
@@ -257,7 +270,7 @@ public class ViewingPanel extends JPanel {
 			}
 			
 			if (buttonPushed == viewVectorButton) {
-				canvas.setVectorView(true);
+				
 			}
 			
 			if (buttonPushed == viewCriticalPoint) {
@@ -325,6 +338,15 @@ public class ViewingPanel extends JPanel {
 			}
 			if (buttonPushed == viewShiftButton) {
 				canvas.setDragMode(2);
+			}
+			if(buttonPushed == bothGridView){
+				canvas.setVectorView(1);
+			}
+			if(buttonPushed == grid1View){
+				canvas.setVectorView(2);
+			}
+			if(buttonPushed == grid2View){
+				canvas.setVectorView(3);
 			}
 			canvas.display();
 		}

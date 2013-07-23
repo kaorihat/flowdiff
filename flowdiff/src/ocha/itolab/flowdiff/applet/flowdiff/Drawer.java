@@ -20,8 +20,8 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -44,10 +44,10 @@ public class Drawer implements GLEventListener {
 	DoubleBuffer modelview, projection, p1, p2, p3, p4;
 	IntBuffer viewport;
 	int windowWidth, windowHeight;
+	int isVectorView = 1;
 
 	boolean isMousePressed = false, isAnnotation = true;
 	boolean isImage = true, isWireframe = true;
-	boolean isVectorView = false;
 	boolean isCriticalPoint = false;
 
 	double linewidth = 1.0;
@@ -127,7 +127,7 @@ public class Drawer implements GLEventListener {
 		this.vheight = vheight;
 		//System.out.println(vheight);
 	}
-	public void setVectorView(boolean v){
+	public void setVectorView(int v){
 		this.isVectorView = v;
 	}
 	
@@ -320,14 +320,16 @@ public class Drawer implements GLEventListener {
 		
 		//drawElement1(grid1,100,0,1);
 		//drawElement2(grid1,100,0,2);
-		drawElement3(grid1,30);
+		//drawElement3(grid1,vheight);
 		//drawElement3(grid1,100,0,7);
 		//drawElement3(grid1,100,0,5);
 		//drawElement3(grid1,100,0,6);
 		//drawElement3(grid1,100,0,7);
-		if(isVectorView == true){//ベクトル表示の有無
-			drawVectorPart(grid1,1,vheight,30);
-			drawVectorPart(grid2,2,vheight,30);
+		if(isVectorView == 1 || isVectorView == 2){//ベクトル表示の有無
+			drawVectorPart(grid1,1,vheight,20);
+		}
+		if(isVectorView == 1 || isVectorView == 3){//ベクトル表示の有無
+			drawVectorPart(grid2,2,vheight,20);
 		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
