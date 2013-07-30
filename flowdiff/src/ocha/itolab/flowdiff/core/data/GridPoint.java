@@ -22,10 +22,7 @@ public class GridPoint {
 		vec[2] = w;
 	}
 	
-	public double getEnvironment() {
-		return environment;
-	}
-
+	
 	public double[] getPosition() {
 		return pos;
 	}
@@ -40,8 +37,14 @@ public class GridPoint {
 	public void setEnvironment(double e) {
 		this.environment = e;
 	}
+	
+	public double getEnvironment() {
+		return environment;
+	}
+
+	
 	/**
-	 * 建物の位置によって分類する
+	 * 建物の位置によって分類する(ラベリングのための値)
 	 * @return
 	 */
 	public int getBuildingType() {
