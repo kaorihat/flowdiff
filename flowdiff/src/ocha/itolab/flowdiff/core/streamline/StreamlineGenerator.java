@@ -1,7 +1,10 @@
 package ocha.itolab.flowdiff.core.streamline;
 
-import ocha.itolab.flowdiff.core.data.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import ocha.itolab.flowdiff.core.data.Element;
+import ocha.itolab.flowdiff.core.data.Grid;
+import ocha.itolab.flowdiff.core.data.GridPoint;
 
 public class StreamlineGenerator {
 	
@@ -69,11 +72,16 @@ public static ArrayList<Integer> elementIds = new ArrayList<Integer>();
 		elementIjk[0] = eIjk[0];
 		elementIjk[1] = eIjk[1];
 		elementIjk[2] = eIjk[2];
-		while(elementId != preElementId && sl.getNumVertex() < 999) {
+		while(elementId != preElementId && elementId >= 0 && sl.getNumVertex() < 999) {
 			elementIds.add(elementId);
 			preElementId = elementId;
 			elementId = traverseStream(grid, sl, elementIjk, startpoint);
-			//System.out.println("    elementId=" + elementId + " preElementId=" + preElementId + " numsl=" + sl.getNumVertex());
+			int numgp[] = grid.getNumGridPoint();
+			/*
+			System.out.println("  next element=(" + elementIjk[0] + "," + elementIjk[1] + "," + elementIjk[2]
+						+ ") size=(" +  numgp[0] + "," +  numgp[1] + "," +  numgp[2] + ")"  );
+			System.out.println("    elementId=" + elementId + " preElementId=" + preElementId + " numsl=" + sl.getNumVertex());
+			*/
 		}
 
 	}
@@ -201,10 +209,12 @@ public static ArrayList<Integer> elementIds = new ArrayList<Integer>();
 			if(ret == false) return -1; // ボリュームの外に出たらret == falseとなる
 		}
 		// 該当する三角形がない場合、最も近い格子点上に追跡を移す
+		/*
 		else {
 			boolean ret = specifyNextGridPoint(grid, element, startpoint, intersect, eIjk);
 			if(ret == false) return -1;
 		}
+		*/
 		
 		// 交差位置の前回からの移動量が非常に小さければ、処理を終了する
 		dist = (startpoint[0] - intersect[0]) * (startpoint[0] - intersect[0])
@@ -226,7 +236,7 @@ public static ArrayList<Integer> elementIds = new ArrayList<Integer>();
 		startpoint[0] = intersect[0];
 		startpoint[1] = intersect[1];
 		startpoint[2] = intersect[2];
-			
+		
 		elementId = grid.calcElementId(eIjk[0], eIjk[1], eIjk[2]);
 		return elementId;
 	}
@@ -317,9 +327,9 @@ public static ArrayList<Integer> elementIds = new ArrayList<Integer>();
 		eeIjk[2] = (ngpvec[2] > 0.0) ? nIjk[2] : (nIjk[2] - 1);
 		
 		// 流れがボリュームの外に出るようであれば、処理を中止する
-		if(eeIjk[0] < 0 || eeIjk[0] > (numgp[0] - 1)) return false;
-	    if(eeIjk[1] < 0 || eeIjk[1] > (numgp[1] - 1)) return false;
-	    if(eeIjk[2] < 0 || eeIjk[2] > (numgp[2] - 1)) return false;
+		if(eeIjk[0] < 0 || eeIjk[0] >= (numgp[0] - 1)) return false;
+	    if(eeIjk[1] < 0 || eeIjk[1] >= (numgp[1] - 1)) return false;
+	    if(eeIjk[2] < 0 || eeIjk[2] >= (numgp[2] - 1)) return false;
 
 		// 必要な情報を代入し、処理を続行する
 	    double ngppos[] = ngp.getPosition();

@@ -20,8 +20,8 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
