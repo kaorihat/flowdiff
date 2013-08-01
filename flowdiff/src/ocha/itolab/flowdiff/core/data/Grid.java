@@ -241,11 +241,11 @@ public class Grid {
 		int n = 0;
 		//建物のラベリング
 		for(int i = 0; i<gtotal;i++){
-			if(getGridPoint(i).getBuildingType() ==0){
+			if(getGridPoint(i).getBuildingLabel() ==0){
 				if(this.getEnvironment(i) == 1.0){
 					count++;
 					while(n>=0){
-						getGridPoint(i+n).setBuildingType(count);
+						getGridPoint(i+n).setBuildingLabel(count);
 						barray[n] = this.getGridPoint(i+n);
 						if(this.getEnvironment(i+n) != 1.0){break;}
 						n++;
@@ -275,6 +275,7 @@ public class Grid {
 	public double getEnvironment(int id){
 		return this.getGridPoint(id).environment;
 	}
+	
 	
 	
 	// targetとなっているelementとstreamlineの交差判定

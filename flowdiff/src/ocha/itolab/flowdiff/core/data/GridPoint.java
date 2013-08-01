@@ -7,7 +7,7 @@ public class GridPoint {
 	double pos[] = new double[3];
 	double vec[] = new double[3];
 	double environment =0.0;
-	int type = 0;
+	int label = 0;
 	
 
 	public void setPosition(double x, double y, double z) {
@@ -47,11 +47,11 @@ public class GridPoint {
 	 * 建物の位置によって分類する(ラベリングのための値)
 	 * @return
 	 */
-	public int getBuildingType() {
-		return type;
+	public int getBuildingLabel() {
+		return label;
 	}
 
-	public void setBuildingType(int type) {
-		this.type = type;
+	public void setBuildingLabel(int label) {
+		this.label = label;
 	}
 }

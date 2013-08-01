@@ -452,12 +452,14 @@ public class Drawer implements GLEventListener {
 		Building b = new Building();
 		b.labeling(grid1);
 		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
-			if(grid.getGridPoint(i).getBuildingType()==1){
+			if(grid.getGridPoint(i).getBuildingLabel()==0){
+				continue;
+			}else if(grid.getGridPoint(i).getBuildingLabel()==1){
 				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingType()==2){
+			}else if(grid.getGridPoint(i).getBuildingLabel()==2){
 				gl2.glColor3d(1.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingType()==3){
-				gl2.glColor3d(1.0, 1.0, 1.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==3){
+				gl2.glColor3d(0.0, 1.0, 1.0);
 			}
 				gl2.glBegin(GL.GL_POINTS);
 				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
