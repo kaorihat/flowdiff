@@ -12,6 +12,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import ocha.itolab.flowdiff.core.data.Building;
 import ocha.itolab.flowdiff.core.data.Element;
 import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.data.GridPoint;
@@ -315,8 +316,10 @@ public class Drawer implements GLEventListener {
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
 
 		drawBox();
-		drawBuilding(grid1);
+		//drawBuilding(grid1);
+		//drawBuilding1(grid1);
 		//drawBuilding(grid2);
+		drawBuilding2(grid1);
 		
 		//drawElement1(grid1,100,0,1);
 		//drawElement2(grid1,100,0,2);
@@ -431,15 +434,37 @@ public class Drawer implements GLEventListener {
 	void drawBuilding1(Grid grid){
 		if(grid == null) return;
 		int num = grid.getBuildingPoint1().length;
-		GridPoint[] bgp = new GridPoint[num];
+		//GridPoint[] bgp = new GridPoint[num];
 		//System.out.println(grid.getBuildingPoint1().length);
-		bgp = grid.getBuildingPoint1();
+		//bgp = grid.getBuildingPoint1();
+		GridPoint[] bgp = grid.getBuildingPoint1();
 		//建物がある座標に点を描画
 		for(int i = 0;i<num;i++){
 				gl2.glColor3d(0.0, 0.0, 1.0);
 				gl2.glBegin(GL.GL_POINTS);
 				gl2.glVertex3d(bgp[i].getPosition()[0], bgp[i].getPosition()[1], bgp[i].getPosition()[2]);
 				gl2.glEnd();
+		}
+	}
+	
+	void drawBuilding2(Grid grid){
+		if(grid == null) return;
+		Building b = new Building();
+		b.labeling(grid1);
+		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
+			if(grid.getGridPoint(i).getBuildingLabel()==0){
+				continue;
+			}else if(grid.getGridPoint(i).getBuildingLabel()==1){
+				gl2.glColor3d(0.0, 0.0, 1.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==2){
+				gl2.glColor3d(1.0, 0.0, 1.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==3){
+				gl2.glColor3d(0.0, 1.0, 1.0);
+			}
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
+				gl2.glEnd();
+			
 		}
 	}
 	

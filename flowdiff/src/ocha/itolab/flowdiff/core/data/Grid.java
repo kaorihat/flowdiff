@@ -65,6 +65,21 @@ public class Grid {
 	public int getNumElementAll() {
 		return etotal;
 	}
+	
+	/**
+	 * 建物のある座標値の数を返す
+	 * @return 
+	 */
+	public int getNumBuilding(){
+		
+		for(int i = 0; i<gtotal;i++){
+			if(this.getEnvironment(i)!=0.0){
+				bnum++;
+			}
+		}
+		return bnum;
+	}
+	
 	/**
 	 * 端に位置している要素ならtrueを返す
 	 */
@@ -206,8 +221,8 @@ public class Grid {
 	 */
 	public  GridPoint[] getBuildingPoint1(){
 		int num = getNumBuilding();
-		GridPoint barray[] = new GridPoint[num];
-		
+		GridPoint barray[] = new GridPoint[bnum];
+		System.out.println("bnum=" +bnum);
 		for(int i = 0; i<gtotal;i++){
 			if(this.getEnvironment(i)!=0.0){
 				barray[count] = this.getGridPoint(i);
@@ -226,11 +241,11 @@ public class Grid {
 		int n = 0;
 		//建物のラベリング
 		for(int i = 0; i<gtotal;i++){
-			if(getGridPoint(i).getBuildingType() ==0){
+			if(getGridPoint(i).getBuildingLabel() ==0){
 				if(this.getEnvironment(i) == 1.0){
 					count++;
 					while(n>=0){
-						getGridPoint(i+n).setBuildingType(count);
+						getGridPoint(i+n).setBuildingLabel(count);
 						barray[n] = this.getGridPoint(i+n);
 						if(this.getEnvironment(i+n) != 1.0){break;}
 						n++;
@@ -242,21 +257,6 @@ public class Grid {
 			}
 		}
 		return barray;
-	}
-	
-	/**
-	 * 建物のある座標値の数を返す
-	 */
-	public void setNumBuilding(){
-		
-		for(int i = 0; i<gtotal;i++){
-			if(this.getEnvironment(i)!=0.0){
-				bnum++;
-			}
-		}
-	}
-	public int getNumBuilding(){
-		return bnum;
 	}
 	
 	/**
@@ -275,6 +275,7 @@ public class Grid {
 	public double getEnvironment(int id){
 		return this.getGridPoint(id).environment;
 	}
+	
 	
 	
 	// targetとなっているelementとstreamlineの交差判定
