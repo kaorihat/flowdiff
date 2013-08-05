@@ -70,6 +70,7 @@ public class Drawer implements GLEventListener {
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
 	int vheight = 0;
+	Building b;
 	
 	/**
 	 * Constructor
@@ -94,6 +95,7 @@ public class Drawer implements GLEventListener {
 		p4 = DoubleBuffer.allocate(3);
 
 		glcanvas.addGLEventListener((javax.media.opengl.GLEventListener) this);
+		b = new Building();
 	}
 
 	public GLAutoDrawable getGLAutoDrawable() {
@@ -145,6 +147,7 @@ public class Drawer implements GLEventListener {
 		centerX = (minmax[0] + minmax[1]) * 0.5;
 		centerY = (minmax[2] + minmax[3]) * 0.5;
 		centerZ = (minmax[4] + minmax[5]) * 0.5;
+		setBuildingLabel(grid1);
 	}
 	
 	/**
@@ -156,6 +159,10 @@ public class Drawer implements GLEventListener {
 		centerX = (minmax[0] + minmax[1]) * 0.5;
 		centerY = (minmax[2] + minmax[3]) * 0.5;
 		centerZ = (minmax[4] + minmax[5]) * 0.5;
+	}
+	
+	void setBuildingLabel(Grid grid){
+		b.labeling(grid);
 	}
 	
 	/**
@@ -449,17 +456,34 @@ public class Drawer implements GLEventListener {
 	
 	void drawBuilding2(Grid grid){
 		if(grid == null) return;
-		Building b = new Building();
-		b.labeling(grid1);
+		
 		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
-			if(grid.getGridPoint(i).getBuildingLabel()==0){
+			if(grid.getGridPoint(i).getBuildingLabel()==0 && grid.getGridPoint(i).getBuildingLabel()==1){
 				continue;
-			}else if(grid.getGridPoint(i).getBuildingLabel()==1){
-				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==2){
-				gl2.glColor3d(1.0, 0.0, 1.0);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==3){
+				gl2.glColor3d(0.0, 0.0, 0.5);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==4){
+				gl2.glColor3d(0.0, 1.0, 0.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==5){
+				gl2.glColor3d(0.0, 0.5, 0.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==6){
+				gl2.glColor3d(1.0, 0.0, 0.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==7){
+				gl2.glColor3d(0.5, 0.0, 0.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==8){
 				gl2.glColor3d(0.0, 1.0, 1.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==9){
+				gl2.glColor3d(0.0, 1.0, 0.5);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==10){
+				gl2.glColor3d(1.0, 1.0, 1.0);
+			}else if(grid.getGridPoint(i).getBuildingLabel()==11){
+				gl2.glColor3d(0.0, 0.0, 1.0);
+			}
+			else{
+				continue;
+				//gl2.glColor3d(1.0, 0.0, 0.0);
 			}
 				gl2.glBegin(GL.GL_POINTS);
 				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);

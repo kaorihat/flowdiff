@@ -126,7 +126,15 @@ public class Grid {
 	public GridPoint getGridPoint(int id) {
 		return garray[id];
 	}
-	
+	/**
+	 * getGridPointにエラー処理を加えたもの
+	 * @param id
+	 * @return
+	 */
+	public GridPoint getGridPoint2(int id){
+		
+		return garray[id];
+	}
 	/**
 	 * 所定の要素を返す
 	 */
