@@ -21,8 +21,8 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -458,7 +458,7 @@ public class Drawer implements GLEventListener {
 		if(grid == null) return;
 		
 		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
-			if(grid.getGridPoint(i).getBuildingLabel()==0 && grid.getGridPoint(i).getBuildingLabel()==1){
+			if(grid.getGridPoint(i).getBuildingLabel()==0){
 				continue;
 			}else if(grid.getGridPoint(i).getBuildingLabel()==2){
 				gl2.glColor3d(0.0, 0.0, 1.0);
@@ -490,6 +490,40 @@ public class Drawer implements GLEventListener {
 				gl2.glEnd();
 			
 		}
+		GridPoint minmax[] = b.minmaxPos(grid1,1);
+		
+		// 建物を描く
+		gl2.glColor3d(1.0, 0.0, 0.0);
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[0].getPosition()[0], minmax[0].getPosition()[1], minmax[0].getPosition()[2]);
+		gl2.glVertex3d(minmax[1].getPosition()[0], minmax[1].getPosition()[1], minmax[1].getPosition()[2]);
+		gl2.glVertex3d(minmax[3].getPosition()[0], minmax[3].getPosition()[1], minmax[3].getPosition()[2]);
+		gl2.glVertex3d(minmax[2].getPosition()[0], minmax[2].getPosition()[1], minmax[2].getPosition()[2]);
+		gl2.glEnd();
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[0].getPosition()[0], minmax[0].getPosition()[1], minmax[0].getPosition()[2]);
+		gl2.glVertex3d(minmax[2].getPosition()[0], minmax[2].getPosition()[1], minmax[2].getPosition()[2]);
+		gl2.glVertex3d(minmax[6].getPosition()[0], minmax[6].getPosition()[1], minmax[6].getPosition()[2]);
+		gl2.glVertex3d(minmax[4].getPosition()[0], minmax[4].getPosition()[1], minmax[4].getPosition()[2]);
+		gl2.glEnd();
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[1].getPosition()[0], minmax[1].getPosition()[1], minmax[1].getPosition()[2]);
+		gl2.glVertex3d(minmax[3].getPosition()[0], minmax[3].getPosition()[1], minmax[3].getPosition()[2]);
+		gl2.glVertex3d(minmax[7].getPosition()[0], minmax[7].getPosition()[1], minmax[7].getPosition()[2]);
+		gl2.glVertex3d(minmax[5].getPosition()[0], minmax[5].getPosition()[1], minmax[5].getPosition()[2]);
+		gl2.glEnd();
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[4].getPosition()[0], minmax[4].getPosition()[1], minmax[4].getPosition()[2]);
+		gl2.glVertex3d(minmax[5].getPosition()[0], minmax[5].getPosition()[1], minmax[5].getPosition()[2]);
+		gl2.glVertex3d(minmax[7].getPosition()[0], minmax[7].getPosition()[1], minmax[7].getPosition()[2]);
+		gl2.glVertex3d(minmax[6].getPosition()[0], minmax[6].getPosition()[1], minmax[6].getPosition()[2]);
+		gl2.glEnd();
+		gl2.glBegin(GL.GL_TRIANGLE_FAN);
+		gl2.glVertex3d(minmax[2].getPosition()[0], minmax[2].getPosition()[1], minmax[2].getPosition()[2]);
+		gl2.glVertex3d(minmax[3].getPosition()[0], minmax[3].getPosition()[1], minmax[3].getPosition()[2]);
+		gl2.glVertex3d(minmax[7].getPosition()[0], minmax[7].getPosition()[1], minmax[7].getPosition()[2]);
+		gl2.glVertex3d(minmax[6].getPosition()[0], minmax[6].getPosition()[1], minmax[6].getPosition()[2]);
+		gl2.glEnd();
 	}
 	
 	/**
