@@ -97,7 +97,12 @@ public class Building {
 	
 	
 	public GridPoint[] minmaxPos(Grid grid,int label){
-		GridPoint[] gp = new GridPoint[8];
+		GridPoint[] gp;
+		if(label < 6){
+			gp = new GridPoint[8];
+		}else{
+			gp = new GridPoint[8];
+		}
 		int num = 0;
 		for(int i = 0; i < grid.getNumGridPointAll(); i++) {
 			if(grid.getGridPoint(i).getBuildingLabel() == label){
@@ -109,7 +114,7 @@ public class Building {
 						count++;
 					}
 				}
-				if(i+1<=grid.getNumGridPointAll()){
+				if(i+1<grid.getNumGridPointAll()){
 					if(label == grid.getGridPoint(i+1).getBuildingLabel()){
 						count++;
 					}
@@ -119,7 +124,7 @@ public class Building {
 						count++;
 					}
 				}
-				if(i+x<=grid.getNumGridPointAll()){
+				if(i+x<grid.getNumGridPointAll()){
 					if(label == grid.getGridPoint(i+x).getBuildingLabel()){
 						count++;
 					}
@@ -129,12 +134,16 @@ public class Building {
 						count++;
 					}
 				}
-				if(i+x*y<=grid.getNumGridPointAll()){
+				if(i+x*y<grid.getNumGridPointAll()){
 					if(label == grid.getGridPoint(i+x*y).getBuildingLabel()){
 						count++;
 					}
 				}
-				if(count == 3){
+				if(count==2 && label > 5){
+					gp[num] = grid.getGridPoint(i);
+					num++;
+					System.out.println("num="+num);
+				}else if(count == 3 && label < 6){
 					gp[num] = grid.getGridPoint(i);
 					num++;
 					System.out.println("num="+num);
