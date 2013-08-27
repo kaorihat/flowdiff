@@ -6,6 +6,15 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 public class Element {
 	public GridPoint gp[] = new GridPoint[8];
 	
+	/**
+	 * エレメント内の特定要素を返す
+	 */
+	public GridPoint getElement(int num){
+		
+		GridPoint ele = new GridPoint();
+		ele = gp[num];
+		return ele;
+	}
 	
 	/**
 	 * エレメント内の位置関係を表示するテストメソッド
