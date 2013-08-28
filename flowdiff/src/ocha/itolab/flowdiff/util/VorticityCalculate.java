@@ -8,7 +8,9 @@ public class VorticityCalculate {
 	public Vorticity vorticity[];
 	
 	public void calculatevorticity(Grid grid){
+		vorticity = new Vorticity[grid.getNumElementAll()];
 		for(int i = 0;i <grid.getNumElementAll();i++){
+			vorticity[i] = new Vorticity();
 			GridPoint gp[] = new GridPoint[4];
 			gp[0]=grid.getElement(i).getElement(0);
 			gp[1]=grid.getElement(i).getElement(1);
@@ -33,11 +35,17 @@ public class VorticityCalculate {
 		}
 	}
 	
-	public void minmax(){
-		Grid grid = new Grid();
+	public void minmax(Grid grid){
+		double min = 0;
+		double max = 0;
 		for(int i = 0;i <grid.getNumElementAll();i++){
-			
+			if(max < vorticity[i].getVorticity()){
+				max = vorticity[i].getVorticity();
+			}else if(min > vorticity[i].getVorticity()){
+				min = vorticity[i].getVorticity();
+			}
 		}
+		System.out.println(max+":"+min);
 	}
 
 }

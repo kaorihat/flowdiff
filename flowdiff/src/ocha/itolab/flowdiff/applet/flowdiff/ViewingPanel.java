@@ -56,6 +56,9 @@ public class ViewingPanel extends JPanel {
 	Grid grid1 = null;
 	Grid grid2 = null;
 	
+	/*button toggle flag*/
+	boolean viewVorticity_flag = false;//trueの時オン
+	
 	public ViewingPanel() {
 		// super class init
 		super();
@@ -280,7 +283,8 @@ public class ViewingPanel extends JPanel {
 				canvas.setCriticalPoint(true);
 			}
 			if (buttonPushed == viewVorticity) {
-				canvas.setVorticity(true);
+				viewVorticity_flag = !viewVorticity_flag;
+				canvas.setVorticity(viewVorticity_flag);
 			}
 			canvas.display();
 		}

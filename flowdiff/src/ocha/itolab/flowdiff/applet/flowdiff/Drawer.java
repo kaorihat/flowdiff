@@ -22,8 +22,8 @@ import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
@@ -650,11 +650,19 @@ public class Drawer implements GLEventListener {
 		if(grid == null) return;
 		VorticityCalculate vc = new VorticityCalculate();
 		vc.calculatevorticity(grid);
-		
-		gl2.glColor3d(0.0, 1.0, 1.0);
-		gl2.glPointSize(2.f);
+		vc.minmax(grid);
+		//gl2.glPointSize(1.0f);
 		//ベクトルの描画
 		for(int i = 0; i < grid.getNumElementAll();i++){
+			if(vc.vorticity[i].getVorticity()>0){
+				//gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl2.glColor3d(1.0*vc.vorticity[i].getVorticity()/2,0.0, 0.0);
+			}else if(vc.vorticity[i].getVorticity()<0){
+				gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[i].getVorticity()/2);
+				//gl2.glColor3d(1.0, 1.0, 0.0);
+			}else{
+				continue;
+			}
 			gl2.glBegin(GL.GL_POINTS);
 			gl2.glVertex3d(vc.vorticity[i].getPosition()[0], vc.vorticity[i].getPosition()[1], vc.vorticity[i].getPosition()[2]);
 			gl2.glEnd();
