@@ -5,15 +5,15 @@ import ocha.itolab.flowdiff.core.data.GridPoint;
 
 public class VorticityCalculate {
 	public GridPoint gp[] = new GridPoint[8];
-	Vorticity vorticity[];
+	public Vorticity vorticity[];
 	
 	public void calculatevorticity(Grid grid){
 		for(int i = 0;i <grid.getNumElementAll();i++){
 			GridPoint gp[] = new GridPoint[4];
 			gp[0]=grid.getElement(i).getElement(0);
 			gp[1]=grid.getElement(i).getElement(1);
-			gp[2]=grid.getElement(i).getElement(2);
-			gp[3]=grid.getElement(i).getElement(3);
+			gp[2]=grid.getElement(i).getElement(4);
+			gp[3]=grid.getElement(i).getElement(5);
 			
 			double dx = Math.abs(gp[0].getPosition()[0] - gp[1].getPosition()[0]);
 			double dz = Math.abs(gp[0].getPosition()[2] - gp[3].getPosition()[2]);

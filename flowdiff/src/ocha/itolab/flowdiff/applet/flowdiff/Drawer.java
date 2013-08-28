@@ -20,6 +20,7 @@ import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
+import ocha.itolab.flowdiff.util.VorticityCalculate;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 //import com.sun.opengl.util.gl2.GLUT;
@@ -50,6 +51,7 @@ public class Drawer implements GLEventListener {
 	boolean isMousePressed = false, isAnnotation = true;
 	boolean isImage = true, isWireframe = true;
 	boolean isCriticalPoint = false;
+	boolean isVorticity = false;
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -136,6 +138,9 @@ public class Drawer implements GLEventListener {
 	
 	public void setCriticalPoint(boolean c){
 		this.isCriticalPoint = c;
+	}
+	public void setVorticity(boolean c){
+		this.isVorticity = c;
 	}
 	
 	/**
@@ -345,6 +350,9 @@ public class Drawer implements GLEventListener {
 		//drawVectorPart(grid2,2);
 		if(isCriticalPoint == true){//渦中心表示
 			drawCriticalPoint(grid1);
+		}
+		if(isVorticity == true){//渦中心表示
+			drawVorticity(grid1);
 		}
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
@@ -626,12 +634,29 @@ public class Drawer implements GLEventListener {
 		CriticalPointFinder cpf = new CriticalPointFinder();
 		array = cpf.find(grid);
 		
-		gl2.glColor3d(00, 1.0, 1.0);
+		gl2.glColor3d(0.0, 1.0, 1.0);
 		gl2.glPointSize(2.f);
 		//ベクトルの描画
 		for(int i = 0; i < array.size();i++){
 			gl2.glBegin(GL.GL_POINTS);
 			gl2.glVertex3d(array.get(i).getPosition()[0], array.get(i).getPosition()[1], array.get(i).getPosition()[2]);
+			gl2.glEnd();
+		}
+	}
+	/**
+	 * 渦度の表示
+	 */
+	void drawVorticity(Grid grid){
+		if(grid == null) return;
+		VorticityCalculate vc = new VorticityCalculate();
+		vc.calculatevorticity(grid);
+		
+		gl2.glColor3d(0.0, 1.0, 1.0);
+		gl2.glPointSize(2.f);
+		//ベクトルの描画
+		for(int i = 0; i < grid.getNumElementAll();i++){
+			gl2.glBegin(GL.GL_POINTS);
+			gl2.glVertex3d(vc.vorticity[i].getPosition()[0], vc.vorticity[i].getPosition()[1], vc.vorticity[i].getPosition()[2]);
 			gl2.glEnd();
 		}
 	}

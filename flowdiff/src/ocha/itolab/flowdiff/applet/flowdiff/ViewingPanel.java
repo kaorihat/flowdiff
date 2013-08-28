@@ -33,7 +33,7 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
-	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint;
+	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, grid1View, grid2View, bothGridView;
 	public JLabel xText, yText, zText, vtext, vecviewText;
 	public JSlider sliderX, sliderY, sliderZ,vheight;
@@ -104,7 +104,7 @@ public class ViewingPanel extends JPanel {
 		
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(8,1));
+		p2.setLayout(new GridLayout(9,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -136,6 +136,8 @@ public class ViewingPanel extends JPanel {
 		p2.add(generateButton);
 		viewCriticalPoint = new JButton("渦中心表示");
 		p2.add(viewCriticalPoint);
+		viewVorticity = new JButton("渦度表示");
+		p2.add(viewVorticity);
 		//
 		// パネル群のレイアウト
 		//
@@ -203,6 +205,7 @@ public class ViewingPanel extends JPanel {
 		viewResetButton.addActionListener(actionListener);
 		generateButton.addActionListener(actionListener);
 		viewCriticalPoint.addActionListener(actionListener);
+		viewVorticity.addActionListener(actionListener);
 	}
 
 	/**
@@ -275,6 +278,9 @@ public class ViewingPanel extends JPanel {
 			
 			if (buttonPushed == viewCriticalPoint) {
 				canvas.setCriticalPoint(true);
+			}
+			if (buttonPushed == viewVorticity) {
+				canvas.setVorticity(true);
 			}
 			canvas.display();
 		}

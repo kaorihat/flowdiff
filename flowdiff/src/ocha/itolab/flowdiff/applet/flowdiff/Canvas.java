@@ -313,6 +313,14 @@ public class Canvas extends JPanel {
 		public void setCriticalPoint(boolean c){
 			drawer.setCriticalPoint(c);
 		}
+		
+		/**
+		 * 渦度を検出する
+		 * @param v
+		 */
+			public void setVorticity(boolean c){
+				drawer.setVorticity(c);
+			}
 	/**
 	 * 画面上の特定物体をピックする
 	 * @param px ピックした物体の画面上のX座標値
