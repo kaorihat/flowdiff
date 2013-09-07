@@ -654,12 +654,12 @@ public class Drawer implements GLEventListener {
 		//gl2.glPointSize(1.0f);
 		//ベクトルの描画
 		for(int i = 0; i < grid.getNumElementAll();i++){
-			if(vc.vorticity[i].getVorticity()>0.0){
+			if(vc.vorticity[i].getVorticity()>1.0){
 				gl2.glEnable(GL.GL_BLEND);
 				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				//gl2.glColor3d(1.0*vc.vorticity[i].getVorticity()/2,0.0, 0.0);
 				gl2.glColor4d(1.0*vc.vorticity[i].getVorticity()/2,0.0, 0.0, 0.3);
-			}else if(vc.vorticity[i].getVorticity()<0.0){
+			}else if(vc.vorticity[i].getVorticity()<-1.0){
 				gl2.glEnable(GL.GL_BLEND);
 				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[i].getVorticity()/2);

@@ -35,8 +35,8 @@ public class ViewingPanel extends JPanel {
 	
 	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, grid1View, grid2View, bothGridView;
-	public JLabel xText, yText, zText, vtext, vecviewText;
-	public JSlider sliderX, sliderY, sliderZ,vheight;
+	public JLabel xText, yText, zText, vtext, vhText,vecviewText;
+	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight;
 	public Container container;
 	File currentDirectory;
 
@@ -107,7 +107,7 @@ public class ViewingPanel extends JPanel {
 		
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(9,1));
+		p2.setLayout(new GridLayout(11,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -141,6 +141,15 @@ public class ViewingPanel extends JPanel {
 		p2.add(viewCriticalPoint);
 		viewVorticity = new JButton("渦度表示");
 		p2.add(viewVorticity);
+		sliderVH = new JSlider(0, 85, 10);
+		sliderVH.setMajorTickSpacing(10);
+		sliderVH.setMinorTickSpacing(5);
+		sliderVH.setPaintTicks(true);
+		sliderVH.setLabelTable(sliderVH.createStandardLabels(20));
+		sliderVH.setPaintLabels(true);
+	    vhText = new JLabel(" 高さ(渦度): " + sliderVH.getValue());
+		p2.add(sliderVH);
+		p2.add(vhText);
 		//
 		// パネル群のレイアウト
 		//
@@ -227,6 +236,7 @@ public class ViewingPanel extends JPanel {
 		sliderX.addChangeListener(changeListener);
 		sliderY.addChangeListener(changeListener);
 		sliderZ.addChangeListener(changeListener);
+		sliderVH.addChangeListener(changeListener);
 	}
 	
 	/**
@@ -401,6 +411,10 @@ public class ViewingPanel extends JPanel {
 			else if(changedSlider == vheight){
 				vtext.setText(" ベクトル面地上から: " + vheight.getValue());
 				canvas.setVheight(vheight.getValue());
+			}
+			else if(changedSlider == sliderVH){
+				vtext.setText(" ベクトル面地上から: " + sliderVH.getValue());
+				canvas.setVheight(sliderVH.getValue());
 			}
 			canvas.display();
 		}
