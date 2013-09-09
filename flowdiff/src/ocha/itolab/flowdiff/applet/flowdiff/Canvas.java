@@ -29,6 +29,7 @@ public class Canvas extends JPanel {
 	Grid grid1, grid2;
 	Streamline sl1, sl2;
 	int vheight;
+	int vort;
 	
 	boolean isMousePressed = false, isAnnotation = true, 
 		isImage = true, isWireframe = true;
@@ -109,8 +110,14 @@ public class Canvas extends JPanel {
 		this.vheight = vheight;
 		drawer.setVheight(vheight);
 	}
-
-
+	
+	public int getVortheight() {
+		return vort;
+	}
+	public void setVortheight(int vort) {
+		this.vort = vort;
+		drawer.setVortheight(vort);
+	}
 	/**
 	 * Gridをセットする
 	 */

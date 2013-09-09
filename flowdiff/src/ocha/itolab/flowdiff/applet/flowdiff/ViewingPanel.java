@@ -142,12 +142,12 @@ public class ViewingPanel extends JPanel {
 		viewVorticity = new JButton("渦度表示");
 		p2.add(viewVorticity);
 		sliderVH = new JSlider(0, 85, 10);
+		vhText = new JLabel(" 高さ(渦度): " + sliderVH.getValue());
 		sliderVH.setMajorTickSpacing(10);
 		sliderVH.setMinorTickSpacing(5);
 		sliderVH.setPaintTicks(true);
 		sliderVH.setLabelTable(sliderVH.createStandardLabels(20));
 		sliderVH.setPaintLabels(true);
-	    vhText = new JLabel(" 高さ(渦度): " + sliderVH.getValue());
 		p2.add(sliderVH);
 		p2.add(vhText);
 		//
@@ -413,8 +413,8 @@ public class ViewingPanel extends JPanel {
 				canvas.setVheight(vheight.getValue());
 			}
 			else if(changedSlider == sliderVH){
-				vtext.setText(" ベクトル面地上から: " + sliderVH.getValue());
-				canvas.setVheight(sliderVH.getValue());
+				vhText.setText(" 高さ(渦度): " + sliderVH.getValue());
+				canvas.setVortheight(sliderVH.getValue());
 			}
 			canvas.display();
 		}

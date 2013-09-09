@@ -22,8 +22,8 @@ import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
@@ -72,7 +72,9 @@ public class Drawer implements GLEventListener {
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
 	int vheight = 0;
+	int vort = 0;
 	Building b;
+	VorticityCalculate vc1,vc2;
 	
 	/**
 	 * Constructor
@@ -98,6 +100,8 @@ public class Drawer implements GLEventListener {
 
 		glcanvas.addGLEventListener((javax.media.opengl.GLEventListener) this);
 		b = new Building();
+		vc1 = new VorticityCalculate();
+		vc2 = new VorticityCalculate();
 	}
 
 	public GLAutoDrawable getGLAutoDrawable() {
@@ -132,6 +136,13 @@ public class Drawer implements GLEventListener {
 		this.vheight = vheight;
 		//System.out.println(vheight);
 	}
+	public int getVortheight() {
+		return vort;
+	}
+	public void setVortheight(int vort) {
+		this.vort = vort;
+		//System.out.println(vheight);
+	}
 	public void setVectorView(int v){
 		this.isVectorView = v;
 	}
@@ -153,6 +164,7 @@ public class Drawer implements GLEventListener {
 		centerY = (minmax[2] + minmax[3]) * 0.5;
 		centerZ = (minmax[4] + minmax[5]) * 0.5;
 		setBuildingLabel(grid1);
+		setVorticity1(grid1);
 	}
 	
 	/**
@@ -164,10 +176,28 @@ public class Drawer implements GLEventListener {
 		centerX = (minmax[0] + minmax[1]) * 0.5;
 		centerY = (minmax[2] + minmax[3]) * 0.5;
 		centerZ = (minmax[4] + minmax[5]) * 0.5;
+		setVorticity2(grid2);
 	}
 	
+	/*
+	 * 建物のラベリングを行う（コンストラクタでインスタンス作成）
+	 * gridを取得した場所(setGrid1)で使用
+	 */
 	void setBuildingLabel(Grid grid){
 		b.labeling(grid);
+	}
+	/**
+	 * 渦度計算を行う（コンストラクタでインスタンス作成）
+	 * gridを取得した場所(setGrid1)で使用
+	 * @param grid
+	 */
+	void setVorticity1(Grid grid){
+		vc1.calculatevorticity(grid);
+		vc1.minmax(grid);//最大最少を確認（表示するのみ）
+	}
+	void setVorticity2(Grid grid){
+		vc2.calculatevorticity(grid);
+		vc2.minmax(grid);//最大最少を確認（表示するのみ）
 	}
 	
 	/**
@@ -352,7 +382,10 @@ public class Drawer implements GLEventListener {
 			drawCriticalPoint(grid1);
 		}
 		if(isVorticity == true){//渦中心表示
-			drawVorticity(grid1);
+			drawVorticity(grid1,vort,1,vc1);
+			drawVorticity(grid2,vort,2,vc2);
+			System.out.println("vort="+vort);
+			//drawVorticity(grid1);
 		}
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
@@ -599,6 +632,13 @@ public class Drawer implements GLEventListener {
 					//gl2.glBegin(GL2.GL_LINE_STRIP);
 					gl2.glVertex3d(gpos[0], gpos[1], gpos[2]);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
+					//glut.glutSolidCone(1.0, 1.0, 1, 1);
+					//glut.glutSolidCube(1.0f);
+					//glut.glutWireTeapot(1.0, true);
+					gl2.glEnd();
+					gl2.glPointSize(2.25f);
+					gl2.glBegin(GL.GL_POINTS);
+					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
 					gl2.glEnd();
 				}
 			}
@@ -646,11 +686,11 @@ public class Drawer implements GLEventListener {
 	/**
 	 * 渦度の表示
 	 */
-	void drawVorticity(Grid grid){
+	void drawVorticity(Grid grid,VorticityCalculate vc){
 		if(grid == null) return;
-		VorticityCalculate vc = new VorticityCalculate();
-		vc.calculatevorticity(grid);
-		vc.minmax(grid);
+		//VorticityCalculate vc = new VorticityCalculate();
+		//vc.calculatevorticity(grid);
+		//vc.minmax(grid);
 		//gl2.glPointSize(1.0f);
 		//ベクトルの描画
 		for(int i = 0; i < grid.getNumElementAll();i++){
@@ -675,6 +715,46 @@ public class Drawer implements GLEventListener {
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
 	
+	void drawVorticity(Grid grid, int height,int type,VorticityCalculate vc){
+		if(grid == null) return;
+		int posnum = grid.getNumElement()[0]*height + 1;
+		gl2.glPointSize(2.0f);
+		//ベクトルの描画
+		for(int i = 0; i < grid.getNumElement()[2];i++){
+			
+			for(int j = 0;j <grid.getNumElement()[0];j++){
+				if(vc.vorticity[posnum+j].getVorticity()>2.0){
+					gl2.glEnable(GL.GL_BLEND);
+					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					//gl2.glColor3d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0);
+					if(type==1){
+						gl2.glColor3d(1.0,1.0, 0.0);
+					}else{
+						gl2.glColor3d(0.0,1.0, 1.0);
+					}
+					//gl2.glColor4d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0, 0.3);
+				}else if(vc.vorticity[posnum+j].getVorticity()<-2.0){
+					gl2.glEnable(GL.GL_BLEND);
+					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					if(type==1){
+						gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/2);
+					}else{
+						gl2.glColor3d(0.0,1.0, 0.0);
+						//gl2.glColor3d(1.0, 1.0, 0.0);
+					}
+				}else{
+					continue;
+				}
+				
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(vc.vorticity[posnum+j].getPosition()[0], vc.vorticity[posnum+j].getPosition()[1], vc.vorticity[posnum+j].getPosition()[2]);
+				gl2.glEnd();
+			}
+			posnum += grid.getNumElement()[0]*grid.getNumElement()[1];
+		}
+		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl2.glPointSize(1.0f);
+	}
 	/**
 	 * 始点を描画する
 	 */
@@ -819,8 +899,10 @@ public class Drawer implements GLEventListener {
 		
 		// 折れ線を描く
 		if(id == 1)
+			//grid1ピンク
 			gl2.glColor3d(1.0, 0.0, 1.0);
 		if(id == 2)
+			//grid2シアン
 			gl2.glColor3d(0.0, 1.0, 1.0);
 		gl2.glBegin(GL2.GL_LINE_STRIP);
 		for(int i = 0; i < sl.getNumVertex(); i++) {
