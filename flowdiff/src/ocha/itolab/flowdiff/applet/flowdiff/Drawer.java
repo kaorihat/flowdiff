@@ -22,8 +22,8 @@ import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -372,21 +372,26 @@ public class Drawer implements GLEventListener {
 		//drawElement3(grid1,100,0,7);
 		if(isVectorView == 1 || isVectorView == 2){//ベクトル表示の有無
 			drawVectorPart(grid1,1,vheight,20);
+			if(isVorticity == true){//渦度表示
+				drawVorticity(grid1,vort,1,vc1);
+			}
 		}
 		if(isVectorView == 1 || isVectorView == 3){//ベクトル表示の有無
 			drawVectorPart(grid2,2,vheight,20);
+			if(isVorticity == true){//渦度表示
+				drawVorticity(grid2,vort,2,vc2);
+			}
 		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
 		if(isCriticalPoint == true){//渦中心表示
 			drawCriticalPoint(grid1);
 		}
+		/*
 		if(isVorticity == true){//渦中心表示
 			drawVorticity(grid1,vort,1,vc1);
 			drawVorticity(grid2,vort,2,vc2);
-			System.out.println("vort="+vort);
-			//drawVorticity(grid1);
-		}
+		}*/
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);

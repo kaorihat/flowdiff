@@ -107,7 +107,7 @@ public class ViewingPanel extends JPanel {
 		
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(11,1));
+		p2.setLayout(new GridLayout(14,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -150,6 +150,17 @@ public class ViewingPanel extends JPanel {
 		sliderVH.setPaintLabels(true);
 		p2.add(sliderVH);
 		p2.add(vhText);
+		
+		ButtonGroup group3 = new ButtonGroup();
+		bothGridView = new JRadioButton("両方",true);//最初にチェックが入っている
+		group3.add(bothGridView);
+		p2.add(bothGridView);
+		grid1View = new JRadioButton("grid1");
+		group3.add(grid1View);
+		p2.add(grid1View);
+		grid2View = new JRadioButton("grid2");
+		group3.add(grid2View);
+		p2.add(grid2View);
 		//
 		// パネル群のレイアウト
 		//
