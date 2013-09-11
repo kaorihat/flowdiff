@@ -504,18 +504,19 @@ public class Drawer implements GLEventListener {
 		if(grid == null) return;
 		
 		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
+			gl2.glPointSize(3.0f);
 			if(grid.getGridPoint(i).getBuildingLabel()==0){
 				continue;
 			}else if(grid.getGridPoint(i).getBuildingLabel()==6){
-				gl2.glColor3d(1.0, 0.0, 0.0);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==7){
-				gl2.glColor3d(0.5, 0.0, 0.0);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==8){
-				gl2.glColor3d(0.0, 1.0, 1.0);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==9){
-				gl2.glColor3d(0.0, 1.0, 0.5);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==10){
-				gl2.glColor3d(1.0, 1.0, 1.0);
+				gl2.glColor3d(0.0, 0.0, 1.0);
 			}else if(grid.getGridPoint(i).getBuildingLabel()==11){
 				gl2.glColor3d(0.0, 0.0, 1.0);
 			}
@@ -526,7 +527,7 @@ public class Drawer implements GLEventListener {
 				gl2.glBegin(GL.GL_POINTS);
 				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
 				gl2.glEnd();
-			
+				gl2.glPointSize(1.0f);
 		}
 		for(int i=1; i<6;i++){
 			GridPoint minmax[] = b.minmaxPos(grid1,i);
@@ -641,10 +642,12 @@ public class Drawer implements GLEventListener {
 					//glut.glutSolidCube(1.0f);
 					//glut.glutWireTeapot(1.0, true);
 					gl2.glEnd();
+					/*
 					gl2.glPointSize(2.25f);
 					gl2.glBegin(GL.GL_POINTS);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
 					gl2.glEnd();
+					*/
 				}
 			}
 		}
@@ -697,7 +700,7 @@ public class Drawer implements GLEventListener {
 		//vc.calculatevorticity(grid);
 		//vc.minmax(grid);
 		//gl2.glPointSize(1.0f);
-		//ベクトルの描画
+		//渦度の描画
 		for(int i = 0; i < grid.getNumElementAll();i++){
 			if(vc.vorticity[i].getVorticity()>1.0){
 				gl2.glEnable(GL.GL_BLEND);
@@ -724,7 +727,7 @@ public class Drawer implements GLEventListener {
 		if(grid == null) return;
 		int posnum = grid.getNumElement()[0]*height + 1;
 		gl2.glPointSize(2.0f);
-		//ベクトルの描画
+		//渦度の描画
 		for(int i = 0; i < grid.getNumElement()[2];i++){
 			
 			for(int j = 0;j <grid.getNumElement()[0];j++){
@@ -733,18 +736,24 @@ public class Drawer implements GLEventListener {
 					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 					//gl2.glColor3d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0);
 					if(type==1){
-						gl2.glColor3d(1.0,1.0, 0.0);
+						//gl2.glColor3d(1.0,1.0, 0.0);
+						gl2.glColor4d(1.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
 					}else{
-						gl2.glColor3d(0.0,1.0, 1.0);
+						//gl2.glColor3d(0.0,1.0, 1.0);
+						gl2.glColor4d(0.0,1.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
 					}
 					//gl2.glColor4d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0, 0.3);
 				}else if(vc.vorticity[posnum+j].getVorticity()<-2.0){
 					gl2.glEnable(GL.GL_BLEND);
 					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 					if(type==1){
-						gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/2);
+						//gl2.glColor3d(1.0,1.0, 0.0);
+						//gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/2);
+						gl2.glColor4d(1.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
 					}else{
-						gl2.glColor3d(0.0,1.0, 0.0);
+						//gl2.glColor3d(0.0,1.0, 1.0);
+						gl2.glColor4d(0.0,1.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
+						//gl2.glColor3d(0.0,1.0, 0.0);
 						//gl2.glColor3d(1.0, 1.0, 0.0);
 					}
 				}else{
@@ -758,7 +767,6 @@ public class Drawer implements GLEventListener {
 			posnum += grid.getNumElement()[0]*grid.getNumElement()[1];
 		}
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
-		gl2.glPointSize(1.0f);
 	}
 	/**
 	 * 始点を描画する
