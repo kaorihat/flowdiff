@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -64,6 +65,7 @@ public class ViewingPanel extends JPanel {
 		super();
 		setSize(200, 800);
 
+		JTabbedPane tabbedpane = new JTabbedPane();
 		// パネル1
 		JPanel p1 = new JPanel();
 		p1.setLayout(new GridLayout(11,1));
@@ -164,9 +166,9 @@ public class ViewingPanel extends JPanel {
 		//
 		// パネル群のレイアウト
 		//
-		this.setLayout(new GridLayout(2,1));
-		this.add(p1);
-		this.add(p2);
+		tabbedpane.addTab("tab1", p1);
+		tabbedpane.addTab("tab2", p2);
+		this.add(tabbedpane);
 		
 		//
 		// リスナーの追加
