@@ -46,7 +46,8 @@ public class Drawer implements GLEventListener {
 	DoubleBuffer modelview, projection, p1, p2, p3, p4;
 	IntBuffer viewport;
 	int windowWidth, windowHeight;
-	int isVectorView = 1;
+	int isVectorView = 0;//(0:なし 1:両方)
+	int isRotView = 0;//(0:なし 1:両方)
 
 	boolean isMousePressed = false, isAnnotation = true;
 	boolean isImage = true, isWireframe = true;
@@ -145,6 +146,9 @@ public class Drawer implements GLEventListener {
 	}
 	public void setVectorView(int v){
 		this.isVectorView = v;
+	}
+	public void setRotView(int r){
+		this.isRotView = r;
 	}
 	
 	public void setCriticalPoint(boolean c){
@@ -370,17 +374,32 @@ public class Drawer implements GLEventListener {
 		//drawElement3(grid1,100,0,5);
 		//drawElement3(grid1,100,0,6);
 		//drawElement3(grid1,100,0,7);
-		if(isVectorView == 1 || isVectorView == 2){//ベクトル表示の有無
+		
+		//両方ベクトル表示
+		if(isVectorView == 1){
 			drawVectorPart(grid1,1,vheight,20);
-			if(isVorticity == true){//渦度表示
-				drawVorticity(grid1,vort,1,vc1);
-			}
-		}
-		if(isVectorView == 1 || isVectorView == 3){//ベクトル表示の有無
 			drawVectorPart(grid2,2,vheight,20);
-			if(isVorticity == true){//渦度表示
-				drawVorticity(grid2,vort,2,vc2);
-			}
+		}
+		
+		//grid1ベクトル表示
+		if(isVectorView == 2){
+			drawVectorPart(grid1,1,vheight,20);
+		}
+		//grid1ベクトル表示
+		if(isVectorView == 3){//ベクトル表示の有無
+			drawVectorPart(grid2,2,vheight,20);
+		}
+		
+		//渦度表示
+		if(isRotView == 1){//両方
+			drawVorticity(grid1,vort,1,vc1);
+			drawVorticity(grid2,vort,2,vc2);
+		}
+		if(isRotView == 2){
+			drawVorticity(grid1,vort,1,vc1);
+		}
+		if(isRotView == 3){
+			drawVorticity(grid2,vort,2,vc2);
 		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);

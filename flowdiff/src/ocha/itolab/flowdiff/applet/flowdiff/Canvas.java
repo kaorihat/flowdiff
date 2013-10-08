@@ -314,6 +314,15 @@ public class Canvas extends JPanel {
 	}
 	
 	/**
+	 * 渦度表示をONにする
+	 * @param v
+	 */
+		public void setRotView(int v){
+			drawer.setRotView(v);
+		}
+	
+	
+	/**
 	 * 渦中心を検出する
 	 * @param v
 	 */

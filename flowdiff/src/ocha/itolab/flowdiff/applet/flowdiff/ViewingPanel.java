@@ -35,7 +35,8 @@ public class ViewingPanel extends JPanel {
 
 	
 	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
-	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, grid1View, grid2View, bothGridView;
+	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
+	noneRotView, grid1RotView, grid2RotView, bothRotView;
 	public JLabel xText, yText, zText, vtext, vhText,vecviewText;
 	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight;
 	public Container container;
@@ -68,7 +69,7 @@ public class ViewingPanel extends JPanel {
 		JTabbedPane tabbedpane = new JTabbedPane();
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(11,1));
+		p1.setLayout(new GridLayout(12,1));
 		openDataButton = new JButton("ファイル読込");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
@@ -87,13 +88,16 @@ public class ViewingPanel extends JPanel {
 		vecviewText = new JLabel(" ベクトル表示");
 		p1.add(vecviewText);
 		ButtonGroup group2 = new ButtonGroup();
-		bothGridView = new JRadioButton("両方",true);//最初にチェックが入っている
+		noneGridView = new JRadioButton("なし",true);//最初にチェックが入っている
+		group2.add(noneGridView);
+		p1.add(noneGridView);
+		bothGridView = new JRadioButton("両方");
 		group2.add(bothGridView);
 		p1.add(bothGridView);
-		grid1View = new JRadioButton("grid1");//最初にチェックが入っている
+		grid1View = new JRadioButton("grid1");
 		group2.add(grid1View);
 		p1.add(grid1View);
-		grid2View = new JRadioButton("grid2");//最初にチェックが入っている
+		grid2View = new JRadioButton("grid2");
 		group2.add(grid2View);
 		p1.add(grid2View);
 		
@@ -109,7 +113,7 @@ public class ViewingPanel extends JPanel {
 		
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(14,1));
+		p2.setLayout(new GridLayout(15,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -154,20 +158,23 @@ public class ViewingPanel extends JPanel {
 		p2.add(vhText);
 		
 		ButtonGroup group3 = new ButtonGroup();
-		bothGridView = new JRadioButton("両方",true);//最初にチェックが入っている
-		group3.add(bothGridView);
-		p2.add(bothGridView);
-		grid1View = new JRadioButton("grid1");
-		group3.add(grid1View);
-		p2.add(grid1View);
-		grid2View = new JRadioButton("grid2");
-		group3.add(grid2View);
-		p2.add(grid2View);
+		noneRotView = new JRadioButton("なし", true);//最初にチェックが入っている
+		group3.add(noneRotView);
+		p2.add(noneRotView);
+		grid1RotView = new JRadioButton("両方");//最初にチェックが入っている
+		group3.add(grid1RotView);
+		p2.add(grid1RotView);
+		grid2RotView = new JRadioButton("grid1");
+		group3.add(grid2RotView);
+		p2.add(grid2RotView);
+		bothRotView = new JRadioButton("grid2");
+		group3.add(bothRotView);
+		p2.add(bothRotView);
 		//
 		// パネル群のレイアウト
 		//
-		tabbedpane.addTab("tab1", p1);
-		tabbedpane.addTab("tab2", p2);
+		tabbedpane.addTab("表示", p1);
+		tabbedpane.addTab("渦度", p2);
 		this.add(tabbedpane);
 		
 		//
@@ -216,9 +223,14 @@ public class ViewingPanel extends JPanel {
 		viewRotateButton.addActionListener(actionListener);
 		viewScaleButton.addActionListener(actionListener);
 		viewShiftButton.addActionListener(actionListener);
+		noneGridView.addActionListener(actionListener);
 		bothGridView.addActionListener(actionListener);
 		grid1View.addActionListener(actionListener);
 		grid2View.addActionListener(actionListener);
+		noneRotView.addActionListener(actionListener);
+		grid1RotView.addActionListener(actionListener);
+		grid2RotView.addActionListener(actionListener);
+		bothRotView.addActionListener(actionListener);
 	}
 
 	/**
@@ -372,6 +384,9 @@ public class ViewingPanel extends JPanel {
 			if (buttonPushed == viewShiftButton) {
 				canvas.setDragMode(2);
 			}
+			if(buttonPushed == noneGridView){
+				canvas.setVectorView(0);
+			}
 			if(buttonPushed == bothGridView){
 				canvas.setVectorView(1);
 			}
@@ -379,6 +394,19 @@ public class ViewingPanel extends JPanel {
 				canvas.setVectorView(2);
 			}
 			if(buttonPushed == grid2View){
+				canvas.setVectorView(3);
+			}
+			
+			if(buttonPushed == noneRotView){
+				canvas.setVectorView(0);
+			}
+			if(buttonPushed == grid1RotView){
+				canvas.setVectorView(1);
+			}
+			if(buttonPushed == grid2RotView){
+				canvas.setVectorView(2);
+			}
+			if(buttonPushed == bothRotView){
 				canvas.setVectorView(3);
 			}
 			canvas.display();
