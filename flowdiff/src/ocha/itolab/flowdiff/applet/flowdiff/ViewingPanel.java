@@ -69,11 +69,12 @@ public class ViewingPanel extends JPanel {
 		JTabbedPane tabbedpane = new JTabbedPane();
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(12,1));
+		p1.setLayout(new GridLayout(6,1));
 		openDataButton = new JButton("ファイル読込");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
 		p1.add(viewResetButton);
+		p1.add(new JLabel("操作"));
 		ButtonGroup group1 = new ButtonGroup();
 		viewRotateButton = new JRadioButton("回転",true);//最初にチェックが入っている
 		group1.add(viewRotateButton);
@@ -85,21 +86,24 @@ public class ViewingPanel extends JPanel {
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
 		
-		vecviewText = new JLabel(" ベクトル表示");
-		p1.add(vecviewText);
+		// パネル2
+		JPanel p2 = new JPanel();
+		p2.setLayout(new GridLayout(7,1));
+		vecviewText = new JLabel("ベクトル表示");
+		p2.add(vecviewText);
 		ButtonGroup group2 = new ButtonGroup();
 		noneGridView = new JRadioButton("なし",true);//最初にチェックが入っている
 		group2.add(noneGridView);
-		p1.add(noneGridView);
+		p2.add(noneGridView);
 		bothGridView = new JRadioButton("両方");
 		group2.add(bothGridView);
-		p1.add(bothGridView);
+		p2.add(bothGridView);
 		grid1View = new JRadioButton("grid1");
 		group2.add(grid1View);
-		p1.add(grid1View);
+		p2.add(grid1View);
 		grid2View = new JRadioButton("grid2");
 		group2.add(grid2View);
-		p1.add(grid2View);
+		p2.add(grid2View);
 		
 		vheight = new JSlider(0, 85, 10);
 		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
@@ -108,12 +112,12 @@ public class ViewingPanel extends JPanel {
 		vheight.setPaintTicks(true);
 		vheight.setLabelTable(vheight.createStandardLabels(20));
 		vheight.setPaintLabels(true);
-		p1.add(vheight);
-		p1.add(vtext);
+		p2.add(vheight);
+		p2.add(vtext);
 		
 		// パネル2
-		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(15,1));
+		JPanel p3 = new JPanel();
+		p3.setLayout(new GridLayout(15,1));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -121,8 +125,8 @@ public class ViewingPanel extends JPanel {
 		sliderX.setLabelTable(sliderX.createStandardLabels(20));
 	    sliderX.setPaintLabels(true);
 	    xText = new JLabel(" よこ: " + sliderX.getValue());
-		p2.add(sliderX);
-		p2.add(xText);
+		p3.add(sliderX);
+		p3.add(xText);
 		sliderY = new JSlider(0, 100, 10);
 		sliderY.setMajorTickSpacing(10);
 		sliderY.setMinorTickSpacing(5);
@@ -130,8 +134,8 @@ public class ViewingPanel extends JPanel {
 		sliderY.setLabelTable(sliderY.createStandardLabels(20));
 	    sliderY.setPaintLabels(true);
 	    yText = new JLabel(" たて: " + sliderY.getValue());
-		p2.add(sliderY);
-		p2.add(yText);
+		p3.add(sliderY);
+		p3.add(yText);
 		sliderZ = new JSlider(0, 100, 10);
 		sliderZ.setMajorTickSpacing(10);
 		sliderZ.setMinorTickSpacing(5);
@@ -139,14 +143,14 @@ public class ViewingPanel extends JPanel {
 		sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
 	    sliderZ.setPaintLabels(true);
 	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
-		p2.add(sliderZ);
-		p2.add(zText);
+		p3.add(sliderZ);
+		p3.add(zText);
 		generateButton = new JButton("流線決定");
-		p2.add(generateButton);
+		p3.add(generateButton);
 		viewCriticalPoint = new JButton("渦中心表示");
-		p2.add(viewCriticalPoint);
+		p3.add(viewCriticalPoint);
 		viewVorticity = new JButton("渦度表示");
-		p2.add(viewVorticity);
+		p3.add(viewVorticity);
 		sliderVH = new JSlider(0, 85, 10);
 		vhText = new JLabel(" 高さ(渦度): " + sliderVH.getValue());
 		sliderVH.setMajorTickSpacing(10);
@@ -154,27 +158,28 @@ public class ViewingPanel extends JPanel {
 		sliderVH.setPaintTicks(true);
 		sliderVH.setLabelTable(sliderVH.createStandardLabels(20));
 		sliderVH.setPaintLabels(true);
-		p2.add(sliderVH);
-		p2.add(vhText);
+		p3.add(sliderVH);
+		p3.add(vhText);
 		
 		ButtonGroup group3 = new ButtonGroup();
 		noneRotView = new JRadioButton("なし", true);//最初にチェックが入っている
 		group3.add(noneRotView);
-		p2.add(noneRotView);
+		p3.add(noneRotView);
 		grid1RotView = new JRadioButton("両方");//最初にチェックが入っている
 		group3.add(grid1RotView);
-		p2.add(grid1RotView);
+		p3.add(grid1RotView);
 		grid2RotView = new JRadioButton("grid1");
 		group3.add(grid2RotView);
-		p2.add(grid2RotView);
+		p3.add(grid2RotView);
 		bothRotView = new JRadioButton("grid2");
 		group3.add(bothRotView);
-		p2.add(bothRotView);
+		p3.add(bothRotView);
 		//
 		// パネル群のレイアウト
 		//
 		tabbedpane.addTab("表示", p1);
-		tabbedpane.addTab("渦度", p2);
+		tabbedpane.addTab("ベクトル", p2);
+		tabbedpane.addTab("渦度", p3);
 		this.add(tabbedpane);
 		
 		//
@@ -398,16 +403,16 @@ public class ViewingPanel extends JPanel {
 			}
 			
 			if(buttonPushed == noneRotView){
-				canvas.setVectorView(0);
+				canvas.setRotView(0);
 			}
 			if(buttonPushed == grid1RotView){
-				canvas.setVectorView(1);
+				canvas.setRotView(1);
 			}
 			if(buttonPushed == grid2RotView){
-				canvas.setVectorView(2);
+				canvas.setRotView(2);
 			}
 			if(buttonPushed == bothRotView){
-				canvas.setVectorView(3);
+				canvas.setRotView(3);
 			}
 			canvas.display();
 		}

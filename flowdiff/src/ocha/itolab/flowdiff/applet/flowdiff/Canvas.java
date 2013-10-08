@@ -315,10 +315,10 @@ public class Canvas extends JPanel {
 	
 	/**
 	 * 渦度表示をONにする
-	 * @param v
+	 * @param r
 	 */
-		public void setRotView(int v){
-			drawer.setRotView(v);
+		public void setRotView(int r){
+			drawer.setRotView(r);
 		}
 	
 	
