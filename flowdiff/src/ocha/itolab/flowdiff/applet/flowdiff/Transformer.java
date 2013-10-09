@@ -175,6 +175,43 @@ public class Transformer {
 		Xrotate = 0.5;
 		Yrotate = 0.5;
 	}
+	
+	/**
+	 * 視点パラメータを切り替える
+	 */
+	public void setLookAt(int num) {
+		for (int i = 0; i < 16; i++) {
+			if (i % 5 == 0)
+				viewRotate[i] = 1.0;
+			else
+				viewRotate[i] = 0.0;
+		}
+		viewScaleX = viewScaleBakX = 0.6; // 箱の大きさの初期値
+		viewScaleY = viewScaleBakY = 0.6;
+		viewShift[0] = viewShiftBak[0] = 0.0;
+		viewShift[1] = viewShiftBak[1] = 0.0;
+		viewShift[2] = viewShiftBak[2] = 0.0;
+		if(num == 0){
+			Xrotate = XrotateBak = 1.0;
+			Yrotate = YrotateBak = 0.5;
+		}else if(num == 1){
+			Xrotate = XrotateBak = 0.0;
+			Yrotate = YrotateBak = 2.0;
+		}else if(num == 2){
+			Xrotate = XrotateBak = 0.0;
+			Yrotate = YrotateBak = 0.0;
+		}else if(num == 3){
+			Xrotate = XrotateBak = -4.0;
+			Yrotate = YrotateBak = 0.0;
+		}else if(num == 4){
+			Xrotate = XrotateBak = -2.0;
+			Yrotate = YrotateBak = 0.0;
+		}else{
+			Xrotate = XrotateBak = 2.0;
+			Yrotate = YrotateBak = 0.0;
+		}
+	}
+	
 
 	/**
 	 * tableのサイズ値を返す

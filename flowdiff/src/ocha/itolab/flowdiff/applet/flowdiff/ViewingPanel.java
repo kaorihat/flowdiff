@@ -34,9 +34,9 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 	
-	public JButton  openDataButton, viewResetButton, generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
+	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
-	noneRotView, grid1RotView, grid2RotView, bothRotView;
+	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5;
 	public JLabel xText, yText, zText, vtext, vhText,vecviewText;
 	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight;
 	public Container container;
@@ -60,6 +60,7 @@ public class ViewingPanel extends JPanel {
 	
 	/*button toggle flag*/
 	boolean viewVorticity_flag = false;//trueの時オン
+	boolean viewBuildingButton_flag = false;
 	
 	public ViewingPanel() {
 		// super class init
@@ -69,7 +70,7 @@ public class ViewingPanel extends JPanel {
 		JTabbedPane tabbedpane = new JTabbedPane();
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(6,1));
+		p1.setLayout(new GridLayout(14,1));
 		openDataButton = new JButton("ファイル読込");
 		viewResetButton = new JButton("元に戻す");
 		p1.add(openDataButton);
@@ -85,6 +86,28 @@ public class ViewingPanel extends JPanel {
 		viewShiftButton = new JRadioButton("移動");
 		group1.add(viewShiftButton);
 		p1.add(viewShiftButton);
+		p1.add(new JLabel("視点切り替え"));
+		ButtonGroup group4 = new ButtonGroup();
+		viewRotate0 = new JRadioButton("斜め", true);//最初にチェックが入っている
+		group4.add(viewRotate0);
+		p1.add(viewRotate0);
+		viewRotate1 = new JRadioButton("真上",true);
+		group4.add(viewRotate1);
+		p1.add(viewRotate1);
+		viewRotate2 = new JRadioButton("正面");
+		group4.add(viewRotate2);
+		p1.add(viewRotate2);
+		viewRotate3 = new JRadioButton("後ろ");
+		group4.add(viewRotate3);
+		p1.add(viewRotate3);
+		viewRotate4 = new JRadioButton("右横");
+		group4.add(viewRotate4);
+		p1.add(viewRotate4);
+		viewRotate5 = new JRadioButton("左横");
+		group4.add(viewRotate5);
+		p1.add(viewRotate5);
+		viewBuildingButton = new JButton("建物表示");
+		p1.add(viewBuildingButton);
 		
 		// パネル2
 		JPanel p2 = new JPanel();
@@ -117,36 +140,7 @@ public class ViewingPanel extends JPanel {
 		
 		// パネル2
 		JPanel p3 = new JPanel();
-		p3.setLayout(new GridLayout(15,1));
-		sliderX = new JSlider(0, 100, 10);
-		sliderX.setMajorTickSpacing(10);
-		sliderX.setMinorTickSpacing(5);
-		sliderX.setPaintTicks(true);
-		sliderX.setLabelTable(sliderX.createStandardLabels(20));
-	    sliderX.setPaintLabels(true);
-	    xText = new JLabel(" よこ: " + sliderX.getValue());
-		p3.add(sliderX);
-		p3.add(xText);
-		sliderY = new JSlider(0, 100, 10);
-		sliderY.setMajorTickSpacing(10);
-		sliderY.setMinorTickSpacing(5);
-		sliderY.setPaintTicks(true);
-		sliderY.setLabelTable(sliderY.createStandardLabels(20));
-	    sliderY.setPaintLabels(true);
-	    yText = new JLabel(" たて: " + sliderY.getValue());
-		p3.add(sliderY);
-		p3.add(yText);
-		sliderZ = new JSlider(0, 100, 10);
-		sliderZ.setMajorTickSpacing(10);
-		sliderZ.setMinorTickSpacing(5);
-		sliderZ.setPaintTicks(true);
-		sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
-	    sliderZ.setPaintLabels(true);
-	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
-		p3.add(sliderZ);
-		p3.add(zText);
-		generateButton = new JButton("流線決定");
-		p3.add(generateButton);
+		p3.setLayout(new GridLayout(8,1));
 		viewCriticalPoint = new JButton("渦中心表示");
 		p3.add(viewCriticalPoint);
 		viewVorticity = new JButton("渦度表示");
@@ -160,7 +154,6 @@ public class ViewingPanel extends JPanel {
 		sliderVH.setPaintLabels(true);
 		p3.add(sliderVH);
 		p3.add(vhText);
-		
 		ButtonGroup group3 = new ButtonGroup();
 		noneRotView = new JRadioButton("なし", true);//最初にチェックが入っている
 		group3.add(noneRotView);
@@ -174,12 +167,47 @@ public class ViewingPanel extends JPanel {
 		bothRotView = new JRadioButton("grid2");
 		group3.add(bothRotView);
 		p3.add(bothRotView);
+		
+		JPanel p4 = new JPanel();
+		p4.setLayout(new GridLayout(8,1));
+		p4.add(new JLabel("流線表示"));
+		sliderX = new JSlider(0, 100, 10);
+		sliderX.setMajorTickSpacing(10);
+		sliderX.setMinorTickSpacing(5);
+		sliderX.setPaintTicks(true);
+		sliderX.setLabelTable(sliderX.createStandardLabels(20));
+	    sliderX.setPaintLabels(true);
+	    xText = new JLabel(" よこ: " + sliderX.getValue());
+		p4.add(sliderX);
+		p4.add(xText);
+		sliderY = new JSlider(0, 100, 10);
+		sliderY.setMajorTickSpacing(10);
+		sliderY.setMinorTickSpacing(5);
+		sliderY.setPaintTicks(true);
+		sliderY.setLabelTable(sliderY.createStandardLabels(20));
+	    sliderY.setPaintLabels(true);
+	    yText = new JLabel(" たて: " + sliderY.getValue());
+		p4.add(sliderY);
+		p4.add(yText);
+		sliderZ = new JSlider(0, 100, 10);
+		sliderZ.setMajorTickSpacing(10);
+		sliderZ.setMinorTickSpacing(5);
+		sliderZ.setPaintTicks(true);
+		sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
+	    sliderZ.setPaintLabels(true);
+	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
+		p4.add(sliderZ);
+		p4.add(zText);
+		generateButton = new JButton("流線決定");
+		p4.add(generateButton);
+		
 		//
 		// パネル群のレイアウト
 		//
 		tabbedpane.addTab("表示", p1);
 		tabbedpane.addTab("ベクトル", p2);
 		tabbedpane.addTab("渦度", p3);
+		tabbedpane.addTab("流線", p4);
 		this.add(tabbedpane);
 		
 		//
@@ -236,6 +264,12 @@ public class ViewingPanel extends JPanel {
 		grid1RotView.addActionListener(actionListener);
 		grid2RotView.addActionListener(actionListener);
 		bothRotView.addActionListener(actionListener);
+		viewRotate0.addActionListener(actionListener);
+		viewRotate1.addActionListener(actionListener);
+		viewRotate2.addActionListener(actionListener);
+		viewRotate3.addActionListener(actionListener);
+		viewRotate4.addActionListener(actionListener);
+		viewRotate5.addActionListener(actionListener);
 	}
 
 	/**
@@ -248,6 +282,7 @@ public class ViewingPanel extends JPanel {
 		generateButton.addActionListener(actionListener);
 		viewCriticalPoint.addActionListener(actionListener);
 		viewVorticity.addActionListener(actionListener);
+		viewBuildingButton.addActionListener(actionListener);
 	}
 
 	/**
@@ -325,6 +360,10 @@ public class ViewingPanel extends JPanel {
 			if (buttonPushed == viewVorticity) {
 				viewVorticity_flag = !viewVorticity_flag;
 				canvas.setVorticity(viewVorticity_flag);
+			}
+			if(buttonPushed == viewBuildingButton){
+				viewBuildingButton_flag =! viewBuildingButton_flag;
+				canvas.setIsBuilding(viewBuildingButton_flag);
 			}
 			canvas.display();
 		}
@@ -413,6 +452,24 @@ public class ViewingPanel extends JPanel {
 			}
 			if(buttonPushed == bothRotView){
 				canvas.setRotView(3);
+			}
+			if (buttonPushed == viewRotate0) {
+				canvas.setLookAt(0);
+			}
+			if (buttonPushed == viewRotate1) {
+				canvas.setLookAt(1);
+			}
+			if (buttonPushed == viewRotate2) {
+				canvas.setLookAt(2);
+			}
+			if (buttonPushed == viewRotate3) {
+				canvas.setLookAt(3);
+			}
+			if (buttonPushed == viewRotate4) {
+				canvas.setLookAt(4);
+			}
+			if (buttonPushed == viewRotate5) {
+				canvas.setLookAt(5);
 			}
 			canvas.display();
 		}

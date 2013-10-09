@@ -53,6 +53,7 @@ public class Drawer implements GLEventListener {
 	boolean isImage = true, isWireframe = true;
 	boolean isCriticalPoint = false;
 	boolean isVorticity = false;
+	boolean isBuilding = false;
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -156,6 +157,9 @@ public class Drawer implements GLEventListener {
 	}
 	public void setVorticity(boolean c){
 		this.isVorticity = c;
+	}
+	public void setIsBuilding(boolean b){
+		this.isBuilding = b;
 	}
 	
 	/**
@@ -362,18 +366,9 @@ public class Drawer implements GLEventListener {
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection);
 
 		drawBox();
-		//drawBuilding(grid1);
-		//drawBuilding1(grid1);
-		//drawBuilding(grid2);
-		drawBuilding2(grid1);
+		//建物の描画
+		drawBuilding2(grid1,isBuilding);
 		
-		//drawElement1(grid1,100,0,1);
-		//drawElement2(grid1,100,0,2);
-		//drawElement3(grid1,vheight);
-		//drawElement3(grid1,100,0,7);
-		//drawElement3(grid1,100,0,5);
-		//drawElement3(grid1,100,0,6);
-		//drawElement3(grid1,100,0,7);
 		
 		//両方ベクトル表示
 		if(isVectorView == 1){
@@ -385,7 +380,7 @@ public class Drawer implements GLEventListener {
 		if(isVectorView == 2){
 			drawVectorPart(grid1,1,vheight,20);
 		}
-		//grid1ベクトル表示
+		//grid2ベクトル表示
 		if(isVectorView == 3){//ベクトル表示の有無
 			drawVectorPart(grid2,2,vheight,20);
 		}
@@ -519,9 +514,14 @@ public class Drawer implements GLEventListener {
 		}
 	}
 	
-	void drawBuilding2(Grid grid){
+	void drawBuilding2(Grid grid,boolean t){
 		if(grid == null) return;
-		
+		int type = 0;
+		if(t){
+			type = 5;
+		}else{
+			type = 6;
+		}
 		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
 			gl2.glPointSize(3.0f);
 			if(grid.getGridPoint(i).getBuildingLabel()==0){
@@ -548,7 +548,7 @@ public class Drawer implements GLEventListener {
 				gl2.glEnd();
 				gl2.glPointSize(1.0f);
 		}
-		for(int i=1; i<6;i++){
+		for(int i=1; i<type;i++){
 			GridPoint minmax[] = b.minmaxPos(grid1,i);
 			System.out.println("minmax="+minmax.length);
 

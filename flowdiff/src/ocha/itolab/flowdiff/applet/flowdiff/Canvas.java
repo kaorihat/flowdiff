@@ -305,6 +305,13 @@ public class Canvas extends JPanel {
 	public void viewDefault() {
 		trans.setDefaultValue();
 	}
+	
+	/**
+	 * 視点の位置を切り替える
+	 */
+	public void setLookAt(int num) {
+		trans.setLookAt(num);
+	}
 /**
  * ベクトル表示をONにする
  * @param v
@@ -321,22 +328,30 @@ public class Canvas extends JPanel {
 			drawer.setRotView(r);
 		}
 	
-	
-	/**
-	 * 渦中心を検出する
-	 * @param v
-	 */
+
+		/**
+		 * 渦中心を検出する
+		 * @param v
+		 */
 		public void setCriticalPoint(boolean c){
 			drawer.setCriticalPoint(c);
 		}
-		
+
 		/**
 		 * 渦度を検出する
 		 * @param v
 		 */
-			public void setVorticity(boolean c){
-				drawer.setVorticity(c);
-			}
+		public void setVorticity(boolean c){
+			drawer.setVorticity(c);
+		}
+		
+		/**
+		 * 建物表示有無の切り替え
+		 * @param v
+		 */
+		public void setIsBuilding(boolean b){
+			drawer.setIsBuilding(b);
+		}
 	/**
 	 * 画面上の特定物体をピックする
 	 * @param px ピックした物体の画面上のX座標値
