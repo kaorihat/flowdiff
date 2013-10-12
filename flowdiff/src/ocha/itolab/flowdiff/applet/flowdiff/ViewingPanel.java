@@ -121,10 +121,10 @@ public class ViewingPanel extends JPanel {
 		bothGridView = new JRadioButton("両方");
 		group2.add(bothGridView);
 		p2.add(bothGridView);
-		grid1View = new JRadioButton("grid1");
+		grid1View = new JRadioButton("建物有(ベクトル白)");
 		group2.add(grid1View);
 		p2.add(grid1View);
-		grid2View = new JRadioButton("grid2");
+		grid2View = new JRadioButton("建物無(ベクトル赤)");
 		group2.add(grid2View);
 		p2.add(grid2View);
 		
@@ -161,16 +161,18 @@ public class ViewingPanel extends JPanel {
 		grid1RotView = new JRadioButton("両方");//最初にチェックが入っている
 		group3.add(grid1RotView);
 		p3.add(grid1RotView);
-		grid2RotView = new JRadioButton("grid1");
+		grid2RotView = new JRadioButton("建物有(ベクトル白)");
 		group3.add(grid2RotView);
 		p3.add(grid2RotView);
-		bothRotView = new JRadioButton("grid2");
+		bothRotView = new JRadioButton("建物無(ベクトル赤)");
 		group3.add(bothRotView);
 		p3.add(bothRotView);
 		
 		JPanel p4 = new JPanel();
-		p4.setLayout(new GridLayout(8,1));
+		p4.setLayout(new GridLayout(10,1));
 		p4.add(new JLabel("流線表示"));
+		p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
+		p4.add(new JLabel("水色：建物無(ベクトル赤)"));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
