@@ -36,9 +36,9 @@ public class ViewingPanel extends JPanel {
 	
 	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
-	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5;
-	public JLabel xText, yText, zText, vtext, vhText,vecviewText;
-	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight;
+	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,showDiffView,noneDiffView;
+	public JLabel xText, yText, zText, vtext, vhText, vecviewText, diffText;
+	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight,sliderDiff;
 	public Container container;
 	File currentDirectory;
 
@@ -138,7 +138,7 @@ public class ViewingPanel extends JPanel {
 		p2.add(vheight);
 		p2.add(vtext);
 		
-		// パネル2
+		// パネル3
 		JPanel p3 = new JPanel();
 		p3.setLayout(new GridLayout(8,1));
 		viewCriticalPoint = new JButton("渦中心表示");
@@ -168,6 +168,7 @@ public class ViewingPanel extends JPanel {
 		group3.add(bothRotView);
 		p3.add(bothRotView);
 		
+		// パネル4
 		JPanel p4 = new JPanel();
 		p4.setLayout(new GridLayout(10,1));
 		p4.add(new JLabel("流線表示"));
@@ -203,6 +204,28 @@ public class ViewingPanel extends JPanel {
 		generateButton = new JButton("流線決定");
 		p4.add(generateButton);
 		
+		// パネル5
+		JPanel p5 = new JPanel();
+		p5.setLayout(new GridLayout(5,1));
+		p5.add(new JLabel("差分表示"));
+		ButtonGroup group5 = new ButtonGroup();
+		noneDiffView = new JRadioButton("表示しない", true);//最初にチェックが入っている
+		group5.add(noneDiffView);
+		p5.add(noneDiffView);
+		showDiffView = new JRadioButton("差分表示");//最初にチェックが入っている
+		group5.add(showDiffView);
+		p5.add(showDiffView);
+		sliderDiff = new JSlider(0, 100, 10);
+		sliderDiff.setMajorTickSpacing(10);
+		sliderDiff.setMinorTickSpacing(5);
+		sliderDiff.setPaintTicks(true);
+		sliderDiff.setLabelTable(sliderDiff.createStandardLabels(20));
+		sliderDiff.setPaintLabels(true);
+	    diffText = new JLabel(" 高さ: " + sliderDiff.getValue());
+		p5.add(sliderDiff);
+		p5.add(diffText);
+		
+		
 		//
 		// パネル群のレイアウト
 		//
@@ -210,6 +233,7 @@ public class ViewingPanel extends JPanel {
 		tabbedpane.addTab("ベクトル", p2);
 		tabbedpane.addTab("渦度", p3);
 		tabbedpane.addTab("流線", p4);
+		tabbedpane.addTab("差分", p5);
 		this.add(tabbedpane);
 		
 		//
@@ -272,6 +296,8 @@ public class ViewingPanel extends JPanel {
 		viewRotate3.addActionListener(actionListener);
 		viewRotate4.addActionListener(actionListener);
 		viewRotate5.addActionListener(actionListener);
+		noneDiffView.addActionListener(actionListener);
+		showDiffView.addActionListener(actionListener);
 	}
 
 	/**
@@ -322,6 +348,7 @@ public class ViewingPanel extends JPanel {
 				sliderZ.setValue(10);
 				canvas.setGrid1(grid1);
 				canvas.setGrid2(grid2);
+				canvas.setDiffVector(grid1, grid2);
 				canvas.setStreamline1(null);
 				canvas.setStreamline2(null);
 			}
@@ -473,6 +500,12 @@ public class ViewingPanel extends JPanel {
 			if (buttonPushed == viewRotate5) {
 				canvas.setLookAt(5);
 			}
+			if(buttonPushed == noneDiffView){
+				canvas.setDiffVector(false);
+			}
+			if(buttonPushed == showDiffView){
+				canvas.setDiffVector(true);
+			}
 			canvas.display();
 		}
 	}
@@ -520,6 +553,10 @@ public class ViewingPanel extends JPanel {
 			else if(changedSlider == sliderVH){
 				vhText.setText(" 高さ(渦度): " + sliderVH.getValue());
 				canvas.setVortheight(sliderVH.getValue());
+			}
+			else if(changedSlider == sliderDiff){
+				diffText.setText("　高さ：　"+ sliderDiff.getValue());
+				canvas.setDiffheight(sliderDiff.getValue());
 			}
 			canvas.display();
 		}

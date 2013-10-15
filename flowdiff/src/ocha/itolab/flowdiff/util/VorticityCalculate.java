@@ -7,6 +7,10 @@ public class VorticityCalculate {
 	public GridPoint gp[] = new GridPoint[8];
 	public Vorticity vorticity[];
 	
+	/**
+	 * うず度を計算するメソッド
+	 * @param grid
+	 */
 	public void calculatevorticity(Grid grid){
 		vorticity = new Vorticity[grid.getNumElementAll()];
 		for(int i = 0;i <grid.getNumElementAll();i++){

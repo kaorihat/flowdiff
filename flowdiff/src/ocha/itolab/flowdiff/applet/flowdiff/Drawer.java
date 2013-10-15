@@ -20,6 +20,7 @@ import ocha.itolab.flowdiff.core.streamline.Streamline;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
+import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -54,6 +55,7 @@ public class Drawer implements GLEventListener {
 	boolean isCriticalPoint = false;
 	boolean isVorticity = false;
 	boolean isBuilding = false;
+	boolean isDiff = false;
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -73,10 +75,12 @@ public class Drawer implements GLEventListener {
 
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
-	int vheight = 0;
-	int vort = 0;
+	int vheight = 10;
+	int vort = 10;
 	Building b;
 	VorticityCalculate vc1,vc2;
+	DiffVectorCal dv;
+	int hdiff = 10;
 	
 	/**
 	 * Constructor
@@ -104,6 +108,7 @@ public class Drawer implements GLEventListener {
 		b = new Building();
 		vc1 = new VorticityCalculate();
 		vc2 = new VorticityCalculate();
+		dv = new DiffVectorCal();
 	}
 
 	public GLAutoDrawable getGLAutoDrawable() {
@@ -161,6 +166,12 @@ public class Drawer implements GLEventListener {
 	public void setIsBuilding(boolean b){
 		this.isBuilding = b;
 	}
+	public void setDiffVector(boolean d){
+		this.isDiff = d;
+	}
+	public void setDiffheight(int h){
+		this.hdiff = h;
+	}
 	
 	/**
 	 * Gridをセットする
@@ -201,13 +212,20 @@ public class Drawer implements GLEventListener {
 	 */
 	void setVorticity1(Grid grid){
 		vc1.calculatevorticity(grid);
-		vc1.minmax(grid);//最大最少を確認（表示するのみ）
+		//vc1.minmax(grid);//最大最少を確認（表示するのみ）
 	}
 	void setVorticity2(Grid grid){
 		vc2.calculatevorticity(grid);
-		vc2.minmax(grid);//最大最少を確認（表示するのみ）
+		//vc2.minmax(grid);//最大最少を確認（表示するのみ）
 	}
-	
+	/**
+	 * 差分計算を行う（コンストラクタでインスタンス作成）
+	 * gridを取得した場所(setGrid1)で使用
+	 * @param grid
+	 */
+	void setDiffVector(Grid grid1,Grid grid2){
+		dv.calDiffAngle(grid1,grid2);
+	}
 	/**
 	 * Streamlineをセットする
 	 */
@@ -398,7 +416,7 @@ public class Drawer implements GLEventListener {
 		}
 		//drawEdgeElement(grid1);
 		//drawVectorPart(grid2,2);
-		if(isCriticalPoint == true){//渦中心表示
+		if(isCriticalPoint){//渦中心表示
 			drawCriticalPoint(grid1);
 		}
 		/*
@@ -406,6 +424,11 @@ public class Drawer implements GLEventListener {
 			drawVorticity(grid1,vort,1,vc1);
 			drawVorticity(grid2,vort,2,vc2);
 		}*/
+		//差分表示
+		if(isDiff){
+			System.out.println("aaaa");
+			drawDiffVector(grid1,grid2,hdiff);
+		}
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamline(sl1, 1);
@@ -786,6 +809,24 @@ public class Drawer implements GLEventListener {
 			posnum += grid.getNumElement()[0]*grid.getNumElement()[1];
 		}
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
+	}
+	
+	/**
+	 * 差分の表示
+	 */
+	void drawDiffVector(Grid grid1, Grid grid2,int hdiff){
+		if(grid1 == null) return;
+		if(grid2 == null) return;
+		
+		//差分の描画
+		
+		gl2.glColor3d(0.0, 1.0, 1.0);
+		//ベクトルの描画
+		for(int i = 0; i < grid1.getNumGridPointAll();i++){
+			gl2.glBegin(GL.GL_POINTS);
+			gl2.glVertex3d(grid1.getGridPoint(i).getPosition()[0], grid1.getGridPoint(i).getPosition()[1], grid1.getGridPoint(i).getPosition()[2]);
+			gl2.glEnd();
+		}
 	}
 	/**
 	 * 始点を描画する

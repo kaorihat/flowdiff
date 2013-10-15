@@ -30,14 +30,15 @@ public class Canvas extends JPanel {
 	Streamline sl1, sl2;
 	int vheight;
 	int vort;
-	
+	int diff;
+
 	boolean isMousePressed = false, isAnnotation = true, 
-		isImage = true, isWireframe = true;
+			isImage = true, isWireframe = true;
 	int dragMode,dimMode;
 	int width, height, mouseX, mouseY;
 	double linewidth = 1.0, bgR = 0.0, bgG = 0.0, bgB = 0.0;
 
-	
+
 	/**
 	 * Constructor
 	 * @param width 画面の幅
@@ -46,10 +47,10 @@ public class Canvas extends JPanel {
 	 * @param backgroundColor 画面の背景色
 	 */
 	public Canvas(
-		int width,
-		int height,
-		Color foregroundColor,
-		Color backgroundColor) {
+			int width,
+			int height,
+			Color foregroundColor,
+			Color backgroundColor) {
 
 		super(true);
 		this.width = width;
@@ -58,15 +59,15 @@ public class Canvas extends JPanel {
 		setColors(foregroundColor, backgroundColor);
 		dragMode = 3;
 		dimMode = 2;
-	
+
 		glc = new GLCanvas();
-		
+
 		drawer = new Drawer(width, height, glc);
 		trans = new Transformer();
 		trans.viewReset();
 		drawer.setTransformer(trans);
 		glc.addGLEventListener(drawer);
-		
+
 	}
 
 	/**
@@ -81,12 +82,12 @@ public class Canvas extends JPanel {
 	public GLCanvas getGLCanvas(){
 		return this.glc;
 	}
-	
+
 	/**
 	 * Drawer をセットする
 	 * @param d Drawer
 	 */
-   public void setDrawer(Drawer d) {
+	public void setDrawer(Drawer d) {
 		drawer = d;
 	}
 
@@ -97,7 +98,7 @@ public class Canvas extends JPanel {
 	public void setTransformer(Transformer t) {
 		trans = t;
 	}
-	
+
 	/**
 	 * ベクトル面の高さをセットする
 	 * @return
@@ -110,7 +111,10 @@ public class Canvas extends JPanel {
 		this.vheight = vheight;
 		drawer.setVheight(vheight);
 	}
-	
+	/**
+	 * 渦度の高さ変更
+	 * @param vort
+	 */
 	public int getVortheight() {
 		return vort;
 	}
@@ -119,13 +123,24 @@ public class Canvas extends JPanel {
 		drawer.setVortheight(vort);
 	}
 	/**
+	 * 差分の高さ
+	 * @param h
+	 */
+	public int getDiffheight() {
+		return vort;
+	}
+	public void setDiffheight(int h){
+		this.diff = h;
+		drawer.setDiffheight(diff);
+	}
+	/**
 	 * Gridをセットする
 	 */
 	public void setGrid1(Grid g) {
 		grid1 = g;
 		drawer.setGrid1(g);
 	}
-	
+
 	/**
 	 * Gridをセットする
 	 */
@@ -133,8 +148,14 @@ public class Canvas extends JPanel {
 		grid2 = g;
 		drawer.setGrid2(g);
 	}
-	
-	
+
+	/**
+	 * 差分をセットする
+	 */
+	public void setDiffVector(Grid grid1, Grid grid2){
+		drawer.setDiffVector(grid1, grid2);
+	}
+
 	/**
 	 * Streamlineをセットする
 	 */
@@ -142,8 +163,8 @@ public class Canvas extends JPanel {
 		sl1 = s;
 		drawer.setStreamline1(s);
 	}
-	
-	
+
+
 	/**
 	 * Streamlineをセットする
 	 */
@@ -151,7 +172,7 @@ public class Canvas extends JPanel {
 		sl2 = s;
 		drawer.setStreamline2(s);
 	}
-	
+
 	/**
 	 * 再描画
 	 */
@@ -164,7 +185,7 @@ public class Canvas extends JPanel {
 
 		glAD = drawer.getGLAutoDrawable();
 		if (glAD == null) return;
-				
+
 		drawer.getGLAutoDrawable();
 		drawer.setWindowSize(width, height);
 		glAD.display();
@@ -179,8 +200,8 @@ public class Canvas extends JPanel {
 		width = (int) getSize().getWidth();
 		height = (int) getSize().getHeight();
 		image = new BufferedImage(width, height, 
-                BufferedImage.TYPE_INT_BGR);
-		
+				BufferedImage.TYPE_INT_BGR);
+
 		/*
 		Graphics2D gg2 = image.createGraphics();
 		gg2.clearRect(0, 0, width, height);
@@ -191,10 +212,10 @@ public class Canvas extends JPanel {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}	
-		*/	
+		 */	
 	}
-	
-	
+
+
 	/**
 	 * 前面色と背景色をセットする
 	 * @param foregroundColor 前面色
@@ -270,7 +291,7 @@ public class Canvas extends JPanel {
 		bgG = g;
 		bgB = b;
 		setBackground(
-			new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)));
+				new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)));
 	}
 
 	/**
@@ -281,7 +302,7 @@ public class Canvas extends JPanel {
 		dragMode = newMode;
 		drawer.setDragMode(dragMode);
 	}
-	
+
 	/**
 	 * マウスドラッグのモードを返す
 	 * @param dragMode (1:ZOOM  2:SHIFT  3:ROTATE)
@@ -289,9 +310,9 @@ public class Canvas extends JPanel {
 	public int getDragMode() {
 		return dragMode;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 画面表示の拡大縮小・回転・平行移動の各状態をリセットする
 	 */
@@ -305,53 +326,59 @@ public class Canvas extends JPanel {
 	public void viewDefault() {
 		trans.setDefaultValue();
 	}
-	
+
 	/**
 	 * 視点の位置を切り替える
 	 */
 	public void setLookAt(int num) {
 		trans.setLookAt(num);
 	}
-/**
- * ベクトル表示をONにする
- * @param v
- */
+	/**
+	 * ベクトル表示をONにする
+	 * @param v
+	 */
 	public void setVectorView(int v){
 		drawer.setVectorView(v);
 	}
-	
+
 	/**
 	 * 渦度表示をONにする
 	 * @param r
 	 */
-		public void setRotView(int r){
-			drawer.setRotView(r);
-		}
-	
+	public void setRotView(int r){
+		drawer.setRotView(r);
+	}
 
-		/**
-		 * 渦中心を検出する
-		 * @param v
-		 */
-		public void setCriticalPoint(boolean c){
-			drawer.setCriticalPoint(c);
-		}
 
-		/**
-		 * 渦度を検出する
-		 * @param v
-		 */
-		public void setVorticity(boolean c){
-			drawer.setVorticity(c);
-		}
-		
-		/**
-		 * 建物表示有無の切り替え
-		 * @param v
-		 */
-		public void setIsBuilding(boolean b){
-			drawer.setIsBuilding(b);
-		}
+	/**
+	 * 渦中心を検出する
+	 * @param v
+	 */
+	public void setCriticalPoint(boolean c){
+		drawer.setCriticalPoint(c);
+	}
+
+	/**
+	 * 渦度を検出する
+	 * @param v
+	 */
+	public void setVorticity(boolean c){
+		drawer.setVorticity(c);
+	}
+	/**
+	 * 差分を表示する
+	 * @param c
+	 */
+	public void setDiffVector(boolean c){
+		drawer.setDiffVector(c);
+	}
+	/**
+	 * 建物表示有無の切り替え
+	 * @param v
+	 */
+	public void setIsBuilding(boolean b){
+		drawer.setIsBuilding(b);
+	}
 	/**
 	 * 画面上の特定物体をピックする
 	 * @param px ピックした物体の画面上のX座標値
@@ -361,8 +388,8 @@ public class Canvas extends JPanel {
 	public void pickObjects(int px, int py) {
 		drawer.pickBars(px, py);
 	}
-	*/
-	
+	 */
+
 	/**
 	 * Imageの可否をセットする
 	 */
@@ -370,7 +397,7 @@ public class Canvas extends JPanel {
 		isImage = is;
 		drawer.isImage(is);
 	}
-	
+
 	/**
 	 * Wireframeの可否をセットする
 	 */
@@ -378,10 +405,10 @@ public class Canvas extends JPanel {
 		isWireframe = is;
 		drawer.isWireframe(is);
 	}
-	
-	
 
-	
+
+
+
 	/**
 	 * マウスカーソルのイベントを検知する設定を行う
 	 * @param eventListener EventListner
@@ -390,5 +417,5 @@ public class Canvas extends JPanel {
 		addMouseListener((MouseListener) eventListener);
 		addMouseMotionListener((MouseMotionListener) eventListener);
 	}
-	
+
 }
