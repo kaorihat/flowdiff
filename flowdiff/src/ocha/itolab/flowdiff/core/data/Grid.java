@@ -107,6 +107,22 @@ public class Grid {
 	/**
 	 * 同じ平面の要素を返す
 	 */
+	public GridPoint[] getPlanePoints(int height){
+		GridPoint[] gp = new GridPoint[num[0]*num[2]];
+		int count = 0;
+		for(int i = num[0]*(height-1); i < getNumGridPointAll() ;i++){
+			for(int j = 0; j<num[0]; j++){
+				gp[count] = getGridPoint(i+j);
+				count++;
+			}
+			i += num[0]*num[1]-1;
+		}
+		return gp;
+	}
+	
+	/**
+	 * 同じ平面の頂点を返す
+	 */
 	public Element[] getPartElement(int height){
 		Element[] egp = new Element[elnum[0]*elnum[2]];
 		int count = 0;

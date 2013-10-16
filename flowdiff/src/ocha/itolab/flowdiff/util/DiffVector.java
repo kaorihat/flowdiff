@@ -21,11 +21,5 @@ public class DiffVector {
 		return pos;
 	}
 	
-	public double getDiff() {
-		return diff;
-	}
-
-	public void setDiff(double diff) {
-		this.diff = diff;
-	}
+	
 }

@@ -9,6 +9,7 @@ public class GridPoint {
 	double environment =0.0;
 	int label = 0;
 	double vorticity = 0.0;
+	double diff = 0.0;
 	
 
 	public void setPosition(double x, double y, double z) {
@@ -55,5 +56,15 @@ public class GridPoint {
 	public void setBuildingLabel(int label) {
 		this.label = label;
 	}
-	
+	/**
+	 * 差分の表示
+	 * @return
+	 */
+	public double getDiff() {
+		return diff;
+	}
+
+	public void setDiff(double diff) {
+		this.diff = diff;
+	}
 }

@@ -80,7 +80,7 @@ public class Drawer implements GLEventListener {
 	Building b;
 	VorticityCalculate vc1,vc2;
 	DiffVectorCal dv;
-	int hdiff = 10;
+	int hdiff = 50;
 	
 	/**
 	 * Constructor
@@ -426,7 +426,6 @@ public class Drawer implements GLEventListener {
 		}*/
 		//差分表示
 		if(isDiff){
-			System.out.println("aaaa");
 			drawDiffVector(grid1,grid2,hdiff);
 		}
 		if(grid1 != null && sl1 != null) {
@@ -818,14 +817,23 @@ public class Drawer implements GLEventListener {
 		if(grid1 == null) return;
 		if(grid2 == null) return;
 		
-		//差分の描画
+		//描画回数
+		int num = grid1.getNumGridPoint()[0]* grid1.getNumGridPoint()[2];
+		//色の設定
 		
-		gl2.glColor3d(0.0, 1.0, 1.0);
-		//ベクトルの描画
-		for(int i = 0; i < grid1.getNumGridPointAll();i++){
-			gl2.glBegin(GL.GL_POINTS);
-			gl2.glVertex3d(grid1.getGridPoint(i).getPosition()[0], grid1.getGridPoint(i).getPosition()[1], grid1.getGridPoint(i).getPosition()[2]);
-			gl2.glEnd();
+		//差分の描画
+		GridPoint[] gp = grid1.getPlanePoints(hdiff);
+		for(int i = 0; i < num;i++){
+			if(gp[i].getDiff() != Double.NaN){
+				double angle = gp[i].getDiff();
+				//System.out.println("angle =" +angle);
+				gl2.glEnable(GL.GL_BLEND);
+				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl2.glColor4d(angle/Math.PI, 0.0, 0.0, angle/Math.PI);
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
+				gl2.glEnd();
+			}
 		}
 	}
 	/**

@@ -215,11 +215,11 @@ public class ViewingPanel extends JPanel {
 		showDiffView = new JRadioButton("差分表示");//最初にチェックが入っている
 		group5.add(showDiffView);
 		p5.add(showDiffView);
-		sliderDiff = new JSlider(0, 100, 10);
+		sliderDiff = new JSlider(0, 85, 10);
 		sliderDiff.setMajorTickSpacing(10);
 		sliderDiff.setMinorTickSpacing(5);
 		sliderDiff.setPaintTicks(true);
-		sliderDiff.setLabelTable(sliderDiff.createStandardLabels(20));
+		sliderDiff.setLabelTable(sliderDiff.createStandardLabels(10));
 		sliderDiff.setPaintLabels(true);
 	    diffText = new JLabel(" 高さ: " + sliderDiff.getValue());
 		p5.add(sliderDiff);
@@ -330,6 +330,7 @@ public class ViewingPanel extends JPanel {
 		sliderY.addChangeListener(changeListener);
 		sliderZ.addChangeListener(changeListener);
 		sliderVH.addChangeListener(changeListener);
+		sliderDiff.addChangeListener(changeListener);
 	}
 	
 	/**
