@@ -9,7 +9,9 @@ public class GridPoint {
 	double environment =0.0;
 	int label = 0;
 	double vorticity = 0.0;
-	double diff = 0.0;
+	double ang_diff = 0.0;
+	double len_diff = 0.0;
+	double length = 0.0;
 	
 
 	public void setPosition(double x, double y, double z) {
@@ -57,14 +59,34 @@ public class GridPoint {
 		this.label = label;
 	}
 	/**
-	 * 差分の表示
+	 * 角度差分の表示
 	 * @return
 	 */
-	public double getDiff() {
-		return diff;
+	public double getAngDiff() {
+		return ang_diff;
 	}
 
-	public void setDiff(double diff) {
-		this.diff = diff;
+	public void setAngDiff(double diff) {
+		this.ang_diff = diff;
+	}
+	/**
+	 * 長さ差分の表示
+	 * @return
+	 */
+	public double getLenDiff() {
+		return len_diff;
+	}
+
+	public void setLenDiff(double diff) {
+		this.len_diff = diff;
+	}
+	
+	/**
+	 * 長さの表示
+	 * @return
+	 */
+	public double getLength() {
+		length = Math.sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
+		return length;
 	}
 }

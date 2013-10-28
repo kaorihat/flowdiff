@@ -33,10 +33,11 @@ public class ViewingPanel extends JPanel {
 	static String url1 = "file:../data/kassoro/ari/";
 	static String url2 = "file:../data/kassoro/nashi/";
 
-	
+
 	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
-	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,showDiffView,noneDiffView;
+	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,
+	showDiffAngView,showDiffLenView,noneDiffView;
 	public JLabel xText, yText, zText, vtext, vhText, vecviewText, diffText;
 	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight,sliderDiff;
 	public Container container;
@@ -44,7 +45,7 @@ public class ViewingPanel extends JPanel {
 
 	/* Selective canvas */
 	Canvas canvas;
-	
+
 	/* Cursor Sensor */
 	boolean cursorSensorFlag = false;
 
@@ -57,11 +58,11 @@ public class ViewingPanel extends JPanel {
 	/* Data */
 	Grid grid1 = null;
 	Grid grid2 = null;
-	
+
 	/*button toggle flag*/
 	boolean viewVorticity_flag = false;//trueの時オン
 	boolean viewBuildingButton_flag = false;
-	
+
 	public ViewingPanel() {
 		// super class init
 		super();
@@ -108,7 +109,7 @@ public class ViewingPanel extends JPanel {
 		p1.add(viewRotate5);
 		viewBuildingButton = new JButton("建物表示");
 		p1.add(viewBuildingButton);
-		
+
 		// パネル2
 		JPanel p2 = new JPanel();
 		p2.setLayout(new GridLayout(7,1));
@@ -127,7 +128,7 @@ public class ViewingPanel extends JPanel {
 		grid2View = new JRadioButton("建物無(ベクトル赤)");
 		group2.add(grid2View);
 		p2.add(grid2View);
-		
+
 		vheight = new JSlider(0, 85, 10);
 		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
 		vheight.setMajorTickSpacing(10);
@@ -137,7 +138,7 @@ public class ViewingPanel extends JPanel {
 		vheight.setPaintLabels(true);
 		p2.add(vheight);
 		p2.add(vtext);
-		
+
 		// パネル3
 		JPanel p3 = new JPanel();
 		p3.setLayout(new GridLayout(8,1));
@@ -167,14 +168,14 @@ public class ViewingPanel extends JPanel {
 		bothRotView = new JRadioButton("建物無(ベクトル赤)");
 		group3.add(bothRotView);
 		p3.add(bothRotView);
-		
+
 		// パネル4
 		JPanel p4 = new JPanel();
 		p4.setLayout(new GridLayout(10,1));
 		p4.add(new JLabel("流線表示"));
 		p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
 		p4.add(new JLabel("水色：建物無(ベクトル赤)"));
-		sliderX = new JSlider(0, 100, 10);
+		sliderX = new JSlider(0, 100, 30);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
 		sliderX.setPaintTicks(true);
@@ -189,32 +190,35 @@ public class ViewingPanel extends JPanel {
 		sliderY.setPaintTicks(true);
 		sliderY.setLabelTable(sliderY.createStandardLabels(20));
 	    sliderY.setPaintLabels(true);
-	    yText = new JLabel(" たて: " + sliderY.getValue());
+	    yText = new JLabel(" 高さ: " + sliderY.getValue());
 		p4.add(sliderY);
 		p4.add(yText);
-		sliderZ = new JSlider(0, 100, 10);
+		sliderZ = new JSlider(0, 100, 30);
 		sliderZ.setMajorTickSpacing(10);
 		sliderZ.setMinorTickSpacing(5);
 		sliderZ.setPaintTicks(true);
 		sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
 	    sliderZ.setPaintLabels(true);
-	    zText = new JLabel(" たかさ: " + sliderZ.getValue());
+	    zText = new JLabel(" たて: " + sliderZ.getValue());
 		p4.add(sliderZ);
 		p4.add(zText);
 		generateButton = new JButton("流線決定");
 		p4.add(generateButton);
-		
+
 		// パネル5
 		JPanel p5 = new JPanel();
-		p5.setLayout(new GridLayout(5,1));
+		p5.setLayout(new GridLayout(6,1));
 		p5.add(new JLabel("差分表示"));
 		ButtonGroup group5 = new ButtonGroup();
 		noneDiffView = new JRadioButton("表示しない", true);//最初にチェックが入っている
 		group5.add(noneDiffView);
 		p5.add(noneDiffView);
-		showDiffView = new JRadioButton("差分表示");//最初にチェックが入っている
-		group5.add(showDiffView);
-		p5.add(showDiffView);
+		showDiffAngView = new JRadioButton("角度差分表示");
+		group5.add(showDiffAngView);
+		p5.add(showDiffAngView);
+		showDiffLenView = new JRadioButton("長さ差分表示");
+		group5.add(showDiffLenView);
+		p5.add(showDiffLenView);
 		sliderDiff = new JSlider(0, 85, 10);
 		sliderDiff.setMajorTickSpacing(10);
 		sliderDiff.setMinorTickSpacing(5);
@@ -224,8 +228,8 @@ public class ViewingPanel extends JPanel {
 	    diffText = new JLabel(" 高さ: " + sliderDiff.getValue());
 		p5.add(sliderDiff);
 		p5.add(diffText);
-		
-		
+
+
 		//
 		// パネル群のレイアウト
 		//
@@ -235,7 +239,7 @@ public class ViewingPanel extends JPanel {
 		tabbedpane.addTab("流線", p4);
 		tabbedpane.addTab("差分", p5);
 		this.add(tabbedpane);
-		
+
 		//
 		// リスナーの追加
 		//
@@ -297,7 +301,8 @@ public class ViewingPanel extends JPanel {
 		viewRotate4.addActionListener(actionListener);
 		viewRotate5.addActionListener(actionListener);
 		noneDiffView.addActionListener(actionListener);
-		showDiffView.addActionListener(actionListener);
+		showDiffAngView.addActionListener(actionListener);
+		showDiffLenView.addActionListener(actionListener);
 	}
 
 	/**
@@ -332,7 +337,7 @@ public class ViewingPanel extends JPanel {
 		sliderVH.addChangeListener(changeListener);
 		sliderDiff.addChangeListener(changeListener);
 	}
-	
+
 	/**
 	 * ボタンのアクションを検知するActionListener
 	 * @author itot
@@ -349,11 +354,11 @@ public class ViewingPanel extends JPanel {
 				sliderZ.setValue(10);
 				canvas.setGrid1(grid1);
 				canvas.setGrid2(grid2);
-				canvas.setDiffVector(grid1, grid2);
+				canvas.setDiffVector2(grid1, grid2);
 				canvas.setStreamline1(null);
 				canvas.setStreamline2(null);
 			}
-			
+
 			if (buttonPushed == viewResetButton) {
 				grid1.setStartPoint(10, 10, 10);
 				grid2.setStartPoint(10, 10, 10);
@@ -362,7 +367,7 @@ public class ViewingPanel extends JPanel {
 				sliderZ.setValue(10);
 				canvas.viewReset();
 			}
-			
+
 			if (buttonPushed == generateButton) {
 				Streamline sl1 = new Streamline();
 				Streamline sl2 = new Streamline();
@@ -372,18 +377,18 @@ public class ViewingPanel extends JPanel {
 				eIjk[1] = sliderY.getValue() * numg[1] / 100;
 				eIjk[2] = sliderZ.getValue() * numg[2] / 100;
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
-				System.out.println("    target:" + grid1.intersectWithTarget(sl1)); 
+				//System.out.println("    target:" + grid1.intersectWithTarget(sl1));
 				canvas.setStreamline1(sl1);
 				StreamlineGenerator.generate(grid2, sl2, eIjk, null);
-				System.out.println("    target:" + grid1.intersectWithTarget(sl2)); 
+				//System.out.println("    target:" + grid1.intersectWithTarget(sl2));
 				canvas.setStreamline2(sl2);
-				
+
 			}
-			
+
 			if (buttonPushed == viewVectorButton) {
-				
+
 			}
-			
+
 			if (buttonPushed == viewCriticalPoint) {
 				canvas.setCriticalPoint(true);
 			}
@@ -412,17 +417,17 @@ public class ViewingPanel extends JPanel {
 			return dirChooser.getSelectedFile().getAbsolutePath();
 		} else if (selected == JFileChooser.CANCEL_OPTION) { // cancel selected
 			return null;
-		} 
-		
+		}
+
 		return null;
 	}
 
-	
+
 	/**
 	 * 拡張子がJPGであるファイルの名前一式を配列に確保して返す
 	 */
 	String[] getJpegFilenames(String dirname) {
-	
+
 		File directory = new File(dirname);
 		String[] filelist = directory.list();
 		int num = 0;
@@ -430,18 +435,18 @@ public class ViewingPanel extends JPanel {
 			if(filelist[i].endsWith("JPG") || filelist[i].endsWith("jpg"))
 				num++;
 		}
-		
+
 		String jpeglist[] = new String[num];
 		num = 0;
 		for(int i = 0; i < filelist.length; i++) {
 			if(filelist[i].endsWith("JPG") || filelist[i].endsWith("jpg"))
 				jpeglist[num++] = filelist[i];
 		}
-		
+
 		return jpeglist;
 	}
-			
-			
+
+
 	/**
 	 * ラジオボタンのアクションを検知するActionListener
 	 * @author itot
@@ -470,7 +475,7 @@ public class ViewingPanel extends JPanel {
 			if(buttonPushed == grid2View){
 				canvas.setVectorView(3);
 			}
-			
+
 			if(buttonPushed == noneRotView){
 				canvas.setRotView(0);
 			}
@@ -502,10 +507,13 @@ public class ViewingPanel extends JPanel {
 				canvas.setLookAt(5);
 			}
 			if(buttonPushed == noneDiffView){
-				canvas.setDiffVector(false);
+				canvas.setDiffVector(0);
 			}
-			if(buttonPushed == showDiffView){
-				canvas.setDiffVector(true);
+			if(buttonPushed == showDiffAngView){
+				canvas.setDiffVector(1);
+			}
+			if(buttonPushed == showDiffLenView){
+				canvas.setDiffVector(2);
 			}
 			canvas.display();
 		}

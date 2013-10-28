@@ -142,11 +142,11 @@ public class Building {
 				if(count==2 && label > 5){
 					gp[num] = grid.getGridPoint(i);
 					num++;
-					System.out.println("num="+num);
+					//System.out.println("num="+num);
 				}else if(count == 3 && label < 6){
 					gp[num] = grid.getGridPoint(i);
 					num++;
-					System.out.println("num="+num);
+					//System.out.println("num="+num);
 				}
 			}
 		}

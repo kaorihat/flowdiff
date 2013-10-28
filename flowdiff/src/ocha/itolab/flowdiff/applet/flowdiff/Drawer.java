@@ -55,7 +55,7 @@ public class Drawer implements GLEventListener {
 	boolean isCriticalPoint = false;
 	boolean isVorticity = false;
 	boolean isBuilding = false;
-	boolean isDiff = false;
+	
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -81,6 +81,7 @@ public class Drawer implements GLEventListener {
 	VorticityCalculate vc1,vc2;
 	DiffVectorCal dv;
 	int hdiff = 50;
+	int numDiff = 0;
 	
 	/**
 	 * Constructor
@@ -166,8 +167,8 @@ public class Drawer implements GLEventListener {
 	public void setIsBuilding(boolean b){
 		this.isBuilding = b;
 	}
-	public void setDiffVector(boolean d){
-		this.isDiff = d;
+	public void setDiffVector(int c){ //差分の種類を得る
+		this.numDiff = c;
 	}
 	public void setDiffheight(int h){
 		this.hdiff = h;
@@ -223,9 +224,19 @@ public class Drawer implements GLEventListener {
 	 * gridを取得した場所(setGrid1)で使用
 	 * @param grid
 	 */
-	void setDiffVector(Grid grid1,Grid grid2){
+	void setDiffVector2(Grid grid1,Grid grid2){
+		dv.calDiffAngle(grid1,grid2);
+		dv.calDiffLen(grid1,grid2);
+	}
+	
+	/**
+	void setDiffAngVector(Grid grid1,Grid grid2){
 		dv.calDiffAngle(grid1,grid2);
 	}
+	void setDiffLngVector(Grid grid1,Grid grid2){
+		dv.calDiffLen(grid1,grid2);
+	}
+	**/
 	/**
 	 * Streamlineをセットする
 	 */
@@ -425,8 +436,8 @@ public class Drawer implements GLEventListener {
 			drawVorticity(grid2,vort,2,vc2);
 		}*/
 		//差分表示
-		if(isDiff){
-			drawDiffVector(grid1,grid2,hdiff);
+		if(numDiff != 0){
+			drawDiffVector(grid1,grid2,hdiff,numDiff);
 		}
 		if(grid1 != null && sl1 != null) {
 			drawStartGrid(grid1);
@@ -572,7 +583,7 @@ public class Drawer implements GLEventListener {
 		}
 		for(int i=1; i<type;i++){
 			GridPoint minmax[] = b.minmaxPos(grid1,i);
-			System.out.println("minmax="+minmax.length);
+			//System.out.println("minmax="+minmax.length);
 
 			// 建物を描く
 			gl2.glColor3d(0.0, 0.7, 0.3);
@@ -813,26 +824,43 @@ public class Drawer implements GLEventListener {
 	/**
 	 * 差分の表示
 	 */
-	void drawDiffVector(Grid grid1, Grid grid2,int hdiff){
+	void drawDiffVector(Grid grid1, Grid grid2,int hdiff,int type){
 		if(grid1 == null) return;
 		if(grid2 == null) return;
-		
+
 		//描画回数
 		int num = grid1.getNumGridPoint()[0]* grid1.getNumGridPoint()[2];
 		//色の設定
-		
+
 		//差分の描画
 		GridPoint[] gp = grid1.getPlanePoints(hdiff);
-		for(int i = 0; i < num;i++){
-			if(gp[i].getDiff() != Double.NaN){
-				double angle = gp[i].getDiff();
-				//System.out.println("angle =" +angle);
-				gl2.glEnable(GL.GL_BLEND);
-				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-				gl2.glColor4d(angle/Math.PI, 0.0, 0.0, angle/Math.PI);
-				gl2.glBegin(GL.GL_POINTS);
-				gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
-				gl2.glEnd();
+		
+		if(type == 1){
+			for(int i = 0; i < num;i++){
+				if(gp[i].getAngDiff() != Double.NaN){
+					double angle = gp[i].getAngDiff();
+					//System.out.println("angle =" +angle);
+					gl2.glEnable(GL.GL_BLEND);
+					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					gl2.glColor4d(angle/Math.PI, 0.0, 0.0, angle/Math.PI);
+					gl2.glBegin(GL.GL_POINTS);
+					gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
+					gl2.glEnd();
+				}
+			}
+		}
+		else if(type == 2){
+			for(int i = 0; i < num;i++){
+				if(gp[i].getLenDiff() != Double.NaN){
+					double length = gp[i].getLenDiff();
+					//System.out.println("angle =" +angle);
+					gl2.glEnable(GL.GL_BLEND);
+					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					gl2.glColor4d(length/dv.max, 0.0, 0.0, length/dv.max);
+					gl2.glBegin(GL.GL_POINTS);
+					gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
+					gl2.glEnd();
+				}
 			}
 		}
 	}

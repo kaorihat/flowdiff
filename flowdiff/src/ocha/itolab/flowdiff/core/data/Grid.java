@@ -1,6 +1,7 @@
 package ocha.itolab.flowdiff.core.data;
 
 import ocha.itolab.flowdiff.core.streamline.Streamline;
+import ocha.itolab.flowdiff.util.DiffVectorCal;
 
 public class Grid {
 	int num[] = new int[3];
@@ -15,6 +16,7 @@ public class Grid {
 	public double environment[] = new double[4]; // 建物の座標値・種別を格納する(1:建物・滑走路　0.5:海 0:何もなし)
 	int bnum = 0;
 	int count = 0;
+	DiffVectorCal dv[];
 	/**
 	 * 格子の頂点数を設定する
 	 */
@@ -246,7 +248,7 @@ public class Grid {
 	public  GridPoint[] getBuildingPoint1(){
 		int num = getNumBuilding();
 		GridPoint barray[] = new GridPoint[bnum];
-		System.out.println("bnum=" +bnum);
+		//System.out.println("bnum=" +bnum);
 		for(int i = 0; i<gtotal;i++){
 			if(this.getEnvironment(i)!=0.0){
 				barray[count] = this.getGridPoint(i);
@@ -300,6 +302,28 @@ public class Grid {
 		return this.getGridPoint(id).environment;
 	}
 	
+	/**
+	 * 角度差分を返す
+	 */
+	public void setAngDiff(int id, double diff){
+		this.getGridPoint(id).setAngDiff(diff);
+	}
+	
+	public double getAngDiff(int id){
+		return this.getGridPoint(id).getAngDiff();
+	}
+	
+	
+	/**
+	 * 長さ差分を返す
+	 */
+	public void setLenDiff(int id, double diff){
+		this.getGridPoint(id).setLenDiff(diff);
+	}
+	
+	public double getLenDiff(int id){
+		return this.getGridPoint(id).getLenDiff();
+	}
 	
 	
 	// targetとなっているelementとstreamlineの交差判定
