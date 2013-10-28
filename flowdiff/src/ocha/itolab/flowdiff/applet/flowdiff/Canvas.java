@@ -150,13 +150,6 @@ public class Canvas extends JPanel {
 	}
 
 	/**
-	 * 差分をセットする
-	 */
-	public void setDiffVector(Grid grid1, Grid grid2){
-		drawer.setDiffVector(grid1, grid2);
-	}
-
-	/**
 	 * Streamlineをセットする
 	 */
 	public void setStreamline1(Streamline s) {
@@ -369,8 +362,15 @@ public class Canvas extends JPanel {
 	 * 差分を表示する
 	 * @param c
 	 */
-	public void setDiffVector(boolean c){
+	public void setDiffVector(int c){
 		drawer.setDiffVector(c);
+	}
+	
+	/**
+	 * 差分をセットする
+	 */
+	public void setDiffVector2(Grid grid1, Grid grid2){
+		drawer.setDiffVector2(grid1, grid2);
 	}
 	/**
 	 * 建物表示有無の切り替え
