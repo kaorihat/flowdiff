@@ -76,6 +76,7 @@ public class Drawer implements GLEventListener {
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
 	ArrayList<Streamline> arrsl1 = null, arrsl2 = null;
+	ArrayList<int[]> deplist = null ; 
 	int vheight = 10;
 	int vort = 10;
 	Building b;
@@ -251,7 +252,14 @@ public class Drawer implements GLEventListener {
 	public void setStreamline2(ArrayList<Streamline> streamline) {
 		arrsl2 = streamline;
 	}
-	
+	/**
+	 * 流線始点のリストをセットする
+	 * @param allDeperture
+	 */
+	public void setStreamlineDepertures(ArrayList<int[]> allDeperture) {
+		// TODO 自動生成されたメソッド・スタブ
+		deplist = allDeperture;
+	}
 	
 	/**
 	 * 描画領域のサイズを設定する
@@ -442,11 +450,12 @@ public class Drawer implements GLEventListener {
 		}
 		if(grid1 != null && arrsl1 != null) {
 			drawStartGrid(grid1);
+			drawStreamlineStart(deplist);
 			drawStreamline(arrsl1, 1);
 			//drawEndGrid(grid1);
 		}
 		if(grid2 != null && arrsl2 != null) {
-			drawStartGrid(grid2);
+			//drawStartGrid(grid2);
 			drawStreamline(arrsl2, 2);
 			//drawEndGrid(grid2);
 		}
@@ -865,8 +874,9 @@ public class Drawer implements GLEventListener {
 			}
 		}
 	}
+	
 	/**
-	 * 始点を描画する
+	 * 始点を描画する(エレメントを描画)
 	 */
 	void drawStartGrid(Grid grid){
 		int i, j, k;
@@ -926,6 +936,26 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
+		gl2.glEnd();
+	}
+	
+	/**
+	 * 始点を描画する（エレメントの中心を描画）
+	 */
+	void drawStartGrid(Grid grid, int[] dep){
+		int i, j, k;
+		double[] pos = new double[3];
+		
+		if(grid == null) return;
+		i = dep[0];
+		j = dep[1];
+		k = dep[2];
+		//エレメントの中心座標を描画する
+		pos = grid.calcElementCenter(i, j, k);
+		
+		gl2.glColor3d(1.0, 1.0, 1.0);
+		gl2.glBegin(GL.GL_POINTS);
+		gl2.glVertex3d(pos[0], pos[1], pos[2]);
 		gl2.glEnd();
 	}
 	
@@ -1011,18 +1041,36 @@ public class Drawer implements GLEventListener {
 		for(int i=0;i<arrsl.size();i++){
 			Streamline sl = arrsl.get(i);
 			int numvertex = sl.getNumVertex();
-			if(id == 1)
+			//始点の描画
+			
+			if(id == 1){
 				//grid1ピンク
 				gl2.glColor3d(1.0, 0.0, 1.0);
-			if(id == 2)
+			}
+			if(id == 2){
 				//grid2シアン
 				gl2.glColor3d(0.0, 1.0, 1.0);
+			}
 			gl2.glBegin(GL2.GL_LINE_STRIP);
+			
+			//流線描画
 			for(int j = 0; j < numvertex; j++) {
 				double pos[] = sl.getPosition(j);
 				gl2.glVertex3d(pos[0], pos[1], pos[2]);
 			}
 			gl2.glEnd();
+		}
+	}
+	/**
+	 * 流線の始点リストを描画する
+	 * @param deplist
+	 */
+	void drawStreamlineStart(ArrayList<int[]> deplist){
+		if(grid1 == null) return;
+		//始点を描画
+		for(int i=0; i<deplist.size(); i++){
+			int[] dep = deplist.get(i);
+			drawStartGrid(grid1,dep);
 		}
 	}
 
@@ -1079,4 +1127,6 @@ public class Drawer implements GLEventListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 }

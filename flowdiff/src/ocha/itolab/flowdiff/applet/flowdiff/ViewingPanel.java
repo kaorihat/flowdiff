@@ -35,7 +35,8 @@ public class ViewingPanel extends JPanel {
 	static String url2 = "file:../data/kassoro/nashi/";
 
 
-	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity;
+	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity,
+	resetAllStreamlineButton;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
 	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,
 	showDiffAngView,showDiffLenView,noneDiffView;
@@ -172,11 +173,11 @@ public class ViewingPanel extends JPanel {
 
 		// パネル4
 		JPanel p4 = new JPanel();
-		p4.setLayout(new GridLayout(10,1));
+		p4.setLayout(new GridLayout(11,1));
 		p4.add(new JLabel("流線表示"));
 		p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
 		p4.add(new JLabel("水色：建物無(ベクトル赤)"));
-		sliderX = new JSlider(0, 100, 30);
+		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
 		sliderX.setPaintTicks(true);
@@ -194,7 +195,7 @@ public class ViewingPanel extends JPanel {
 	    yText = new JLabel(" 高さ: " + sliderY.getValue());
 		p4.add(sliderY);
 		p4.add(yText);
-		sliderZ = new JSlider(0, 100, 30);
+		sliderZ = new JSlider(0, 100, 10);
 		sliderZ.setMajorTickSpacing(10);
 		sliderZ.setMinorTickSpacing(5);
 		sliderZ.setPaintTicks(true);
@@ -205,6 +206,8 @@ public class ViewingPanel extends JPanel {
 		p4.add(zText);
 		generateButton = new JButton("流線決定");
 		p4.add(generateButton);
+		resetAllStreamlineButton = new JButton("全てクリア");
+		p4.add(resetAllStreamlineButton);
 
 		// パネル5
 		JPanel p5 = new JPanel();
@@ -317,6 +320,7 @@ public class ViewingPanel extends JPanel {
 		viewCriticalPoint.addActionListener(actionListener);
 		viewVorticity.addActionListener(actionListener);
 		viewBuildingButton.addActionListener(actionListener);
+		resetAllStreamlineButton.addActionListener(actionListener);
 	}
 
 	/**
@@ -377,6 +381,8 @@ public class ViewingPanel extends JPanel {
 				eIjk[0] = sliderX.getValue() * numg[0] / 100;
 				eIjk[1] = sliderY.getValue() * numg[1] / 100;
 				eIjk[2] = sliderZ.getValue() * numg[2] / 100;
+				StreamlineArray.addDeperture(eIjk);
+				canvas.setStreamlineDepertures(StreamlineArray.getAllDeperture());
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
 				//System.out.println("    target:" + grid1.intersectWithTarget(sl1));
 				StreamlineArray.addList1(sl1);
@@ -385,6 +391,11 @@ public class ViewingPanel extends JPanel {
 				//System.out.println("    target:" + grid1.intersectWithTarget(sl2));
 				StreamlineArray.addList2(sl2);
 				canvas.setStreamline2(StreamlineArray.getAllList2());
+			}
+			if(buttonPushed == resetAllStreamlineButton){
+				StreamlineArray.clearAllDeperture();
+				StreamlineArray.clearAllList1();
+				StreamlineArray.clearAllList2();
 			}
 
 			if (buttonPushed == viewVectorButton) {

@@ -29,6 +29,7 @@ public class Canvas extends JPanel {
 	GLCanvas glc;
 	Grid grid1, grid2;
 	ArrayList<Streamline> sl1, sl2;
+	ArrayList<int[]> depl;
 	int vheight;
 	int vort;
 	int diff;
@@ -151,7 +152,7 @@ public class Canvas extends JPanel {
 	}
 
 	/**
-	 * Streamlineをセットする
+	 * Streamlineのリストをセットする
 	 */
 	public void setStreamline1(ArrayList<Streamline> streamline) {
 		sl1 = streamline;
@@ -160,11 +161,20 @@ public class Canvas extends JPanel {
 
 
 	/**
-	 * Streamlineをセットする
+	 * Streamlineのリストをセットする
 	 */
 	public void setStreamline2(ArrayList<Streamline> streamline) {
 		sl2 = streamline;
 		drawer.setStreamline2(streamline);
+	}
+	/**
+	 * 流線の始点リストをセット
+	 * @param allDeperture
+	 */
+	public void setStreamlineDepertures(ArrayList<int[]> allDeperture) {
+		// TODO 自動生成されたメソッド・スタブ
+		depl = allDeperture;
+		drawer.setStreamlineDepertures(allDeperture);
 	}
 
 	/**
@@ -418,5 +428,6 @@ public class Canvas extends JPanel {
 		addMouseListener((MouseListener) eventListener);
 		addMouseMotionListener((MouseMotionListener) eventListener);
 	}
+
 
 }

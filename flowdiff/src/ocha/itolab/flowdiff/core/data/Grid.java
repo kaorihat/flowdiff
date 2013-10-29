@@ -183,6 +183,29 @@ public class Grid {
 	}
 	
 	/**
+	 * 要素の中心座標を求める
+	 */
+	public double[] calcElementCenter(int i, int j, int k) {
+		double[][] pos = new double[8][3];
+		double[] cenpos = new double[3];
+		
+		Element element = this.getElement(this.calcElementId(i, j, k));
+		for (int d = 0; d < 8; d++){
+			pos[d] = element.gp[d].getPosition();
+		}
+		for (int d = 0; d < 8; d++){
+			cenpos[0] += pos[d][0];
+			cenpos[1] += pos[d][1];
+			cenpos[2] += pos[d][2];
+		}
+		cenpos[0] = cenpos[0]/8;
+		cenpos[1] = cenpos[1]/8;
+		cenpos[2] = cenpos[2]/8;
+		
+		return cenpos;
+	}
+	
+	/**
 	 * 始点の座標値を定める
 	 */
 	public void setStartPoint(int i, int j, int k) {
