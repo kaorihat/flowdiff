@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.EventListener;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -27,7 +28,7 @@ public class Canvas extends JPanel {
 	BufferedImage image = null;
 	GLCanvas glc;
 	Grid grid1, grid2;
-	Streamline sl1, sl2;
+	ArrayList<Streamline> sl1, sl2;
 	int vheight;
 	int vort;
 	int diff;
@@ -152,18 +153,18 @@ public class Canvas extends JPanel {
 	/**
 	 * Streamlineをセットする
 	 */
-	public void setStreamline1(Streamline s) {
-		sl1 = s;
-		drawer.setStreamline1(s);
+	public void setStreamline1(ArrayList<Streamline> streamline) {
+		sl1 = streamline;
+		drawer.setStreamline1(streamline);
 	}
 
 
 	/**
 	 * Streamlineをセットする
 	 */
-	public void setStreamline2(Streamline s) {
-		sl2 = s;
-		drawer.setStreamline2(s);
+	public void setStreamline2(ArrayList<Streamline> streamline) {
+		sl2 = streamline;
+		drawer.setStreamline2(streamline);
 	}
 
 	/**

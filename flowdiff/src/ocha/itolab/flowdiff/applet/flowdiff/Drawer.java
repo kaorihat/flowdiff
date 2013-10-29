@@ -23,8 +23,8 @@ import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
@@ -75,6 +75,7 @@ public class Drawer implements GLEventListener {
 
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
+	ArrayList<Streamline> arrsl1 = null, arrsl2 = null;
 	int vheight = 10;
 	int vort = 10;
 	Building b;
@@ -240,15 +241,15 @@ public class Drawer implements GLEventListener {
 	/**
 	 * Streamlineをセットする
 	 */
-	public void setStreamline1(Streamline s) {
-		sl1 = s;
+	public void setStreamline1(ArrayList<Streamline> streamline) {
+		arrsl1 = streamline;
 	}
 
 	/**
 	 * Streamlineをセットする
 	 */
-	public void setStreamline2(Streamline s) {
-		sl2 = s;
+	public void setStreamline2(ArrayList<Streamline> streamline) {
+		arrsl2 = streamline;
 	}
 	
 	
@@ -439,14 +440,14 @@ public class Drawer implements GLEventListener {
 		if(numDiff != 0){
 			drawDiffVector(grid1,grid2,hdiff,numDiff);
 		}
-		if(grid1 != null && sl1 != null) {
+		if(grid1 != null && arrsl1 != null) {
 			drawStartGrid(grid1);
-			drawStreamline(sl1, 1);
+			drawStreamline(arrsl1, 1);
 			//drawEndGrid(grid1);
 		}
-		if(grid2 != null && sl2 != null) {
+		if(grid2 != null && arrsl2 != null) {
 			drawStartGrid(grid2);
-			drawStreamline(sl2, 2);
+			drawStreamline(arrsl2, 2);
 			//drawEndGrid(grid2);
 		}
 		
@@ -1004,21 +1005,25 @@ public class Drawer implements GLEventListener {
 	/**
 	 * 流線を描く
 	 */
-	void drawStreamline(Streamline sl, int id) {
+	void drawStreamline(ArrayList<Streamline> arrsl, int id) {
 		
 		// 折れ線を描く
-		if(id == 1)
-			//grid1ピンク
-			gl2.glColor3d(1.0, 0.0, 1.0);
-		if(id == 2)
-			//grid2シアン
-			gl2.glColor3d(0.0, 1.0, 1.0);
-		gl2.glBegin(GL2.GL_LINE_STRIP);
-		for(int i = 0; i < sl.getNumVertex(); i++) {
-			double pos[] = sl.getPosition(i);
-			gl2.glVertex3d(pos[0], pos[1], pos[2]);
+		for(int i=0;i<arrsl.size();i++){
+			Streamline sl = arrsl.get(i);
+			int numvertex = sl.getNumVertex();
+			if(id == 1)
+				//grid1ピンク
+				gl2.glColor3d(1.0, 0.0, 1.0);
+			if(id == 2)
+				//grid2シアン
+				gl2.glColor3d(0.0, 1.0, 1.0);
+			gl2.glBegin(GL2.GL_LINE_STRIP);
+			for(int j = 0; j < numvertex; j++) {
+				double pos[] = sl.getPosition(j);
+				gl2.glVertex3d(pos[0], pos[1], pos[2]);
+			}
+			gl2.glEnd();
 		}
-		gl2.glEnd();
 	}
 
 	/**

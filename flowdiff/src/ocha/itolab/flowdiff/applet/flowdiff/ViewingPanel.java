@@ -24,6 +24,7 @@ import javax.swing.event.ChangeListener;
 import ocha.itolab.flowdiff.core.data.FileReader;
 import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
+import ocha.itolab.flowdiff.core.streamline.StreamlineArray;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 
 
@@ -378,11 +379,12 @@ public class ViewingPanel extends JPanel {
 				eIjk[2] = sliderZ.getValue() * numg[2] / 100;
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
 				//System.out.println("    target:" + grid1.intersectWithTarget(sl1));
-				canvas.setStreamline1(sl1);
+				StreamlineArray.addList1(sl1);
+				canvas.setStreamline1(StreamlineArray.getAllList1());
 				StreamlineGenerator.generate(grid2, sl2, eIjk, null);
 				//System.out.println("    target:" + grid1.intersectWithTarget(sl2));
-				canvas.setStreamline2(sl2);
-
+				StreamlineArray.addList2(sl2);
+				canvas.setStreamline2(StreamlineArray.getAllList2());
 			}
 
 			if (buttonPushed == viewVectorButton) {
