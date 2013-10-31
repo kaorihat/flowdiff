@@ -267,7 +267,12 @@ public class Drawer implements GLEventListener {
 		// TODO 自動生成されたメソッド・スタブ
 		scolor = color;
 	}
-	
+	public void setStreamline(ArrayList<int[]> depl, ArrayList<Streamline> sl1, ArrayList<Streamline> sl2) {
+		// TODO 自動生成されたメソッド・スタブ
+		deplist = depl;
+		arrsl1 = sl1;
+		arrsl2 = sl2;
+	}
 	public void setStreamlineArray() {
 		// TODO 自動生成されたメソッド・スタブ
 		arrsl1 = StreamlineArray.streamlines1;
@@ -1155,8 +1160,5 @@ public class Drawer implements GLEventListener {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
 	
 }

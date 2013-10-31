@@ -183,6 +183,15 @@ public class Canvas extends JPanel {
 		sa = class1;
 		//drawer.setStreamlineArray(sa);
 	}
+	
+	public void setStreamline(ArrayList<int[]> deperture, ArrayList<Streamline> streamlines1,
+			ArrayList<Streamline> streamlines2) {
+		// TODO 自動生成されたメソッド・スタブ
+		depl = deperture;
+		sl1 = streamlines1;
+		sl2 = streamlines2;
+		drawer.setStreamline(depl, sl1, sl2);
+	}
 /**
  * 
  * @param color
@@ -443,6 +452,8 @@ public class Canvas extends JPanel {
 		addMouseListener((MouseListener) eventListener);
 		addMouseMotionListener((MouseMotionListener) eventListener);
 	}
+
+	
 
 	
 

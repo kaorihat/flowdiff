@@ -76,7 +76,7 @@ public class StreamlineArray {
 		streamlines1.remove(i);
 		streamlines2.remove(i);
 		deperture.remove(i);
-		//color.remove(i);
+		color.remove(i);
 	}
 	
 	public static void  clearList1(int i){

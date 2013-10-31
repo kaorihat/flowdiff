@@ -253,7 +253,7 @@ public class ViewingPanel extends JPanel {
 	    resetAllStreamlineButton = new JButton("全て削除");
 	    JPanel pb = new JPanel();
 	    pb.add(label);
-	    //pb.add(highlightStreamline);
+	    pb.add(highlightStreamline);
 	    pb.add(removeStreamlineButton);
 		pb.add(resetAllStreamlineButton);
 	    p6.add(sp);
@@ -409,18 +409,13 @@ public class ViewingPanel extends JPanel {
 				eIjk[0] = sliderX.getValue() * numg[0] / 100;
 				eIjk[1] = sliderY.getValue() * numg[1] / 100;
 				eIjk[2] = sliderZ.getValue() * numg[2] / 100;
-				StreamlineArray.addDeperture(eIjk);
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
-				StreamlineArray.addList1(sl1);
 				StreamlineGenerator.generate(grid2, sl2, eIjk, null);
-				StreamlineArray.addList2(sl2);
-				//StreamlineArray.addList(sl1, sl2, eIjk);
-				canvas.setStreamlineDepertures(StreamlineArray.getAllDeperture());
-				canvas.setStreamline1(StreamlineArray.getAllList1());
-				canvas.setStreamline2(StreamlineArray.getAllList2());
+				StreamlineArray.addList(sl1, sl2, eIjk);
+				canvas.setStreamline(StreamlineArray.deperture, StreamlineArray.streamlines1, StreamlineArray.streamlines2);
 				//canvas.setStreamlineHighColor(StreamlineArray.color);
 				//canvas.setStreamlineArray(Streamlinearray);
-				model.addElement(" (横："+eIjk[0]+", 高さ："+eIjk[1]+", 縦："+eIjk[2]+")");
+				model.addElement(" (横："+eIjk[0]+", 高さ："+eIjk[1]+2+", 縦："+eIjk[2]+")");
 			}
 			
 			if(buttonPushed == resetAllStreamlineButton){
@@ -449,7 +444,7 @@ public class ViewingPanel extends JPanel {
 				int index = list.getSelectedIndex();
 				
 				if (!list.isSelectionEmpty()){
-					//StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
+					StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
 						/*
 					else if (index.length > 1){
 						for (int i = index.length-1 ; i > -1 ; i--){
