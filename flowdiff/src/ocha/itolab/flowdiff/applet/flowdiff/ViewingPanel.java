@@ -2,6 +2,7 @@
 package ocha.itolab.flowdiff.applet.flowdiff;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,12 +11,15 @@ import java.awt.event.ItemListener;
 import java.io.File;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -36,12 +40,14 @@ public class ViewingPanel extends JPanel {
 
 
 	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity,
-	resetAllStreamlineButton;
+	resetAllStreamlineButton,removeStreamlineButton,highlightStreamline;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
 	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,
 	showDiffAngView,showDiffLenView,noneDiffView;
 	public JLabel xText, yText, zText, vtext, vhText, vecviewText, diffText;
 	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight,sliderDiff;
+	public JList list;
+	public DefaultListModel model;
 	public Container container;
 	File currentDirectory;
 
@@ -173,7 +179,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル4
 		JPanel p4 = new JPanel();
-		p4.setLayout(new GridLayout(11,1));
+		p4.setLayout(new GridLayout(10,1));
 		p4.add(new JLabel("流線表示"));
 		p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
 		p4.add(new JLabel("水色：建物無(ベクトル赤)"));
@@ -206,8 +212,6 @@ public class ViewingPanel extends JPanel {
 		p4.add(zText);
 		generateButton = new JButton("流線決定");
 		p4.add(generateButton);
-		resetAllStreamlineButton = new JButton("全てクリア");
-		p4.add(resetAllStreamlineButton);
 
 		// パネル5
 		JPanel p5 = new JPanel();
@@ -234,6 +238,27 @@ public class ViewingPanel extends JPanel {
 		p5.add(diffText);
 
 
+		JPanel p6 = new JPanel();
+		p6.setLayout(new GridLayout(2,1));
+	    model = new DefaultListModel();
+	    list = new JList(model);
+
+	    JScrollPane sp = new JScrollPane();
+	    sp.getViewport().setView(list);
+	    sp.setPreferredSize(new Dimension(200, 100));
+	    
+	    JLabel label = new JLabel();
+	    highlightStreamline = new JButton("ハイライト");
+	    removeStreamlineButton = new JButton("削除");
+	    resetAllStreamlineButton = new JButton("全て削除");
+	    JPanel pb = new JPanel();
+	    pb.add(label);
+	    //pb.add(highlightStreamline);
+	    pb.add(removeStreamlineButton);
+		pb.add(resetAllStreamlineButton);
+	    p6.add(sp);
+	    p6.add(pb);
+		
 		//
 		// パネル群のレイアウト
 		//
@@ -241,6 +266,7 @@ public class ViewingPanel extends JPanel {
 		tabbedpane.addTab("ベクトル", p2);
 		tabbedpane.addTab("渦度", p3);
 		tabbedpane.addTab("流線", p4);
+		tabbedpane.addTab("流線選択", p6);
 		tabbedpane.addTab("差分", p5);
 		this.add(tabbedpane);
 
@@ -321,6 +347,8 @@ public class ViewingPanel extends JPanel {
 		viewVorticity.addActionListener(actionListener);
 		viewBuildingButton.addActionListener(actionListener);
 		resetAllStreamlineButton.addActionListener(actionListener);
+		removeStreamlineButton.addActionListener(actionListener);
+		//highlightStreamline.addActionListener(actionListener);
 	}
 
 	/**
@@ -382,20 +410,54 @@ public class ViewingPanel extends JPanel {
 				eIjk[1] = sliderY.getValue() * numg[1] / 100;
 				eIjk[2] = sliderZ.getValue() * numg[2] / 100;
 				StreamlineArray.addDeperture(eIjk);
-				canvas.setStreamlineDepertures(StreamlineArray.getAllDeperture());
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
-				//System.out.println("    target:" + grid1.intersectWithTarget(sl1));
 				StreamlineArray.addList1(sl1);
-				canvas.setStreamline1(StreamlineArray.getAllList1());
 				StreamlineGenerator.generate(grid2, sl2, eIjk, null);
-				//System.out.println("    target:" + grid1.intersectWithTarget(sl2));
 				StreamlineArray.addList2(sl2);
+				//StreamlineArray.addList(sl1, sl2, eIjk);
+				canvas.setStreamlineDepertures(StreamlineArray.getAllDeperture());
+				canvas.setStreamline1(StreamlineArray.getAllList1());
 				canvas.setStreamline2(StreamlineArray.getAllList2());
+				//canvas.setStreamlineHighColor(StreamlineArray.color);
+				//canvas.setStreamlineArray(Streamlinearray);
+				model.addElement(" (横："+eIjk[0]+", 高さ："+eIjk[1]+", 縦："+eIjk[2]+")");
 			}
+			
 			if(buttonPushed == resetAllStreamlineButton){
-				StreamlineArray.clearAllDeperture();
-				StreamlineArray.clearAllList1();
-				StreamlineArray.clearAllList2();
+				StreamlineArray.clearAllList();
+				model.clear();
+			}
+			if(buttonPushed == removeStreamlineButton){
+				
+				int[] index = list.getSelectedIndices();
+
+				if (!list.isSelectionEmpty()){
+					if(index.length == 1){
+						StreamlineArray.clearList(index[0]);
+						model.remove(index[0]);
+					}
+					else if (index.length > 1){
+						for (int i = index.length-1 ; i > -1 ; i--){
+							StreamlineArray.clearList(index[i]);
+							model.remove(index[i]);
+						}
+					}
+				}
+			}
+			
+			if(buttonPushed == highlightStreamline){
+				int index = list.getSelectedIndex();
+				
+				if (!list.isSelectionEmpty()){
+					//StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
+						/*
+					else if (index.length > 1){
+						for (int i = index.length-1 ; i > -1 ; i--){
+							StreamlineArray.clearList(index[i]);
+							model.remove(index[i]);
+						}
+					}*/
+				}
 			}
 
 			if (buttonPushed == viewVectorButton) {
@@ -559,12 +621,12 @@ public class ViewingPanel extends JPanel {
 				grid2.startPoint[0] = sliderX.getValue() * numg[0] / 100;
 			}
 			else if (changedSlider == sliderY) {
-				yText.setText(" たて:" + sliderY.getValue());
+				yText.setText(" 高さ:" + sliderY.getValue());
 				grid1.startPoint[1] = sliderY.getValue() * numg[1] / 100;
 				grid2.startPoint[1] = sliderY.getValue() * numg[1] / 100;
 			}
 			else if (changedSlider == sliderZ) {
-				zText.setText(" たかさ:" + sliderZ.getValue());
+				zText.setText(" たて:" + sliderZ.getValue());
 				grid1.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
 				grid2.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
 			}

@@ -17,14 +17,15 @@ import ocha.itolab.flowdiff.core.data.Element;
 import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.data.GridPoint;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
+import ocha.itolab.flowdiff.core.streamline.StreamlineArray;
 import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 import ocha.itolab.flowdiff.util.CriticalPoint;
 import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -77,6 +78,7 @@ public class Drawer implements GLEventListener {
 	Streamline sl1 = null, sl2 = null;
 	ArrayList<Streamline> arrsl1 = null, arrsl2 = null;
 	ArrayList<int[]> deplist = null ; 
+	ArrayList<Boolean> scolor = null;
 	int vheight = 10;
 	int vort = 10;
 	Building b;
@@ -259,6 +261,20 @@ public class Drawer implements GLEventListener {
 	public void setStreamlineDepertures(ArrayList<int[]> allDeperture) {
 		// TODO 自動生成されたメソッド・スタブ
 		deplist = allDeperture;
+	}
+	
+	public void setStreamlineHighColor(ArrayList<Boolean> color) {
+		// TODO 自動生成されたメソッド・スタブ
+		scolor = color;
+	}
+	
+	public void setStreamlineArray() {
+		// TODO 自動生成されたメソッド・スタブ
+		arrsl1 = StreamlineArray.streamlines1;
+		arrsl2 = StreamlineArray.streamlines2;
+		deplist = StreamlineArray.deperture;
+		scolor = StreamlineArray.color;
+		
 	}
 	
 	/**
@@ -451,12 +467,12 @@ public class Drawer implements GLEventListener {
 		if(grid1 != null && arrsl1 != null) {
 			drawStartGrid(grid1);
 			drawStreamlineStart(deplist);
-			drawStreamline(arrsl1, 1);
+			drawStreamline(arrsl1, scolor, 1);
 			//drawEndGrid(grid1);
 		}
 		if(grid2 != null && arrsl2 != null) {
 			//drawStartGrid(grid2);
-			drawStreamline(arrsl2, 2);
+			drawStreamline(arrsl2, scolor, 2);
 			//drawEndGrid(grid2);
 		}
 		
@@ -1035,24 +1051,36 @@ public class Drawer implements GLEventListener {
 	/**
 	 * 流線を描く
 	 */
-	void drawStreamline(ArrayList<Streamline> arrsl, int id) {
+	void drawStreamline(ArrayList<Streamline> arrsl, ArrayList<Boolean> color,int id) {
+		
+		if(id == 1){
+			//grid1ピンク
+			gl2.glColor3d(1.0, 0.0, 1.0);
+		}
+		if(id == 2){
+			//grid2シアン
+			gl2.glColor3d(0.0, 1.0, 1.0);
+		}
 		
 		// 折れ線を描く
 		for(int i=0;i<arrsl.size();i++){
 			Streamline sl = arrsl.get(i);
-			int numvertex = sl.getNumVertex();
-			//始点の描画
+			int numvertex = sl.getNumVertex();	
 			
-			if(id == 1){
-				//grid1ピンク
-				gl2.glColor3d(1.0, 0.0, 1.0);
-			}
-			if(id == 2){
-				//grid2シアン
-				gl2.glColor3d(0.0, 1.0, 1.0);
-			}
+			//色のハイライト
+			/*
+			if(color.get(i)){
+				if(id == 1){
+					//grid1ピンク
+					gl2.glColor3d(1.0, 0.0, 0.0);
+				}
+				if(id == 2){
+					//grid2シアン
+					gl2.glColor3d(0.0, 0.0, 1.0);
+				}
+			}*/
+			
 			gl2.glBegin(GL2.GL_LINE_STRIP);
-			
 			//流線描画
 			for(int j = 0; j < numvertex; j++) {
 				double pos[] = sl.getPosition(j);
@@ -1127,6 +1155,8 @@ public class Drawer implements GLEventListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 }

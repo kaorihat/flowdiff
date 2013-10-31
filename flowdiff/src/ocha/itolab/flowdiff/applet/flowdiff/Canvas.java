@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import ocha.itolab.flowdiff.core.data.Grid;
 import ocha.itolab.flowdiff.core.streamline.Streamline;
+import ocha.itolab.flowdiff.core.streamline.StreamlineArray;
 
 
 /**
@@ -30,6 +31,7 @@ public class Canvas extends JPanel {
 	Grid grid1, grid2;
 	ArrayList<Streamline> sl1, sl2;
 	ArrayList<int[]> depl;
+	Class<StreamlineArray> sa;
 	int vheight;
 	int vort;
 	int diff;
@@ -176,7 +178,20 @@ public class Canvas extends JPanel {
 		depl = allDeperture;
 		drawer.setStreamlineDepertures(allDeperture);
 	}
-
+	
+	public void setStreamlineArray(Class<StreamlineArray> class1){
+		sa = class1;
+		//drawer.setStreamlineArray(sa);
+	}
+/**
+ * 
+ * @param color
+ */
+	public void setStreamlineHighColor(ArrayList<Boolean> color) {
+		// TODO 自動生成されたメソッド・スタブ
+		color = color;
+		drawer.setStreamlineHighColor(color);
+	}
 	/**
 	 * 再描画
 	 */
@@ -428,6 +443,8 @@ public class Canvas extends JPanel {
 		addMouseListener((MouseListener) eventListener);
 		addMouseMotionListener((MouseMotionListener) eventListener);
 	}
+
+	
 
 
 }
