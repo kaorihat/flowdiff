@@ -2,6 +2,7 @@
 package ocha.itolab.flowdiff.applet.flowdiff;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +15,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -71,83 +74,123 @@ public class ViewingPanel extends JPanel {
 		setSize(200, 800);
 
 		JTabbedPane tabbedpane = new JTabbedPane();
+		
+		
 		// パネル1
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(14,1));
+		JPanel p1_1 = new JPanel();
+		JPanel p1_2 = new JPanel();
+		JPanel p1_3 = new JPanel();
+		//p1.setLayout(new BoxLayout(p1,BoxLayout.Y_AXIS));
+		p1.setLayout(new GridLayout(3,1));
+		p1.add(p1_1);
+		p1.add(p1_2);
+		p1.add(p1_3);
+		//p1_1.setLayout(new FlowLayout(FlowLayout.CENTER));
+		p1_1.setLayout(new GridLayout(3,1));
+		p1_2.setLayout(new GridLayout(5,1));
+		p1_3.setLayout(new GridLayout(3,2));
+		
 		openDataButton = new JButton("ファイル読込");
-		viewResetButton = new JButton("元に戻す");
-		p1.add(openDataButton);
-		p1.add(viewResetButton);
-		p1.add(new JLabel("操作"));
+		viewResetButton = new JButton("　元に戻す　");
+		viewBuildingButton = new JButton("　建物表示　");
+		p1_1.add(openDataButton);
+		p1_1.add(viewResetButton);
+		p1_1.add(viewBuildingButton);
+		
+		p1_2.add(new JLabel("操作"));
 		ButtonGroup group1 = new ButtonGroup();
 		viewRotateButton = new JRadioButton("回転",true);//最初にチェックが入っている
 		group1.add(viewRotateButton);
-		p1.add(viewRotateButton);
+		p1_2.add(viewRotateButton);
 		viewScaleButton = new JRadioButton("拡大・縮小");
 		group1.add(viewScaleButton);
-		p1.add(viewScaleButton);
+		p1_2.add(viewScaleButton);
 		viewShiftButton = new JRadioButton("移動");
 		group1.add(viewShiftButton);
-		p1.add(viewShiftButton);
-		p1.add(new JLabel("視点切り替え"));
+		p1_2.add(viewShiftButton);
+		p1_2.add(new JLabel("視点切り替え"));
+		
+		
 		ButtonGroup group4 = new ButtonGroup();
 		viewRotate0 = new JRadioButton("斜め", true);//最初にチェックが入っている
 		group4.add(viewRotate0);
-		p1.add(viewRotate0);
+		p1_3.add(viewRotate0);
 		viewRotate1 = new JRadioButton("真上",true);
 		group4.add(viewRotate1);
-		p1.add(viewRotate1);
+		p1_3.add(viewRotate1);
 		viewRotate2 = new JRadioButton("正面");
 		group4.add(viewRotate2);
-		p1.add(viewRotate2);
+		p1_3.add(viewRotate2);
 		viewRotate3 = new JRadioButton("後ろ");
 		group4.add(viewRotate3);
-		p1.add(viewRotate3);
+		p1_3.add(viewRotate3);
 		viewRotate4 = new JRadioButton("右横");
 		group4.add(viewRotate4);
-		p1.add(viewRotate4);
+		p1_3.add(viewRotate4);
 		viewRotate5 = new JRadioButton("左横");
 		group4.add(viewRotate5);
-		p1.add(viewRotate5);
-		viewBuildingButton = new JButton("建物表示");
-		p1.add(viewBuildingButton);
+		p1_3.add(viewRotate5);
+		
 
+		
+		
 		// パネル2
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(7,1));
+		JPanel p2_1 = new JPanel();
+		JPanel p2_2 = new JPanel();
+		p2.setLayout(new GridLayout(2,1));
+		p2.add(p2_1);
+		p2.add(p2_2);
+		p2_1.setLayout(new GridLayout(5,1));
+		p2_2.setLayout(new GridLayout(2,1));
 		vecviewText = new JLabel("ベクトル表示");
-		p2.add(vecviewText);
+		p2_1.add(vecviewText);
 		ButtonGroup group2 = new ButtonGroup();
 		noneGridView = new JRadioButton("なし",true);//最初にチェックが入っている
 		group2.add(noneGridView);
-		p2.add(noneGridView);
+		p2_1.add(noneGridView);
 		bothGridView = new JRadioButton("両方");
 		group2.add(bothGridView);
-		p2.add(bothGridView);
+		p2_1.add(bothGridView);
 		grid1View = new JRadioButton("建物有(ベクトル白)");
 		group2.add(grid1View);
-		p2.add(grid1View);
+		p2_1.add(grid1View);
 		grid2View = new JRadioButton("建物無(ベクトル赤)");
 		group2.add(grid2View);
-		p2.add(grid2View);
-
+		p2_1.add(grid2View);
+		
 		vheight = new JSlider(0, 85, 10);
-		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue());
+		vtext = new JLabel(" ベクトル面地上から: " + vheight.getValue(),JLabel.CENTER);
 		vheight.setMajorTickSpacing(10);
 		vheight.setMinorTickSpacing(5);
 		vheight.setPaintTicks(true);
-		vheight.setLabelTable(vheight.createStandardLabels(20));
+		vheight.setLabelTable(vheight.createStandardLabels(10));
 		vheight.setPaintLabels(true);
-		p2.add(vheight);
-		p2.add(vtext);
+		p2_2.add(vtext);
+		p2_2.add(vheight);
 
+		
 		// パネル3
 		JPanel p3 = new JPanel();
-		p3.setLayout(new GridLayout(8,1));
+		JPanel p3_1 = new JPanel();
+		JPanel p3_2 = new JPanel();
+		JPanel p3_3 = new JPanel();
+		p3.setLayout(new GridLayout(3,1));
+		p3.add(p3_1);
+		p3.add(p3_2);
+		p3.add(p3_3);
+		//p3_1.setLayout(new FlowLayout(FlowLayout.CENTER));
+		p3_1.setLayout(new GridLayout(2,1));
+		p3_2.setLayout(new GridLayout(2,1));
+		p3_3.setLayout(new GridLayout(5,1));
+		
 		viewCriticalPoint = new JButton("渦中心表示");
-		p3.add(viewCriticalPoint);
+		viewCriticalPoint.setMaximumSize(new Dimension(100, 100));
+		p3_1.add(viewCriticalPoint);
 		viewVorticity = new JButton("渦度表示");
-		p3.add(viewVorticity);
+		p3_1.add(viewVorticity);
+		
 		sliderVH = new JSlider(0, 85, 10);
 		vhText = new JLabel(" 高さ(渦度): " + sliderVH.getValue());
 		sliderVH.setMajorTickSpacing(10);
@@ -155,28 +198,43 @@ public class ViewingPanel extends JPanel {
 		sliderVH.setPaintTicks(true);
 		sliderVH.setLabelTable(sliderVH.createStandardLabels(20));
 		sliderVH.setPaintLabels(true);
-		p3.add(sliderVH);
-		p3.add(vhText);
+		p3_2.add(vhText);
+		p3_2.add(sliderVH);
+		
+		p3_3.add(new JLabel("渦度表示"));
 		ButtonGroup group3 = new ButtonGroup();
 		noneRotView = new JRadioButton("なし", true);//最初にチェックが入っている
 		group3.add(noneRotView);
-		p3.add(noneRotView);
+		p3_3.add(noneRotView);
 		grid1RotView = new JRadioButton("両方");//最初にチェックが入っている
 		group3.add(grid1RotView);
-		p3.add(grid1RotView);
+		p3_3.add(grid1RotView);
 		grid2RotView = new JRadioButton("建物有(ベクトル白)");
 		group3.add(grid2RotView);
-		p3.add(grid2RotView);
+		p3_3.add(grid2RotView);
 		bothRotView = new JRadioButton("建物無(ベクトル赤)");
 		group3.add(bothRotView);
-		p3.add(bothRotView);
+		p3_3.add(bothRotView);
+		
+		
 
 		// パネル4
+
 		JPanel p4 = new JPanel();
-		p4.setLayout(new GridLayout(11,1));
-		p4.add(new JLabel("流線表示"));
-		p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
-		p4.add(new JLabel("水色：建物無(ベクトル赤)"));
+		JPanel p4_1 = new JPanel();
+		JPanel p4_2 = new JPanel();
+		JPanel p4_3 = new JPanel();
+		p4.setLayout(new GridLayout(10,1));
+		//p4.add(p4_2);
+		//p4.add(p4_1);
+		//p4.add(p4_3);
+		
+		//p4_1.setLayout(new GridLayout(8,1));
+		//p4_2.setLayout(new FlowLayout(FlowLayout.CENTER));
+		//p4_3.setLayout(new GridLayout(2,1));
+		
+		
+		p4.add(new JLabel("<html>流線表示<br>ピンク：建物有(ベクトル白)<br>水色：建物無(ベクトル赤)<br><br>流線位置決定</html>"));
 		sliderX = new JSlider(0, 100, 10);
 		sliderX.setMajorTickSpacing(10);
 		sliderX.setMinorTickSpacing(5);
@@ -184,8 +242,8 @@ public class ViewingPanel extends JPanel {
 		sliderX.setLabelTable(sliderX.createStandardLabels(20));
 	    sliderX.setPaintLabels(true);
 	    xText = new JLabel(" よこ: " + sliderX.getValue());
-		p4.add(sliderX);
-		p4.add(xText);
+	    p4.add(xText);
+	    p4.add(sliderX);
 		sliderY = new JSlider(0, 100, 10);
 		sliderY.setMajorTickSpacing(10);
 		sliderY.setMinorTickSpacing(5);
@@ -193,8 +251,8 @@ public class ViewingPanel extends JPanel {
 		sliderY.setLabelTable(sliderY.createStandardLabels(20));
 	    sliderY.setPaintLabels(true);
 	    yText = new JLabel(" 高さ: " + sliderY.getValue());
-		p4.add(sliderY);
-		p4.add(yText);
+	    p4.add(yText);
+	    p4.add(sliderY);
 		sliderZ = new JSlider(0, 100, 10);
 		sliderZ.setMajorTickSpacing(10);
 		sliderZ.setMinorTickSpacing(5);
@@ -202,27 +260,86 @@ public class ViewingPanel extends JPanel {
 		sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
 	    sliderZ.setPaintLabels(true);
 	    zText = new JLabel(" たて: " + sliderZ.getValue());
-		p4.add(sliderZ);
-		p4.add(zText);
+	    p4.add(zText);
+	    p4.add(sliderZ);
+		
+		
+	    String[] initData = {"Blue", "Green", "Red", "Whit", "Black"};
+	    JList  list = new JList(initData);
+	    JScrollPane sp = new JScrollPane();
+	    sp.getViewport().setView(list);
+	    sp.setPreferredSize(new Dimension(100, 80));
+	    p4.add(sp);
+		
 		generateButton = new JButton("流線決定");
 		p4.add(generateButton);
 		resetAllStreamlineButton = new JButton("全てクリア");
 		p4.add(resetAllStreamlineButton);
+		
+		
+		
+		// パネル4
+		/*
+				JPanel p4 = new JPanel();
+				p4.setLayout(new GridLayout(11,1));
+				p4.add(new JLabel("流線表示"));
+				p4.add(new JLabel("ピンク：建物有(ベクトル白)"));
+				p4.add(new JLabel("水色：建物無(ベクトル赤)"));
+				sliderX = new JSlider(0, 100, 30);
+				sliderX.setMajorTickSpacing(10);
+				sliderX.setMinorTickSpacing(5);
+				sliderX.setPaintTicks(true);
+				sliderX.setLabelTable(sliderX.createStandardLabels(20));
+			    sliderX.setPaintLabels(true);
+			    xText = new JLabel(" よこ: " + sliderX.getValue());
+				p4.add(sliderX);
+				p4.add(xText);
+				sliderY = new JSlider(0, 100, 10);
+				sliderY.setMajorTickSpacing(10);
+				sliderY.setMinorTickSpacing(5);
+				sliderY.setPaintTicks(true);
+				sliderY.setLabelTable(sliderY.createStandardLabels(20));
+			    sliderY.setPaintLabels(true);
+			    yText = new JLabel(" 高さ: " + sliderY.getValue());
+				p4.add(sliderY);
+				p4.add(yText);
+				sliderZ = new JSlider(0, 100, 30);
+				sliderZ.setMajorTickSpacing(10);
+				sliderZ.setMinorTickSpacing(5);
+				sliderZ.setPaintTicks(true);
+				sliderZ.setLabelTable(sliderZ.createStandardLabels(20));
+			    sliderZ.setPaintLabels(true);
+			    zText = new JLabel(" たて: " + sliderZ.getValue());
+				p4.add(sliderZ);
+				p4.add(zText);
+				generateButton = new JButton("流線決定");
+				p4.add(generateButton);
+				resetAllStreamlineButton = new JButton("全てクリア");
+				p4.add(resetAllStreamlineButton);
+		*/
+		
 
 		// パネル5
 		JPanel p5 = new JPanel();
-		p5.setLayout(new GridLayout(6,1));
-		p5.add(new JLabel("差分表示"));
+		JPanel p5_1 = new JPanel();
+		JPanel p5_2 = new JPanel();
+		p5.setLayout(new GridLayout(2,1));
+		p5.add(p5_1);
+		p5.add(p5_2);
+		p5_1.setLayout(new GridLayout(4,1));
+		p5_2.setLayout(new GridLayout(2,1));
+		
+		p5_1.add(new JLabel("差分表示"));
 		ButtonGroup group5 = new ButtonGroup();
 		noneDiffView = new JRadioButton("表示しない", true);//最初にチェックが入っている
 		group5.add(noneDiffView);
-		p5.add(noneDiffView);
+		p5_1.add(noneDiffView);
 		showDiffAngView = new JRadioButton("角度差分表示");
 		group5.add(showDiffAngView);
-		p5.add(showDiffAngView);
+		p5_1.add(showDiffAngView);
 		showDiffLenView = new JRadioButton("長さ差分表示");
 		group5.add(showDiffLenView);
-		p5.add(showDiffLenView);
+		p5_1.add(showDiffLenView);
 		sliderDiff = new JSlider(0, 85, 10);
 		sliderDiff.setMajorTickSpacing(10);
 		sliderDiff.setMinorTickSpacing(5);
@@ -230,8 +347,8 @@ public class ViewingPanel extends JPanel {
 		sliderDiff.setLabelTable(sliderDiff.createStandardLabels(10));
 		sliderDiff.setPaintLabels(true);
 	    diffText = new JLabel(" 高さ: " + sliderDiff.getValue());
-		p5.add(sliderDiff);
-		p5.add(diffText);
+	    p5_2.add(diffText);
+	    p5_2.add(sliderDiff);
 
 
 		//
@@ -554,17 +671,17 @@ public class ViewingPanel extends JPanel {
 			int numg[] = grid1.getNumGridPoint();
 			JSlider changedSlider = (JSlider) e.getSource();
 			if (changedSlider == sliderX) {
-				xText.setText(" よこ:" + sliderX.getValue());
+				xText.setText(" 横:" + sliderX.getValue());
 				grid1.startPoint[0] = sliderX.getValue() * numg[0] / 100;
 				grid2.startPoint[0] = sliderX.getValue() * numg[0] / 100;
 			}
 			else if (changedSlider == sliderY) {
-				yText.setText(" たて:" + sliderY.getValue());
+				yText.setText(" 高さ:" + sliderY.getValue());
 				grid1.startPoint[1] = sliderY.getValue() * numg[1] / 100;
 				grid2.startPoint[1] = sliderY.getValue() * numg[1] / 100;
 			}
 			else if (changedSlider == sliderZ) {
-				zText.setText(" たかさ:" + sliderZ.getValue());
+				zText.setText(" 縦:" + sliderZ.getValue());
 				grid1.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
 				grid2.startPoint[2] = sliderZ.getValue() * numg[2] / 100;
 			}
