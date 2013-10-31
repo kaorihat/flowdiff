@@ -348,7 +348,7 @@ public class ViewingPanel extends JPanel {
 		viewBuildingButton.addActionListener(actionListener);
 		resetAllStreamlineButton.addActionListener(actionListener);
 		removeStreamlineButton.addActionListener(actionListener);
-		//highlightStreamline.addActionListener(actionListener);
+		highlightStreamline.addActionListener(actionListener);
 	}
 
 	/**
@@ -412,7 +412,7 @@ public class ViewingPanel extends JPanel {
 				StreamlineGenerator.generate(grid1, sl1, eIjk, null);
 				StreamlineGenerator.generate(grid2, sl2, eIjk, null);
 				StreamlineArray.addList(sl1, sl2, eIjk);
-				canvas.setStreamline(StreamlineArray.deperture, StreamlineArray.streamlines1, StreamlineArray.streamlines2);
+				canvas.setStreamline(StreamlineArray.deperture, StreamlineArray.streamlines1, StreamlineArray.streamlines2, StreamlineArray.color);
 				//canvas.setStreamlineHighColor(StreamlineArray.color);
 				//canvas.setStreamlineArray(Streamlinearray);
 				model.addElement(" (横："+eIjk[0]+", 高さ："+eIjk[1]+2+", 縦："+eIjk[2]+")");
@@ -441,17 +441,16 @@ public class ViewingPanel extends JPanel {
 			}
 			
 			if(buttonPushed == highlightStreamline){
-				int index = list.getSelectedIndex();
+				//ハイライトボタンをおした際、流線の色が変わる
+				int index[] = list.getSelectedIndices();
 				
 				if (!list.isSelectionEmpty()){
-					StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
-						/*
-					else if (index.length > 1){
+					//StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
+					if (index.length > 1){
 						for (int i = index.length-1 ; i > -1 ; i--){
-							StreamlineArray.clearList(index[i]);
-							model.remove(index[i]);
+							StreamlineArray.setStreamlineColor(index[i], !(StreamlineArray.color.get(index[i])));
 						}
-					}*/
+					}
 				}
 			}
 

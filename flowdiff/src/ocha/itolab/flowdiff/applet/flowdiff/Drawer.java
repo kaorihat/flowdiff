@@ -267,11 +267,12 @@ public class Drawer implements GLEventListener {
 		// TODO 自動生成されたメソッド・スタブ
 		scolor = color;
 	}
-	public void setStreamline(ArrayList<int[]> depl, ArrayList<Streamline> sl1, ArrayList<Streamline> sl2) {
+	public void setStreamline(ArrayList<int[]> depl, ArrayList<Streamline> sl1, ArrayList<Streamline> sl2, ArrayList<Boolean> c) {
 		// TODO 自動生成されたメソッド・スタブ
 		deplist = depl;
 		arrsl1 = sl1;
 		arrsl2 = sl2;
+		scolor = c;
 	}
 	public void setStreamlineArray() {
 		// TODO 自動生成されたメソッド・スタブ
@@ -1058,32 +1059,33 @@ public class Drawer implements GLEventListener {
 	 */
 	void drawStreamline(ArrayList<Streamline> arrsl, ArrayList<Boolean> color,int id) {
 		
-		if(id == 1){
-			//grid1ピンク
-			gl2.glColor3d(1.0, 0.0, 1.0);
-		}
-		if(id == 2){
-			//grid2シアン
-			gl2.glColor3d(0.0, 1.0, 1.0);
-		}
-		
 		// 折れ線を描く
 		for(int i=0;i<arrsl.size();i++){
 			Streamline sl = arrsl.get(i);
 			int numvertex = sl.getNumVertex();	
 			
 			//色のハイライト
-			/*
 			if(color.get(i)){
 				if(id == 1){
-					//grid1ピンク
-					gl2.glColor3d(1.0, 0.0, 0.0);
+					//grid1白
+					gl2.glColor3d(1.0, 1.0, 1.0);
 				}
 				if(id == 2){
-					//grid2シアン
-					gl2.glColor3d(0.0, 0.0, 1.0);
+					//grid2黄色
+					gl2.glColor3d(0.5, 1.0, 0.5);
 				}
-			}*/
+			}else{
+				if(i ==0 || color.get(i-1)){
+					if(id == 1){
+						//grid1ピンク
+						gl2.glColor3d(1.0, 0.0, 1.0);
+					}
+					if(id == 2){
+						//grid2シアン
+						gl2.glColor3d(0.0, 1.0, 1.0);
+					}
+				}
+			}
 			
 			gl2.glBegin(GL2.GL_LINE_STRIP);
 			//流線描画

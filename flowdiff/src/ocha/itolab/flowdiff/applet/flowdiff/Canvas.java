@@ -32,6 +32,7 @@ public class Canvas extends JPanel {
 	ArrayList<Streamline> sl1, sl2;
 	ArrayList<int[]> depl;
 	Class<StreamlineArray> sa;
+	ArrayList<Boolean> c;
 	int vheight;
 	int vort;
 	int diff;
@@ -185,12 +186,13 @@ public class Canvas extends JPanel {
 	}
 	
 	public void setStreamline(ArrayList<int[]> deperture, ArrayList<Streamline> streamlines1,
-			ArrayList<Streamline> streamlines2) {
+			ArrayList<Streamline> streamlines2, ArrayList<Boolean> color) {
 		// TODO 自動生成されたメソッド・スタブ
 		depl = deperture;
 		sl1 = streamlines1;
 		sl2 = streamlines2;
-		drawer.setStreamline(depl, sl1, sl2);
+		c = color;
+		drawer.setStreamline(depl, sl1, sl2,c);
 	}
 /**
  * 
