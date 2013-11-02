@@ -247,12 +247,12 @@ public class ViewingPanel extends JPanel {
 	    sp.getViewport().setView(list);
 	    sp.setPreferredSize(new Dimension(200, 100));
 	    
-	    JLabel label = new JLabel();
+	   // JLabel label = new JLabel();
 	    highlightStreamline = new JButton("ハイライト");
 	    removeStreamlineButton = new JButton("削除");
 	    resetAllStreamlineButton = new JButton("全て削除");
 	    JPanel pb = new JPanel();
-	    pb.add(label);
+	    //pb.add(label);
 	    pb.add(highlightStreamline);
 	    pb.add(removeStreamlineButton);
 		pb.add(resetAllStreamlineButton);
@@ -427,11 +427,7 @@ public class ViewingPanel extends JPanel {
 				int[] index = list.getSelectedIndices();
 
 				if (!list.isSelectionEmpty()){
-					if(index.length == 1){
-						StreamlineArray.clearList(index[0]);
-						model.remove(index[0]);
-					}
-					else if (index.length > 1){
+					if (index.length > 0){
 						for (int i = index.length-1 ; i > -1 ; i--){
 							StreamlineArray.clearList(index[i]);
 							model.remove(index[i]);
@@ -446,7 +442,7 @@ public class ViewingPanel extends JPanel {
 				
 				if (!list.isSelectionEmpty()){
 					//StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
-					if (index.length > 1){
+					if (index.length > 0){
 						for (int i = index.length-1 ; i > -1 ; i--){
 							StreamlineArray.setStreamlineColor(index[i], !(StreamlineArray.color.get(index[i])));
 						}

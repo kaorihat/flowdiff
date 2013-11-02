@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class StreamlineArray {
 
-	public static ArrayList<Streamline> streamlines1 = new ArrayList<Streamline>();//流線のリスト
+	public static ArrayList<Streamline> streamlines1 = new ArrayList<Streamline>();//流線の集合リスト
 	public static ArrayList<Streamline> streamlines2 = new ArrayList<Streamline>();
 	public static ArrayList<int[]> deperture = new ArrayList<int[]>();//流線始点のリスト
 	public static ArrayList<Boolean> color = new ArrayList<Boolean>(); //色の変化　初期ビット数

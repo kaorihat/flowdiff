@@ -24,8 +24,8 @@ import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
@@ -1075,21 +1075,19 @@ public class Drawer implements GLEventListener {
 					gl2.glColor3d(0.5, 1.0, 0.5);
 				}
 			}else{
-				if(i ==0 || color.get(i-1)){
-					if(id == 1){
-						//grid1ピンク
-						gl2.glColor3d(1.0, 0.0, 1.0);
-					}
-					if(id == 2){
-						//grid2シアン
-						gl2.glColor3d(0.0, 1.0, 1.0);
-					}
+				if(id == 1){
+					//grid1ピンク
+					gl2.glColor3d(1.0, 0.0, 1.0);
+				}
+				if(id == 2){
+					//grid2シアン
+					gl2.glColor3d(0.0, 1.0, 1.0);
 				}
 			}
-			
+
 			gl2.glBegin(GL2.GL_LINE_STRIP);
 			//流線描画
-			for(int j = 0; j < numvertex; j++) {
+			for(int j = 0; j < numvertex-1; j++) {
 				double pos[] = sl.getPosition(j);
 				gl2.glVertex3d(pos[0], pos[1], pos[2]);
 			}
