@@ -527,13 +527,17 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
-		gl2.glColor3d(0.18, 0.18, 0.18);
+		
+		//地面だけ色を変える
+		//gl2.glColor3d(0.18, 0.18, 0.18);
+		/*
 		gl2.glBegin(GL.GL_TRIANGLE_FAN);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
 		gl2.glEnd();
+		*/
 	}
 	
 	/**
@@ -587,40 +591,30 @@ public class Drawer implements GLEventListener {
 		}else{
 			type = 6;
 		}
-		for (int i = 0; i < grid.getNumGridPointAll(); i++) {
-			gl2.glPointSize(3.0f);
-			if(grid.getGridPoint(i).getBuildingLabel()==0){
-				continue;
-			}else if(grid.getGridPoint(i).getBuildingLabel()==6){
-				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingLabel()==7){
-				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingLabel()==8){
-				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingLabel()==9){
-				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingLabel()==10){
-				gl2.glColor3d(0.0, 0.0, 1.0);
-			}else if(grid.getGridPoint(i).getBuildingLabel()==11){
-				gl2.glColor3d(0.0, 0.0, 1.0);
+		//海・滑走路を描く
+		for(int i =6;i<12;i++){
+			GridPoint minmaxXZ[] = b.minmaxPosXZ(grid1,i);
+			if(i == 11){
+				gl2.glColor3d(0.35, 0.35, 0.35);
+			}else{
+				gl2.glColor3d(0.0, 0.0, 0.4);
 			}
-			else{
-				continue;
-				//gl2.glColor3d(1.0, 0.0, 0.0);
-			}
-				gl2.glBegin(GL.GL_POINTS);
-				gl2.glVertex3d(grid.getGridPoint(i).getPosition()[0], grid.getGridPoint(i).getPosition()[1], grid.getGridPoint(i).getPosition()[2]);
-				gl2.glEnd();
-				gl2.glPointSize(1.0f);
+			gl2.glBegin(GL.GL_TRIANGLE_FAN);
+			gl2.glVertex3d(minmaxXZ[0].getPosition()[0], minmaxXZ[0].getPosition()[1], minmaxXZ[0].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[1].getPosition()[0], minmaxXZ[1].getPosition()[1], minmaxXZ[1].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[2].getPosition()[0], minmaxXZ[2].getPosition()[1], minmaxXZ[2].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[3].getPosition()[0], minmaxXZ[3].getPosition()[1], minmaxXZ[3].getPosition()[2]);
+			gl2.glEnd();
 		}
+
 		for(int i=1; i<type;i++){
 			GridPoint minmax[] = b.minmaxPos(grid1,i);
 			//System.out.println("minmax="+minmax.length);
 
 			// 建物を描く
-			gl2.glColor3d(0.0, 0.7, 0.3);
+			gl2.glColor3d(0.0, 0.5, 0.2);
 			if(i==5){
-				gl2.glColor3d(0.0, 0.3, 0.7);
+				gl2.glColor3d(0.0, 0.2, 0.5);
 			}
 			gl2.glBegin(GL.GL_TRIANGLE_FAN);
 			gl2.glVertex3d(minmax[0].getPosition()[0], minmax[0].getPosition()[1], minmax[0].getPosition()[2]);

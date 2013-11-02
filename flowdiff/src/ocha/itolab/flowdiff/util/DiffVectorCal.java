@@ -74,18 +74,18 @@ public class DiffVectorCal {
 				double len1 = grid1.getGridPoint(i).getLength();
 				double len2 = grid2.getGridPoint(i).getLength();
 				if(i%1000 == 0){
-					System.out.println("len1="+len1+"len2="+len2);
+					//System.out.println("len1="+len1+"len2="+len2);
 				}
 				length[i].setLenDiff(Math.abs(len1-len2));
 			}
 			if(max < length[i].getLenDiff()){
 				if(i%1000 == 0){
-					System.out.println("max1="+max+"max2="+length[i].getLenDiff());
+					//System.out.println("max1="+max+"max2="+length[i].getLenDiff());
 				}
 				max = length[i].getLenDiff();
 			}
 		}
-		System.out.println("max="+max);
+		//System.out.println("max="+max);
 	}
 	
 	

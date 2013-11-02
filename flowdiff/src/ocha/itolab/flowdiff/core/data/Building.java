@@ -95,17 +95,20 @@ public class Building {
 	}
 	
 	
-	
+	/**
+	 * ラベルの端を取得するメソッド
+	 * @param grid
+	 * @param label
+	 * @return
+	 */
 	public GridPoint[] minmaxPos(Grid grid,int label){
-		GridPoint[] gp;
-		if(label < 6){
-			gp = new GridPoint[8];
-		}else{
-			gp = new GridPoint[8];
-		}
+		
+		GridPoint[] gp = new GridPoint[8];
 		int num = 0;
+		
 		for(int i = 0; i < grid.getNumGridPointAll(); i++) {
 			if(grid.getGridPoint(i).getBuildingLabel() == label){
+				//同じラベルのみ
 				int x = grid.getNumGridPoint()[0];
 				int y = grid.getNumGridPoint()[1];
 				int count = 0;
@@ -153,6 +156,47 @@ public class Building {
 		return gp;
 		
 	}
+	
+	/**
+	 * 
+	 * @param grid
+	 * @param label
+	 * @return
+	 */
+public GridPoint[] minmaxPosXZ(Grid grid,int label){
+		
+		GridPoint[] gp = new GridPoint[4];
+		double minX = 10000;//この一万は適当な値　大きければなんでもよかった・・・・
+		double minZ = 10000;
+		double maxX= grid.getGridPoint(0).getPosition()[0];
+		double maxZ = grid.getGridPoint(0).getPosition()[2];
+		double Y = grid.getGridPoint(0).getPosition()[1];
+		
+		for(int i = 0; i < grid.getNumGridPointAll(); i++) {
+			if(grid.getGridPoint(i).getBuildingLabel() == label){
+				if(minX > grid.getGridPoint(i).getPosition()[0]){
+					minX = grid.getGridPoint(i).getPosition()[0];
+				}
+				if(minZ > grid.getGridPoint(i).getPosition()[2]){
+					minZ = grid.getGridPoint(i).getPosition()[2];
+				}
+				if(maxX < grid.getGridPoint(i).getPosition()[0]){
+					maxX = grid.getGridPoint(i).getPosition()[0];
+				}
+				if(maxZ < grid.getGridPoint(i).getPosition()[2]){
+					maxZ = grid.getGridPoint(i).getPosition()[2];
+				}
+			}
+		}
+		for(int i=0;i<4;i++){
+			gp[i] = new GridPoint();
+		}
+		gp[0].setPosition(minX-0.01, Y, minZ); //ちょこっと小細工　-0.1　汎用性なくてごめんなさい
+		gp[1].setPosition(minX-0.01, Y, maxZ);
+		gp[2].setPosition(maxX, Y, maxZ);
+		gp[3].setPosition(maxX, Y, minZ);
+		return gp;
+}
 	/*
 	public void labeling(Grid grid){
 		int label = 1;
