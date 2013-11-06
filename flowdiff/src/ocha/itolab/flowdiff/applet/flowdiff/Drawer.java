@@ -892,18 +892,51 @@ public class Drawer implements GLEventListener {
 					gl2.glEnd();
 				}
 			}
-		}/*
+		}
 		else if(type == 3){
+			int vlen = 20; //ベクトルの長さを調節する値
 			for (int i = 0; i < num; i++) {
+				double vpos1[] = new double[3];
+				double vpos2[] = new double[3];
+				//grid1のベクトル位置
+				vpos1[0] = gp[i].getPosition()[0] + gp[i].getVector()[0]/vlen;
+				vpos1[1] = gp[i].getPosition()[1] + gp[i].getVector()[1]/vlen;
+				vpos1[2] = gp[i].getPosition()[2] + gp[i].getVector()[2]/vlen;
+				//grid2のベクトル位置
+				vpos2[0] = gp2[i].getPosition()[0] + gp2[i].getVector()[0]/vlen;
+				vpos2[1] = gp2[i].getPosition()[1] + gp2[i].getVector()[1]/vlen;
+				vpos2[2] = gp2[i].getPosition()[2] + gp2[i].getVector()[2]/vlen;
 				gl2.glEnable(GL.GL_BLEND);
 				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				gl2.glColor3d(1.0, 1.0, 0.0);
-				gl2.glBegin(GL.GL_POINTS);
-				gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
-				gl2.glVertex3d(gp2[i].getPosition()[0], gp2[i].getPosition()[1], gp2[i].getPosition()[2]);
+				gl2.glBegin(GL.GL_LINES);
+				gl2.glVertex3d(vpos1[0], vpos1[1], vpos1[2]);
+				gl2.glVertex3d(vpos2[0], vpos2[1], vpos2[2]);
 				gl2.glEnd();
 			}
-		}*/
+		}
+		else if(type == 4){
+			int vlen = 20; //ベクトルの長さを調節する値
+			for (int i = 0; i < num; i++) {
+				double vpos1[] = new double[3];
+				double vpos2[] = new double[3];
+				//grid1のベクトル位置
+				vpos1[0] = gp[i].getPosition()[0] + gp[i].getVector()[0];
+				vpos1[1] = gp[i].getPosition()[1] + gp[i].getVector()[1];
+				vpos1[2] = gp[i].getPosition()[2] + gp[i].getVector()[2];
+				//grid2のベクトル位置
+				vpos2[0] = gp2[i].getPosition()[0] + gp2[i].getVector()[0];
+				vpos2[1] = gp2[i].getPosition()[1] + gp2[i].getVector()[1];
+				vpos2[2] = gp2[i].getPosition()[2] + gp2[i].getVector()[2];
+				gl2.glEnable(GL.GL_BLEND);
+				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl2.glColor3d(1.0, 1.0, 0.0);
+				gl2.glBegin(GL.GL_LINES);
+				gl2.glVertex3d(vpos1[0], vpos1[1], vpos1[2]);
+				gl2.glVertex3d(vpos2[0], vpos2[1], vpos2[2]);
+				gl2.glEnd();
+			}
+		}
 	}
 
 	/**

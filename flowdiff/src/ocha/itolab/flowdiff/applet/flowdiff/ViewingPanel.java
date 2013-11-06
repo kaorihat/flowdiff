@@ -45,7 +45,7 @@ public class ViewingPanel extends JPanel {
 	resetAllStreamlineButton,removeStreamlineButton,highlightStreamline;
 	public JRadioButton viewRotateButton, viewScaleButton, viewShiftButton, noneGridView, grid1View, grid2View, bothGridView,
 	noneRotView, grid1RotView, grid2RotView, bothRotView,viewRotate0,viewRotate1,viewRotate2,viewRotate3,viewRotate4,viewRotate5,
-	showDiffAngView,showDiffLenView,noneDiffView;
+	showDiffAngView,showDiffLenView,noneDiffView,showDiffVectorView,showDiffVectorViewLength;
 	public JLabel xText, yText, zText, vtext, vhText, vecviewText, diffText;
 	public JSlider sliderX, sliderY, sliderZ,sliderVH,vheight,sliderDiff;
 	public JList list;
@@ -217,7 +217,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル5
 		JPanel p5 = new JPanel();
-		p5.setLayout(new GridLayout(6,1));
+		p5.setLayout(new GridLayout(7,1));
 		p5.add(new JLabel("差分表示"));
 		ButtonGroup group5 = new ButtonGroup();
 		noneDiffView = new JRadioButton("表示しない", true);//最初にチェックが入っている
@@ -229,6 +229,12 @@ public class ViewingPanel extends JPanel {
 		showDiffLenView = new JRadioButton("長さ差分表示");
 		group5.add(showDiffLenView);
 		p5.add(showDiffLenView);
+		showDiffVectorView = new JRadioButton("ベクトル差分表示");
+		group5.add(showDiffVectorView);
+		p5.add(showDiffVectorView);
+		showDiffVectorViewLength = new JRadioButton("ベクトル差分表示");
+		group5.add(showDiffVectorViewLength);
+		p5.add(showDiffVectorViewLength);
 		sliderDiff = new JSlider(0, 85, 10);
 		sliderDiff.setMajorTickSpacing(10);
 		sliderDiff.setMinorTickSpacing(5);
@@ -335,6 +341,8 @@ public class ViewingPanel extends JPanel {
 		noneDiffView.addActionListener(actionListener);
 		showDiffAngView.addActionListener(actionListener);
 		showDiffLenView.addActionListener(actionListener);
+		showDiffVectorView.addActionListener(actionListener);
+		showDiffVectorViewLength.addActionListener(actionListener);
 	}
 
 	/**
@@ -581,6 +589,12 @@ public class ViewingPanel extends JPanel {
 			}
 			if(buttonPushed == showDiffLenView){
 				canvas.setDiffVector(2);
+			}
+			if(buttonPushed == showDiffVectorView){
+				canvas.setDiffVector(3);
+			}
+			if(buttonPushed == showDiffVectorViewLength){
+				canvas.setDiffVector(4);
 			}
 			canvas.display();
 		}
