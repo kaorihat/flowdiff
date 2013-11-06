@@ -35,8 +35,10 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 public class ViewingPanel extends JPanel {
 
 	// ベクタ場のファイルを読み込む（相対パス）
-	static String url1 = "file:../data/kassoro/ari/";
-	static String url2 = "file:../data/kassoro/nashi/";
+	//static String url1 = "file:../data/kassoro/ari/";
+	//static String url2 = "file:../data/kassoro/nashi/";
+	static String url1 = "file:../data/kassoro/ari90/";
+	static String url2 = "file:../data/kassoro/nashi90/";
 
 
 	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity,
@@ -246,7 +248,7 @@ public class ViewingPanel extends JPanel {
 	    JScrollPane sp = new JScrollPane();
 	    sp.getViewport().setView(list);
 	    sp.setPreferredSize(new Dimension(200, 100));
-	    
+
 	   // JLabel label = new JLabel();
 	    highlightStreamline = new JButton("ハイライト");
 	    removeStreamlineButton = new JButton("削除");
@@ -258,7 +260,7 @@ public class ViewingPanel extends JPanel {
 		pb.add(resetAllStreamlineButton);
 	    p6.add(sp);
 	    p6.add(pb);
-		
+
 		//
 		// パネル群のレイアウト
 		//
@@ -417,13 +419,13 @@ public class ViewingPanel extends JPanel {
 				//canvas.setStreamlineArray(Streamlinearray);
 				model.addElement(" (横："+eIjk[0]+", 高さ："+eIjk[1]+2+", 縦："+eIjk[2]+")");
 			}
-			
+
 			if(buttonPushed == resetAllStreamlineButton){
 				StreamlineArray.clearAllList();
 				model.clear();
 			}
 			if(buttonPushed == removeStreamlineButton){
-				
+
 				int[] index = list.getSelectedIndices();
 
 				if (!list.isSelectionEmpty()){
@@ -435,11 +437,11 @@ public class ViewingPanel extends JPanel {
 					}
 				}
 			}
-			
+
 			if(buttonPushed == highlightStreamline){
 				//ハイライトボタンをおした際、流線の色が変わる
 				int index[] = list.getSelectedIndices();
-				
+
 				if (!list.isSelectionEmpty()){
 					//StreamlineArray.setStreamlineColor(index, !(StreamlineArray.color.get(index)));
 					if (index.length > 0){

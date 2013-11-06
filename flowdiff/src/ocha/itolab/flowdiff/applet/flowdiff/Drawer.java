@@ -24,14 +24,14 @@ import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
 /**
  * 描画処理のクラス
- * 
+ *
  * @author itot
  */
 public class Drawer implements GLEventListener {
@@ -56,7 +56,7 @@ public class Drawer implements GLEventListener {
 	boolean isCriticalPoint = false;
 	boolean isVorticity = false;
 	boolean isBuilding = false;
-	
+
 
 	double linewidth = 1.0;
 	long datemin, datemax;
@@ -77,7 +77,7 @@ public class Drawer implements GLEventListener {
 	Grid grid1 = null, grid2 = null;
 	Streamline sl1 = null, sl2 = null;
 	ArrayList<Streamline> arrsl1 = null, arrsl2 = null;
-	ArrayList<int[]> deplist = null ; 
+	ArrayList<int[]> deplist = null ;
 	ArrayList<Boolean> scolor = null;
 	int vheight = 10;
 	int vort = 10;
@@ -86,10 +86,10 @@ public class Drawer implements GLEventListener {
 	DiffVectorCal dv;
 	int hdiff = 50;
 	int numDiff = 0;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param width
 	 *            描画領域の幅
 	 * @param height
@@ -129,13 +129,13 @@ public class Drawer implements GLEventListener {
 
 	/**
 	 * Transformerをセットする
-	 * 
+	 *
 	 * @param transformer
 	 */
 	public void setTransformer(Transformer view) {
 		this.trans = view;
 	}
-	
+
 	/**
 	 * 高さをセットする
 	 * @return
@@ -161,7 +161,7 @@ public class Drawer implements GLEventListener {
 	public void setRotView(int r){
 		this.isRotView = r;
 	}
-	
+
 	public void setCriticalPoint(boolean c){
 		this.isCriticalPoint = c;
 	}
@@ -177,7 +177,7 @@ public class Drawer implements GLEventListener {
 	public void setDiffheight(int h){
 		this.hdiff = h;
 	}
-	
+
 	/**
 	 * Gridをセットする
 	 */
@@ -190,7 +190,7 @@ public class Drawer implements GLEventListener {
 		setBuildingLabel(grid1);
 		setVorticity1(grid1);
 	}
-	
+
 	/**
 	 * Gridをセットする
 	 */
@@ -202,7 +202,7 @@ public class Drawer implements GLEventListener {
 		centerZ = (minmax[4] + minmax[5]) * 0.5;
 		setVorticity2(grid2);
 	}
-	
+
 	/*
 	 * 建物のラベリングを行う（コンストラクタでインスタンス作成）
 	 * gridを取得した場所(setGrid1)で使用
@@ -232,7 +232,7 @@ public class Drawer implements GLEventListener {
 		dv.calDiffAngle(grid1,grid2);
 		dv.calDiffLen(grid1,grid2);
 	}
-	
+
 	/**
 	void setDiffAngVector(Grid grid1,Grid grid2){
 		dv.calDiffAngle(grid1,grid2);
@@ -262,7 +262,7 @@ public class Drawer implements GLEventListener {
 		// TODO 自動生成されたメソッド・スタブ
 		deplist = allDeperture;
 	}
-	
+
 	public void setStreamlineHighColor(ArrayList<Boolean> color) {
 		// TODO 自動生成されたメソッド・スタブ
 		scolor = color;
@@ -280,12 +280,12 @@ public class Drawer implements GLEventListener {
 		arrsl2 = StreamlineArray.streamlines2;
 		deplist = StreamlineArray.deperture;
 		scolor = StreamlineArray.color;
-		
+
 	}
-	
+
 	/**
 	 * 描画領域のサイズを設定する
-	 * 
+	 *
 	 * @param width
 	 *            描画領域の幅
 	 * @param height
@@ -298,7 +298,7 @@ public class Drawer implements GLEventListener {
 
 	/**
 	 * マウスボタンのON/OFFを設定する
-	 * 
+	 *
 	 * @param isMousePressed
 	 *            マウスボタンが押されていればtrue
 	 */
@@ -308,7 +308,7 @@ public class Drawer implements GLEventListener {
 
 	/**
 	 * 線の太さをセットする
-	 * 
+	 *
 	 * @param lw
 	 *            線の太さ（画素数）
 	 */
@@ -333,7 +333,7 @@ public class Drawer implements GLEventListener {
 
 	/**
 	 * マウスドラッグのモードを設定する
-	 * 
+	 *
 	 * @param dragMode
 	 *            (1:ZOOM 2:SHIFT 3:ROTATE)
 	 */
@@ -389,7 +389,7 @@ public class Drawer implements GLEventListener {
 	 */
 	public void display(GLAutoDrawable drawable) {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		
+
 		// 視点位置を決定
 		gl2.glLoadIdentity();
 		glu.gluLookAt(centerX, centerY, (centerZ + 20.0), centerX, centerY,
@@ -428,14 +428,14 @@ public class Drawer implements GLEventListener {
 		drawBox();
 		//建物の描画
 		drawBuilding2(grid1,isBuilding);
-		
-		
+
+
 		//両方ベクトル表示
 		if(isVectorView == 1){
 			drawVectorPart(grid1,1,vheight,20);
 			drawVectorPart(grid2,2,vheight,20);
 		}
-		
+
 		//grid1ベクトル表示
 		if(isVectorView == 2){
 			drawVectorPart(grid1,1,vheight,20);
@@ -444,7 +444,7 @@ public class Drawer implements GLEventListener {
 		if(isVectorView == 3){//ベクトル表示の有無
 			drawVectorPart(grid2,2,vheight,20);
 		}
-		
+
 		//渦度表示
 		if(isRotView == 1){//両方
 			drawVorticity(grid1,vort,1,vc1);
@@ -481,20 +481,20 @@ public class Drawer implements GLEventListener {
 			drawStreamline(arrsl2, scolor, 2);
 			//drawEndGrid(grid2);
 		}
-		
+
 		// 行列をポップ
 		gl2.glPopMatrix();
 
 	}
 
-	
+
 	/**
 	 * 格子領域を箱で描画する
 	 */
 	void drawBox() {
 		if(grid1 == null) return;
 		double minmax[] = grid1.getMinmaxPos();
-		
+
 		// 6本のループを描く
 		gl2.glColor3d(0.5, 0.5, 0.5);
 		gl2.glBegin(GL.GL_LINE_LOOP);
@@ -527,7 +527,7 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
-		
+
 		//地面だけ色を変える
 		//gl2.glColor3d(0.18, 0.18, 0.18);
 		/*
@@ -539,17 +539,17 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 		*/
 	}
-	
+
 	/**
 	 * 建物を描画する
 	 * @param grid
 	 */
 	void drawBuilding(Grid grid){
 		if(grid == null) return;
-		
+
 		//建物がある座標に点を描画
 		for(int i = 0;i<grid.getNumGridPointAll();i++){
-			
+
 			if(grid.getGridPoint(i).getEnvironment() != 0.0){
 				if(grid.getGridPoint(i).getEnvironment() == 0.5){
 					gl2.glColor3d(0.0, 0.0, 1.0);
@@ -582,7 +582,7 @@ public class Drawer implements GLEventListener {
 				gl2.glEnd();
 		}
 	}
-	
+
 	void drawBuilding2(Grid grid,boolean t){
 		if(grid == null) return;
 		int type = 0;
@@ -654,7 +654,7 @@ public class Drawer implements GLEventListener {
 	 */
 	void drawVector(Grid grid){
 		if(grid == null) return;
-		
+
 		for(int i = 0; i < grid.getNumGridPointAll();i++){
 			gl2.glColor3d(1.0, 0.0, 0.0);
 			gl2.glBegin(GL.GL_POINTS);
@@ -662,7 +662,7 @@ public class Drawer implements GLEventListener {
 			gl2.glEnd();
 		}
 	}
-	
+
 	/**
 	 * 一平面ベクトルの描画(高さ)
 	 * @param grid
@@ -673,7 +673,7 @@ public class Drawer implements GLEventListener {
 	void drawVectorPart(Grid grid, int type,int h,int l){
 		if(grid == null) return;
 		if(h == 85) return;//ぬるぽ対策
-		
+
 		int height = h;//高さ80
 		int test = grid.getNumGridPoint()[0]*height;//描画する最初の要素
 		int next = grid.getNumGridPoint()[0]*grid.getNumGridPoint()[1];//描画する次の列
@@ -700,7 +700,7 @@ public class Drawer implements GLEventListener {
 					vpos[0] = grid.getGridPoint(num+j).getVector()[0];
 					vpos[1] = grid.getGridPoint(num+j).getVector()[1];
 					vpos[2] = grid.getGridPoint(num+j).getVector()[2];
-					
+
 					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
 						gl2.glColor3d(0.8, 0.8, 0.8);
@@ -708,7 +708,7 @@ public class Drawer implements GLEventListener {
 						gl2.glColor3d(1.0, 0.2, 0.2);
 					}
 					//ベクトルの描画
-					
+
 					//
 					//gl2.glLineWidth(0.001f);
 					//gl2.glBegin(GL.GL_LINE_LOOP);
@@ -730,7 +730,7 @@ public class Drawer implements GLEventListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * エレメント群の描写（端っこの）
 	 * @param grid
@@ -748,7 +748,7 @@ public class Drawer implements GLEventListener {
 				}
 			}
 		}
-		
+
 	}
 	/**
 	 * 渦中心の表示
@@ -759,7 +759,7 @@ public class Drawer implements GLEventListener {
 		ArrayList<CriticalPoint> array = new ArrayList<CriticalPoint>();
 		CriticalPointFinder cpf = new CriticalPointFinder();
 		array = cpf.find(grid);
-		
+
 		gl2.glColor3d(0.0, 1.0, 1.0);
 		gl2.glPointSize(2.f);
 		//ベクトルの描画
@@ -793,21 +793,21 @@ public class Drawer implements GLEventListener {
 			}else{
 				continue;
 			}
-			
+
 			gl2.glBegin(GL.GL_POINTS);
 			gl2.glVertex3d(vc.vorticity[i].getPosition()[0], vc.vorticity[i].getPosition()[1], vc.vorticity[i].getPosition()[2]);
 			gl2.glEnd();
 		}
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
-	
+
 	void drawVorticity(Grid grid, int height,int type,VorticityCalculate vc){
 		if(grid == null) return;
 		int posnum = grid.getNumElement()[0]*height + 1;
 		gl2.glPointSize(2.0f);
 		//渦度の描画
 		for(int i = 0; i < grid.getNumElement()[2];i++){
-			
+
 			for(int j = 0;j <grid.getNumElement()[0];j++){
 				if(vc.vorticity[posnum+j].getVorticity()>2.0){
 					gl2.glEnable(GL.GL_BLEND);
@@ -837,7 +837,7 @@ public class Drawer implements GLEventListener {
 				}else{
 					continue;
 				}
-				
+
 				gl2.glBegin(GL.GL_POINTS);
 				gl2.glVertex3d(vc.vorticity[posnum+j].getPosition()[0], vc.vorticity[posnum+j].getPosition()[1], vc.vorticity[posnum+j].getPosition()[2]);
 				gl2.glEnd();
@@ -846,7 +846,7 @@ public class Drawer implements GLEventListener {
 		}
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
-	
+
 	/**
 	 * 差分の表示
 	 */
@@ -860,15 +860,18 @@ public class Drawer implements GLEventListener {
 
 		//差分の描画
 		GridPoint[] gp = grid1.getPlanePoints(hdiff);
-		
+		GridPoint[] gp2 = grid2.getPlanePoints(hdiff);
+
 		if(type == 1){
 			for(int i = 0; i < num;i++){
 				if(gp[i].getAngDiff() != Double.NaN){
 					double angle = gp[i].getAngDiff();
+					double color = Math.log((Math.E-1)*(angle-1)/(Math.PI-1)+1);
+					//double color = Math.exp(Math.log(2)*angle/Math.PI)-1;
 					//System.out.println("angle =" +angle);
 					gl2.glEnable(GL.GL_BLEND);
 					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-					gl2.glColor4d(angle/Math.PI, 0.0, 0.0, angle/Math.PI);
+					gl2.glColor4d(color, 0.0, 0.0, color);
 					gl2.glBegin(GL.GL_POINTS);
 					gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
 					gl2.glEnd();
@@ -879,18 +882,30 @@ public class Drawer implements GLEventListener {
 			for(int i = 0; i < num;i++){
 				if(gp[i].getLenDiff() != Double.NaN){
 					double length = gp[i].getLenDiff();
+					double color = Math.exp(Math.log(2)*length/dv.max)-1;
 					//System.out.println("angle =" +angle);
 					gl2.glEnable(GL.GL_BLEND);
 					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-					gl2.glColor4d(length/dv.max, 0.0, 0.0, length/dv.max);
+					gl2.glColor4d(color, 0.0, 0.0, color);
 					gl2.glBegin(GL.GL_POINTS);
 					gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
 					gl2.glEnd();
 				}
 			}
-		}
+		}/*
+		else if(type == 3){
+			for (int i = 0; i < num; i++) {
+				gl2.glEnable(GL.GL_BLEND);
+				gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl2.glColor3d(1.0, 1.0, 0.0);
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(gp[i].getPosition()[0], gp[i].getPosition()[1], gp[i].getPosition()[2]);
+				gl2.glVertex3d(gp2[i].getPosition()[0], gp2[i].getPosition()[1], gp2[i].getPosition()[2]);
+				gl2.glEnd();
+			}
+		}*/
 	}
-	
+
 	/**
 	 * 始点を描画する(エレメントを描画)
 	 */
@@ -904,7 +919,7 @@ public class Drawer implements GLEventListener {
 		double minmax[] = new double[6];
 		minmax[0] = minmax[2] = minmax[4] = 1.0e+30;
 		minmax[1] = minmax[3] = minmax[5] = -1.0e+30;
-		
+
 		Element element = grid.getElement(grid.calcElementId(i, j, k));
 		for (int d = 0; d < 8; d++){
 			double pos[] = element.gp[d].getPosition();
@@ -913,10 +928,10 @@ public class Drawer implements GLEventListener {
 				minmax[loop*2 + 1] = (minmax[loop*2 + 1] < pos[loop] ? pos[loop] : minmax[loop*2 + 1]);
 			}
 		}
-		
+
 		// 6本のループを描く
 		gl2.glColor3d(1.0, 1.0, 1.0);
-		
+
 		gl2.glBegin(GL.GL_LINE_LOOP);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
@@ -954,38 +969,38 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
 	}
-	
+
 	/**
 	 * 始点を描画する（エレメントの中心を描画）
 	 */
 	void drawStartGrid(Grid grid, int[] dep){
 		int i, j, k;
 		double[] pos = new double[3];
-		
+
 		if(grid == null) return;
 		i = dep[0];
 		j = dep[1];
 		k = dep[2];
 		//エレメントの中心座標を描画する
 		pos = grid.calcElementCenter(i, j, k);
-		
+
 		gl2.glColor3d(1.0, 1.0, 1.0);
 		gl2.glBegin(GL.GL_POINTS);
 		gl2.glVertex3d(pos[0], pos[1], pos[2]);
 		gl2.glEnd();
 	}
-	
-	
+
+
 	/**
 	 * 流線の行き着いた先の格子を描く
 	 */
 	public void drawEndGrid(Grid grid){
 		if(grid == null) return;
-		
+
 		double minmax[] = new double[6];
 		minmax[0] = minmax[2] = minmax[4] = 1.0e+30;
 		minmax[1] = minmax[3] = minmax[5] = -1.0e+30;
-		
+
 		Element element;
 		int lastId = StreamlineGenerator.lastElementId();
 		if (lastId > 0) {
@@ -1002,11 +1017,11 @@ public class Drawer implements GLEventListener {
 				minmax[loop*2 + 1] = (minmax[loop*2 + 1] < pos[loop] ? pos[loop] : minmax[loop*2 + 1]);
 			}
 		}
-		
+
 		// 6本のループを描く
 
 		gl2.glColor3d(0.0, 1.0, 0.0);
-		
+
 		gl2.glBegin(GL.GL_LINE_LOOP);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
@@ -1043,21 +1058,21 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(minmax[1], minmax[3], minmax[5]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glEnd();
-	
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 流線を描く
 	 */
 	void drawStreamline(ArrayList<Streamline> arrsl, ArrayList<Boolean> color,int id) {
-		
+
 		// 折れ線を描く
 		for(int i=0;i<arrsl.size();i++){
 			Streamline sl = arrsl.get(i);
-			int numvertex = sl.getNumVertex();	
-			
+			int numvertex = sl.getNumVertex();
+
 			//色のハイライト
 			if(color.get(i)){
 				if(id == 1){
@@ -1133,7 +1148,7 @@ public class Drawer implements GLEventListener {
 		gl2.glVertex3d(egp[1].getPosition()[0], egp[1].getPosition()[1], egp[1].getPosition()[2]);
 		gl2.glEnd();
 	}
-	
+
 	//平面にエレメントが表示されるかのチェック
 	void drawElement3(Grid grid,int height){
 		if(grid == null) return;
@@ -1152,7 +1167,7 @@ public class Drawer implements GLEventListener {
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
