@@ -280,7 +280,6 @@ public class Drawer implements GLEventListener {
 		arrsl2 = StreamlineArray.streamlines2;
 		deplist = StreamlineArray.deperture;
 		scolor = StreamlineArray.color;
-
 	}
 
 	/**
@@ -681,6 +680,14 @@ public class Drawer implements GLEventListener {
 		double[] gpos = new double[3];
 		double[] vpos = new double[3];
 		int vlen = l; //ベクトルの長さを調節する値(大きいと短くなる)
+		double[] maxvec = new double[3];
+		double[] minvec = new double[3];
+		double[] maxdiff = new double[3];
+		maxvec = grid.getMaxVector();
+		minvec = grid.getMinVector();
+		maxdiff[0] = maxvec[0] - minvec[0];
+		maxdiff[1] = maxvec[1] - minvec[1];
+		maxdiff[2] = maxvec[2] - minvec[2];
 		//System.out.println(next);
 
 		for(int i = 0; i < grid.getNumGridPoint()[2];i++){
@@ -703,7 +710,11 @@ public class Drawer implements GLEventListener {
 
 					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
-						gl2.glColor3d(0.8, 0.8, 0.8);
+						//gl2.glEnable(GL.GL_BLEND);
+						//gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+						//gl2.glColor4d(vpos[0]/maxvec[0], vpos[1]/maxvec[1], vpos[2]/maxvec[2],1.0-vpos[2]/maxvec[2]);
+						gl2.glColor3d(vpos[0]/maxdiff[0], vpos[1]/maxdiff[1], vpos[2]/maxdiff[2]);
+						//gl2.glColor3d(0.8, 0.8, 0.8);
 					}else{
 						gl2.glColor3d(1.0, 0.2, 0.2);
 					}

@@ -17,6 +17,8 @@ public class Grid {
 	int bnum = 0;
 	int count = 0;
 	DiffVectorCal dv[];
+	double maxvec[] = new double[3];
+	double minvec[] = new double[3];
 	/**
 	 * 格子の頂点数を設定する
 	 */
@@ -27,7 +29,7 @@ public class Grid {
 		elnum[0] = nx -1;
 		elnum[1] = ny -1;
 		elnum[2] = nz -1;
-		
+
 		gtotal = nx * ny * nz;
 		etotal = (nx - 1) * (ny - 1) * (nz - 1);
 		//System.out.println("nx,ny,nz="+nx+","+ny+","+nz);
@@ -36,15 +38,15 @@ public class Grid {
 		garray = new GridPoint[gtotal];
 		for(int i = 0; i < gtotal; i++)
 			garray[i] = new GridPoint();
-		
+
 		// 要素の配列を確保する
 		earray = new Element[etotal];
 		for(int i = 0; i < etotal; i++)
 			earray[i] = new Element();
 	}
-	
+
 	//public int[] getNum(){
-		
+
 	//}
 
 	/**
@@ -56,7 +58,7 @@ public class Grid {
 	public int getNumGridPointAll() {
 		return gtotal;
 	}
-	
+
 	/**
 	 * エレメント数を返す
 	 * @return
@@ -67,13 +69,13 @@ public class Grid {
 	public int getNumElementAll() {
 		return etotal;
 	}
-	
+
 	/**
 	 * 建物のある座標値の数を返す
-	 * @return 
+	 * @return
 	 */
 	public int getNumBuilding(){
-		
+
 		for(int i = 0; i<gtotal;i++){
 			if(this.getEnvironment(i)!=0.0){
 				bnum++;
@@ -81,7 +83,7 @@ public class Grid {
 		}
 		return bnum;
 	}
-	
+
 	/**
 	 * 端に位置している要素ならtrueを返す
 	 */
@@ -105,7 +107,7 @@ public class Grid {
 		}
 		return ans;
 	}
-	
+
 	/**
 	 * 同じ平面の要素を返す
 	 */
@@ -121,7 +123,7 @@ public class Grid {
 		}
 		return gp;
 	}
-	
+
 	/**
 	 * 同じ平面の頂点を返す
 	 */
@@ -137,7 +139,7 @@ public class Grid {
 		}
 		return egp;
 	}
-	
+
 	/**
 	 * 所定の格子点を返す
 	 */
@@ -150,7 +152,7 @@ public class Grid {
 	 * @return
 	 */
 	public GridPoint getGridPoint2(int id){
-		
+
 		return garray[id];
 	}
 	/**
@@ -159,14 +161,14 @@ public class Grid {
 	public Element getElement(int id) {
 		return earray[id];
 	}
-	
+
 	/**
 	 * 座標値の最小値・最大値を返す
 	 */
 	public double[] getMinmaxPos() {
 		return minmaxPos;
 	}
-	
+
 	/**
 	 * 格子点の通し番号を求める
 	 */
@@ -174,21 +176,21 @@ public class Grid {
 		return (k * num[0] * num[1] + j * num[0] + i);
 	}
 
-	
+
 	/**
 	 * 要素の通し番号を求める
 	 */
 	public int calcElementId(int i, int j, int k) {
 		return (k * (num[0] - 1) * (num[1] - 1) + j * (num[0] - 1) + i);
 	}
-	
+
 	/**
 	 * 要素の中心座標を求める
 	 */
 	public double[] calcElementCenter(int i, int j, int k) {
 		double[][] pos = new double[8][3];
 		double[] cenpos = new double[3];
-		
+
 		Element element = this.getElement(this.calcElementId(i, j, k));
 		for (int d = 0; d < 8; d++){
 			pos[d] = element.gp[d].getPosition();
@@ -201,10 +203,10 @@ public class Grid {
 		cenpos[0] = cenpos[0]/8;
 		cenpos[1] = cenpos[1]/8;
 		cenpos[2] = cenpos[2]/8;
-		
+
 		return cenpos;
 	}
-	
+
 	/**
 	 * 始点の座標値を定める
 	 */
@@ -213,7 +215,7 @@ public class Grid {
 		startPoint[1] = j;
 		startPoint[2] = k;
 	}
-	
+
 	/**
 	 * 的の座標値を定める
 	 */
@@ -221,14 +223,14 @@ public class Grid {
 		target[0] = i;
 		target[1] = j;
 		target[2] = k;
-	}	
-	
-	
+	}
+
+
 	/**
 	 * データを読み終えたあとのまとめ作業
 	 */
 	public void finalize() {
-		
+
 		// 座標値の最小値・最大値の初期化
 		minmaxPos[0] = minmaxPos[2] = minmaxPos[4] = 1.0e+30;
 		minmaxPos[1] = minmaxPos[3] = minmaxPos[5] = -1.0e+30;
@@ -244,7 +246,7 @@ public class Grid {
 			minmaxPos[4] = (minmaxPos[4] > pos[2]) ? pos[2] : minmaxPos[4];
 			minmaxPos[5] = (minmaxPos[5] < pos[2]) ? pos[2] : minmaxPos[5];
 		}
-		
+
 		// 各要素について：
 		//   8個の頂点をセットする
 		int count = 0;
@@ -264,7 +266,7 @@ public class Grid {
 			}
 		}
 	}
-	
+
 	/**
 	 * 建物のある座標値・種別を返す
 	 */
@@ -280,7 +282,7 @@ public class Grid {
 		}
 		return barray;
 	}
-	
+
 	/**
 	 * 建物のある座標値・種別を返す
 	 */
@@ -301,13 +303,13 @@ public class Grid {
 					}
 				}
 				if(this.getEnvironment(i) == 0.5){
-					
+
 				}
 			}
 		}
 		return barray;
 	}
-	
+
 	/**
 	 * 一点の建物の位置を返す
 	 */
@@ -324,31 +326,79 @@ public class Grid {
 	public double getEnvironment(int id){
 		return this.getGridPoint(id).environment;
 	}
-	
+
 	/**
 	 * 角度差分を返す
 	 */
 	public void setAngDiff(int id, double diff){
 		this.getGridPoint(id).setAngDiff(diff);
 	}
-	
+
 	public double getAngDiff(int id){
 		return this.getGridPoint(id).getAngDiff();
 	}
-	
-	
+
+
 	/**
 	 * 長さ差分を返す
 	 */
 	public void setLenDiff(int id, double diff){
 		this.getGridPoint(id).setLenDiff(diff);
 	}
-	
+
 	public double getLenDiff(int id){
 		return this.getGridPoint(id).getLenDiff();
 	}
-	
-	
+
+	/**
+	 * 一番大きいベクトルを返す
+	 * @return
+	 */
+	public double[] getMaxVector(){
+
+		maxvec[0] = 0.0;
+		maxvec[1] = 0.0;
+		maxvec[2] = 0.0;
+
+		for(int i=0; i<this.getNumGridPointAll(); i++){
+			if(maxvec[0] < this.getGridPoint(i).getVector()[0]){
+				maxvec[0] = this.getGridPoint(i).getVector()[0];
+			}
+			if(maxvec[1] < this.getGridPoint(i).getVector()[1]){
+				maxvec[1] = this.getGridPoint(i).getVector()[1];
+			}
+			if(maxvec[2] < this.getGridPoint(i).getVector()[2]){
+				maxvec[2] = this.getGridPoint(i).getVector()[2];
+			}
+		}
+		return maxvec;
+	}
+
+	/**
+	 * 一番小さいベクトルを返す
+	 * @return
+	 */
+	public double[] getMinVector(){
+
+		minvec[0] = 100.0;
+		minvec[1] = 100.0;
+		minvec[2] = 100.0;
+
+		for(int i=0; i<this.getNumGridPointAll(); i++){
+			if(minvec[0] > this.getGridPoint(i).getVector()[0]){
+				minvec[0] = this.getGridPoint(i).getVector()[0];
+			}
+			if(minvec[1] > this.getGridPoint(i).getVector()[1]){
+				minvec[1] = this.getGridPoint(i).getVector()[1];
+			}
+			if(minvec[2] > this.getGridPoint(i).getVector()[2]){
+				minvec[2] = this.getGridPoint(i).getVector()[2];
+			}
+		}
+		return minvec;
+	}
+
+
 	// targetとなっているelementとstreamlineの交差判定
 	public boolean intersectWithTarget(Streamline sl) {
 		int targetId = calcElementId(target[0],target[1], target[2]);
