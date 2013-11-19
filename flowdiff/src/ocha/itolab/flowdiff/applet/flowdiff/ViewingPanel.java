@@ -35,11 +35,8 @@ import ocha.itolab.flowdiff.core.streamline.StreamlineGenerator;
 public class ViewingPanel extends JPanel {
 
 	// ベクタ場のファイルを読み込む（相対パス）
-	//static String url1 = "file:../data/kassoro/ari/";
-	//static String url2 = "file:../data/kassoro/nashi/";
-	static String url1 = "file:../data/kassoro/ari90/";
-	static String url2 = "file:../data/kassoro/nashi90/";
-
+	static String url1 = Settings.filename(1); //建物有1
+	static String url2 = Settings.filename(0); //建物無0
 
 	public JButton  openDataButton, viewResetButton, viewBuildingButton,generateButton, viewVectorButton, viewCriticalPoint, viewVorticity,
 	resetAllStreamlineButton,removeStreamlineButton,highlightStreamline;
@@ -217,7 +214,7 @@ public class ViewingPanel extends JPanel {
 
 		// パネル5
 		JPanel p5 = new JPanel();
-		p5.setLayout(new GridLayout(7,1));
+		p5.setLayout(new GridLayout(8,1));
 		p5.add(new JLabel("差分表示"));
 		ButtonGroup group5 = new ButtonGroup();
 		noneDiffView = new JRadioButton("表示しない", true);//最初にチェックが入っている

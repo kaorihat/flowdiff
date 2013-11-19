@@ -356,9 +356,9 @@ public class Grid {
 	 */
 	public double[] getMaxVector(){
 
-		maxvec[0] = 0.0;
-		maxvec[1] = 0.0;
-		maxvec[2] = 0.0;
+		maxvec[0] = this.getGridPoint(0).getVector()[0];
+		maxvec[1] = this.getGridPoint(0).getVector()[1];
+		maxvec[2] = this.getGridPoint(0).getVector()[2];
 
 		for(int i=0; i<this.getNumGridPointAll(); i++){
 			if(maxvec[0] < this.getGridPoint(i).getVector()[0]){
@@ -380,9 +380,9 @@ public class Grid {
 	 */
 	public double[] getMinVector(){
 
-		minvec[0] = 100.0;
-		minvec[1] = 100.0;
-		minvec[2] = 100.0;
+		minvec[0] = this.getGridPoint(0).getVector()[0];
+		minvec[1] = this.getGridPoint(0).getVector()[1];
+		minvec[2] = this.getGridPoint(0).getVector()[2];
 
 		for(int i=0; i<this.getNumGridPointAll(); i++){
 			if(minvec[0] > this.getGridPoint(i).getVector()[0]){

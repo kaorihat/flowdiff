@@ -24,8 +24,8 @@ import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-//import com.sun.opengl.util.gl2.GLUT;
+import com.sun.opengl.util.gl2.GLUT;
+//import com.jogamp.opengl.util.gl2.GLUT;
 
 
 
@@ -426,7 +426,9 @@ public class Drawer implements GLEventListener {
 
 		drawBox();
 		//建物の描画
-		drawBuilding2(grid1,isBuilding);
+		if(Settings.building_exits){
+			drawBuilding2(grid1,isBuilding);
+		}
 
 
 		//両方ベクトル表示
@@ -528,15 +530,15 @@ public class Drawer implements GLEventListener {
 		gl2.glEnd();
 
 		//地面だけ色を変える
-		//gl2.glColor3d(0.18, 0.18, 0.18);
-		/*
+		gl2.glColor3d(Settings.ground_color[0], Settings.ground_color[1], Settings.ground_color[2]);
+		
 		gl2.glBegin(GL.GL_TRIANGLE_FAN);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
 		gl2.glEnd();
-		*/
+		
 	}
 
 	/**
@@ -599,10 +601,11 @@ public class Drawer implements GLEventListener {
 				gl2.glColor3d(0.0, 0.0, 0.4);
 			}
 			gl2.glBegin(GL.GL_TRIANGLE_FAN);
-			gl2.glVertex3d(minmaxXZ[0].getPosition()[0], minmaxXZ[0].getPosition()[1], minmaxXZ[0].getPosition()[2]);
-			gl2.glVertex3d(minmaxXZ[1].getPosition()[0], minmaxXZ[1].getPosition()[1], minmaxXZ[1].getPosition()[2]);
-			gl2.glVertex3d(minmaxXZ[2].getPosition()[0], minmaxXZ[2].getPosition()[1], minmaxXZ[2].getPosition()[2]);
-			gl2.glVertex3d(minmaxXZ[3].getPosition()[0], minmaxXZ[3].getPosition()[1], minmaxXZ[3].getPosition()[2]);
+			//地面に色つけるとかくれちゃうのでy軸に0.01たしました・・・
+			gl2.glVertex3d(minmaxXZ[0].getPosition()[0], minmaxXZ[0].getPosition()[1]+0.001, minmaxXZ[0].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[1].getPosition()[0], minmaxXZ[1].getPosition()[1]+0.001, minmaxXZ[1].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[2].getPosition()[0], minmaxXZ[2].getPosition()[1]+0.001, minmaxXZ[2].getPosition()[2]);
+			gl2.glVertex3d(minmaxXZ[3].getPosition()[0], minmaxXZ[3].getPosition()[1]+0.001, minmaxXZ[3].getPosition()[2]);
 			gl2.glEnd();
 		}
 
@@ -683,6 +686,11 @@ public class Drawer implements GLEventListener {
 		double[] maxvec = new double[3];
 		double[] minvec = new double[3];
 		double[] maxdiff = new double[3];
+		final double default_angle = Settings.angle;
+		final double[] unit_vec = new double[3];
+		unit_vec[0] = Math.cos(default_angle);
+		unit_vec[1] = 0.0;
+		unit_vec[2] = Math.sin(default_angle);
 		maxvec = grid.getMaxVector();
 		minvec = grid.getMinVector();
 		maxdiff[0] = maxvec[0] - minvec[0];
@@ -699,7 +707,8 @@ public class Drawer implements GLEventListener {
 					//二列目以降に描画する要素の決定
 					num = test+next*i;
 				}
-				if(grid.getEnvironment(num+j)==0.0 && j%2==0 && i%2==0){
+				if(grid.getEnvironment(num+j)==0.0 && j%Settings.partial==0 && i%Settings.partial==0){//間引きあり
+					//if(grid.getEnvironment(num+j)==0.0){//間引き無
 					//座標・ベクトルを取得
 					gpos[0] = grid.getGridPoint(num+j).getPosition()[0];
 					gpos[1] = grid.getGridPoint(num+j).getPosition()[1];
@@ -708,21 +717,49 @@ public class Drawer implements GLEventListener {
 					vpos[1] = grid.getGridPoint(num+j).getVector()[1];
 					vpos[2] = grid.getGridPoint(num+j).getVector()[2];
 
+					double[] color = new double[3];
+					double diff_angle = Math.abs(Math.acos((vpos[0]*unit_vec[0]+vpos[2]*unit_vec[2])/Math.sqrt(vpos[0]*vpos[0]+vpos[2]*vpos[2])));
+					
+					color[0] = Math.log(vpos[0]*(Math.E-1)/maxdiff[0]+1);
+					color[1] = Math.log(vpos[1]*(Math.E-1)/maxdiff[1]+1);
+					color[2] = Math.log(vpos[2]*(Math.E-1)/maxdiff[2]+1);
+					
 					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
 						//gl2.glEnable(GL.GL_BLEND);
 						//gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 						//gl2.glColor4d(vpos[0]/maxvec[0], vpos[1]/maxvec[1], vpos[2]/maxvec[2],1.0-vpos[2]/maxvec[2]);
-						gl2.glColor3d(vpos[0]/maxdiff[0], vpos[1]/maxdiff[1], vpos[2]/maxdiff[2]);
-						//gl2.glColor3d(0.8, 0.8, 0.8);
+						//gl2.glColor3d(vpos[0]/maxdiff[0], vpos[1]/maxdiff[1], vpos[2]/maxdiff[2]);
+						//gl2.glColor4d(color[0], color[1], color[2],1.0-color[2]);
+						//gl2.glColor3d(color[0], color[1], color[2]);
+						
+						//gl2.glColor3d(0.8, 0.2, 0.2);
+						/*定常流れとの角度の変化による色つけ*/
+						color[0] = Math.log((diff_angle)*(Math.E-1)/(Math.PI)+1);
+						color[1] = 0.0;
+						color[2] = 0.0;
+						gl2.glColor3d(color[0], color[1], color[2]);
+						/*
+						if(diff_angle < 0.3){
+							//gl2.glColor3d(color[0], color[1], color[2]);
+							gl2.glColor3d(0.2, color[1], color[2]);
+						}else{
+							gl2.glColor3d(0.7, 0.0, 0.0);
+						}*/
 					}else{
-						gl2.glColor3d(1.0, 0.2, 0.2);
+						//gl2.glColor3d(0.8, 0.8, 0.8);
+						/*定常流れとの角度の変化による色つけ*/
+						color[0] = 0.0;
+						color[1] = 0.0;
+						color[2] = Math.log((diff_angle)*(Math.E-1)/(Math.PI)+1);
+						gl2.glColor3d(color[0], color[1], color[2]);
 					}
 					//ベクトルの描画
 
 					//
 					//gl2.glLineWidth(0.001f);
 					//gl2.glBegin(GL.GL_LINE_LOOP);
+					gl.glLineWidth(Settings.vector_border);
 					gl2.glBegin(GL.GL_LINES);
 					//gl2.glBegin(GL2.GL_LINE_STRIP);
 					gl2.glVertex3d(gpos[0], gpos[1], gpos[2]);
@@ -731,12 +768,12 @@ public class Drawer implements GLEventListener {
 					//glut.glutSolidCube(1.0f);
 					//glut.glutWireTeapot(1.0, true);
 					gl2.glEnd();
-					/*
+					
 					gl2.glPointSize(2.25f);
 					gl2.glBegin(GL.GL_POINTS);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
 					gl2.glEnd();
-					*/
+					
 				}
 			}
 		}
@@ -1121,20 +1158,20 @@ public class Drawer implements GLEventListener {
 			if(color.get(i)){
 				if(id == 1){
 					//grid1白
-					gl2.glColor3d(1.0, 1.0, 1.0);
+					gl2.glColor3d(0.5, 1.0, 0.5);
 				}
 				if(id == 2){
 					//grid2黄色
-					gl2.glColor3d(0.5, 1.0, 0.5);
+					gl2.glColor3d(1.0, 1.0, 1.0);
 				}
 			}else{
 				if(id == 1){
-					//grid1ピンク
-					gl2.glColor3d(1.0, 0.0, 1.0);
+					//grid1シアン
+					gl2.glColor3d(0.0, 1.0, 1.0);
 				}
 				if(id == 2){
-					//grid2シアン
-					gl2.glColor3d(0.0, 1.0, 1.0);
+					//grid2ピンク
+					gl2.glColor3d(1.0, 0.0, 1.0);
 				}
 			}
 
