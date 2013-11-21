@@ -109,7 +109,7 @@ public class Grid {
 	}
 
 	/**
-	 * 同じ平面の要素を返す
+	 * 同じ平面の頂点を返す
 	 */
 	public GridPoint[] getPlanePoints(int height){
 		GridPoint[] gp = new GridPoint[num[0]*num[2]];
@@ -125,7 +125,7 @@ public class Grid {
 	}
 
 	/**
-	 * 同じ平面の頂点を返す
+	 * 同じ平面の要素を返す
 	 */
 	public Element[] getPartElement(int height){
 		Element[] egp = new Element[elnum[0]*elnum[2]];

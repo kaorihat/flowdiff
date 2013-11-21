@@ -4,23 +4,24 @@ package ocha.itolab.flowdiff.applet.flowdiff;
 
 
 public class Settings {
-	
+
 	//********変更パラメータここだけいじればおｋ*************
 	//<ファイル関連>
-	public static int preset = 110; //ここでどのファイルを読むかをきめる　風向80~110
-	
+	public static int preset = 100; //ここでどのファイルを読むかをきめる　風向80~110
+
 	//<処理関連>
 	public static int partial = 2; //間引き 間引かないときは１
-	
+	public static double vort_threshold = 2.0;
+
 	//<描写関連>
 	public static double[] ground_color = {0.2,0.2,0.2}; //地面の色変更
-	public static float vector_border = 1.0f; //ベクトルの色
+	public static float vector_border = 1.0f; //ベクトルの太さ
 	public static boolean building_exits = true; //建物の有無（あとでラベリングする位置を変えて高速化しよう）
-	
+
 	//<GUI関連>
-	
+
 	//********************************************
-	
+
 	//いじっちゃだめよ Drawerのdefault_angleに入る
 	public static double angle = preset/180.0*Math.PI;
 

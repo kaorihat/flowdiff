@@ -24,8 +24,8 @@ import ocha.itolab.flowdiff.util.CriticalPointFinder;
 import ocha.itolab.flowdiff.util.DiffVectorCal;
 import ocha.itolab.flowdiff.util.VorticityCalculate;
 
-import com.sun.opengl.util.gl2.GLUT;
-//import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+//import com.sun.opengl.util.gl2.GLUT;
 
 
 
@@ -448,8 +448,7 @@ public class Drawer implements GLEventListener {
 
 		//渦度表示
 		if(isRotView == 1){//両方
-			drawVorticity(grid1,vort,1,vc1);
-			drawVorticity(grid2,vort,2,vc2);
+			drawVorticity(grid1,grid2,vort,vc1,vc2);
 		}
 		if(isRotView == 2){
 			drawVorticity(grid1,vort,1,vc1);
@@ -531,14 +530,14 @@ public class Drawer implements GLEventListener {
 
 		//地面だけ色を変える
 		gl2.glColor3d(Settings.ground_color[0], Settings.ground_color[1], Settings.ground_color[2]);
-		
+
 		gl2.glBegin(GL.GL_TRIANGLE_FAN);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[4]);
 		gl2.glVertex3d(minmax[1], minmax[2], minmax[5]);
 		gl2.glVertex3d(minmax[0], minmax[2], minmax[5]);
 		gl2.glEnd();
-		
+
 	}
 
 	/**
@@ -719,11 +718,11 @@ public class Drawer implements GLEventListener {
 
 					double[] color = new double[3];
 					double diff_angle = Math.abs(Math.acos((vpos[0]*unit_vec[0]+vpos[2]*unit_vec[2])/Math.sqrt(vpos[0]*vpos[0]+vpos[2]*vpos[2])));
-					
+
 					color[0] = Math.log(vpos[0]*(Math.E-1)/maxdiff[0]+1);
 					color[1] = Math.log(vpos[1]*(Math.E-1)/maxdiff[1]+1);
 					color[2] = Math.log(vpos[2]*(Math.E-1)/maxdiff[2]+1);
-					
+
 					//色の調整(type 1:建物あり　2:建物なし)
 					if(type==1){
 						//gl2.glEnable(GL.GL_BLEND);
@@ -732,7 +731,7 @@ public class Drawer implements GLEventListener {
 						//gl2.glColor3d(vpos[0]/maxdiff[0], vpos[1]/maxdiff[1], vpos[2]/maxdiff[2]);
 						//gl2.glColor4d(color[0], color[1], color[2],1.0-color[2]);
 						//gl2.glColor3d(color[0], color[1], color[2]);
-						
+
 						//gl2.glColor3d(0.8, 0.2, 0.2);
 						/*定常流れとの角度の変化による色つけ*/
 						color[0] = Math.log((diff_angle)*(Math.E-1)/(Math.PI)+1);
@@ -768,12 +767,12 @@ public class Drawer implements GLEventListener {
 					//glut.glutSolidCube(1.0f);
 					//glut.glutWireTeapot(1.0, true);
 					gl2.glEnd();
-					
+
 					gl2.glPointSize(2.25f);
 					gl2.glBegin(GL.GL_POINTS);
 					gl2.glVertex3d(gpos[0]+vpos[0]/vlen, gpos[1]+vpos[1]/vlen, gpos[2]+vpos[2]/vlen);
 					gl2.glEnd();
-					
+
 				}
 			}
 		}
@@ -817,6 +816,8 @@ public class Drawer implements GLEventListener {
 			gl2.glEnd();
 		}
 	}
+
+
 	/**
 	 * 渦度の表示
 	 */
@@ -849,38 +850,33 @@ public class Drawer implements GLEventListener {
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
 
+
+
 	void drawVorticity(Grid grid, int height,int type,VorticityCalculate vc){
 		if(grid == null) return;
 		int posnum = grid.getNumElement()[0]*height + 1;
+		double min = vc.minmax(grid)[0];
+		double max = vc.minmax(grid)[1];
+
 		gl2.glPointSize(2.0f);
+
 		//渦度の描画
 		for(int i = 0; i < grid.getNumElement()[2];i++){
 
 			for(int j = 0;j <grid.getNumElement()[0];j++){
-				if(vc.vorticity[posnum+j].getVorticity()>2.0){
+				double vorticity = Math.abs(vc.vorticity[posnum+j].getVorticity());
+				if(vorticity > Settings.vort_threshold){
 					gl2.glEnable(GL.GL_BLEND);
 					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 					//gl2.glColor3d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0);
 					if(type==1){
 						//gl2.glColor3d(1.0,1.0, 0.0);
-						gl2.glColor4d(1.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
+						//渦度絶対値
+						gl2.glColor4d(1.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/max,0.8);
 					}else{
+						//渦度絶対値
 						//gl2.glColor3d(0.0,1.0, 1.0);
-						gl2.glColor4d(0.0,1.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
-					}
-					//gl2.glColor4d(1.0*vc.vorticity[posnum+j].getVorticity()/2,0.0, 0.0, 0.3);
-				}else if(vc.vorticity[posnum+j].getVorticity()<-2.0){
-					gl2.glEnable(GL.GL_BLEND);
-					gl2.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-					if(type==1){
-						//gl2.glColor3d(1.0,1.0, 0.0);
-						//gl2.glColor3d(0.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/2);
-						gl2.glColor4d(1.0,0.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
-					}else{
-						//gl2.glColor3d(0.0,1.0, 1.0);
-						gl2.glColor4d(0.0,1.0, -1.0*vc.vorticity[posnum+j].getVorticity()/10,0.8);
-						//gl2.glColor3d(0.0,1.0, 0.0);
-						//gl2.glColor3d(1.0, 1.0, 0.0);
+						gl2.glColor4d(0.0,1.0, -1.0*vc.vorticity[posnum+j].getVorticity()/max,0.8);
 					}
 				}else{
 					continue;
@@ -893,6 +889,45 @@ public class Drawer implements GLEventListener {
 			posnum += grid.getNumElement()[0]*grid.getNumElement()[1];
 		}
 		//gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
+	}
+
+	void drawVorticity(Grid grid1, Grid grid2, int height,VorticityCalculate vc1,VorticityCalculate vc2){
+		if(grid1 == null) return;
+		if(grid2 == null) return;
+
+		int posnum = grid1.getNumElement()[0]*height + 1;
+		double min1 = vc1.minmax(grid1)[0];
+		double max1 = vc1.minmax(grid1)[1];
+		double min2 = vc2.minmax(grid2)[0];
+		double max2 = vc2.minmax(grid2)[1];
+
+		gl2.glPointSize(2.0f);
+
+		//渦度の描画
+		for(int i = 0; i < grid1.getNumElement()[2];i++){
+
+			for(int j = 0;j <grid1.getNumElement()[0];j++){
+				double vorticity1 = Math.abs(vc1.vorticity[posnum+j].getVorticity());
+				double vorticity2 = Math.abs(vc2.vorticity[posnum+j].getVorticity());
+
+				if(vorticity1 > Settings.vort_threshold && vorticity2 > Settings.vort_threshold){
+						gl2.glColor4d(0.8,0.8, 0.8,0.8);
+
+				}else if(vorticity1 > Settings.vort_threshold){
+					gl2.glColor4d(1.0,0.0, -1.0*vc1.vorticity[posnum+j].getVorticity()/max1,0.8);
+				}else if(vorticity2 > Settings.vort_threshold){
+					gl2.glColor4d(0.0,1.0, -1.0*vc2.vorticity[posnum+j].getVorticity()/max2,0.8);
+				}else{
+					continue;
+				}
+
+				gl2.glBegin(GL.GL_POINTS);
+				gl2.glVertex3d(vc1.vorticity[posnum+j].getPosition()[0], vc1.vorticity[posnum+j].getPosition()[1], vc1.vorticity[posnum+j].getPosition()[2]);
+				gl2.glEnd();
+			}
+			posnum += grid1.getNumElement()[0]*grid1.getNumElement()[1];
+		}
+
 	}
 
 	/**
